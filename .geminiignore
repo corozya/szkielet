@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+backend/vendor/
+
+# Build outputs
+frontend/dist/
+backend/public/build/
+backend/public/hot
+
+# Logs and storage
+backend/storage/*.log
+backend/storage/framework/cache/data/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*.php
+backend/storage/logs/
+
+# IDE and System
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.staging.example
+
+# Temporary files
+tmp/
+*.tmp
+*.log
+backend/storage/debugbar/
