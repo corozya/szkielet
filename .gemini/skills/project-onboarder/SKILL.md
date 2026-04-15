@@ -15,20 +15,29 @@ This skill guides you through the process of onboarding a new project by proacti
 - **The Interview**: Present the proposed stack to the user for confirmation. Use [references/questions.md](references/questions.md) only to fill in the gaps or if the analysis is inconclusive.
 - **Tip**: If you need more details to make a decision, ask specific, targeted questions.
 
-### 2. Identify Files to Update
+### 2. AI Team Configuration
+- **Analyze Specialists**: Based on the confirmed tech stack (e.g., PHP, React, Python), propose a list of specialized agents.
+- **Role Creation**: For each confirmed specialist, create a role file in `docs/teams/NAME.md` using the [assets/role_template.md](assets/role_template.md) as a guide.
+- **Role Registration**: Update the "The Expert Team (Roles)" table in `docs/teams/COMMON.md` to include the new specialists.
+
+### 3. Identify Files to Update
 The standard files that MUST be updated are:
 - `GEMINI.md`: Updates the "Project Structure" and "AI Identity".
 - `CLAUDE.md`: Ensures consistency across agents.
-- `docs/teams/COMMON.md`: Updates project-specific standards if needed.
+- `docs/teams/COMMON.md`: Updates the "Expert Team (Roles)" table and project-specific standards.
 - `docs/teams/AGENT_GUIDE.md`: (Optional) Update or create this file for ticket-based workflows.
 
-### 3. Apply Updates (Surgical Editing)
+### 4. Apply Updates (Surgical Editing)
 Use the `replace` tool to perform surgical updates on existing files. 
 - **GEMINI.md**: Replace placeholders like `[MAIN_MODULE_PATH]` and `[DESCRIPTION]` with real data derived from your analysis.
 - **CLAUDE.md**: Ensure the `Role` and `Core Rules` sections match the confirmed project context.
 - **COMMON.md**: Update the "Operational Standards" and "Repository Management" based on the detected environment.
 
-### 4. Documentation Polish
+### 4. Git Clean-up (Skeleton detachment)
+If the project was initialized from the skeleton, ask the user if the Git history should be detached. 
+- **Action**: Run `rm -rf .git && git init` to provide a "clean slate" for the new project.
+
+### 5. Documentation Polish
 Ensure all updated documentation is visually consistent and technically accurate. Offer to generate a `README.md` if it's missing.
 
 ## 🛠 Guidelines

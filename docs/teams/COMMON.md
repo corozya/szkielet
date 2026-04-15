@@ -31,8 +31,11 @@
 ---
 
 ## ⚡ Token Efficiency Mandates (CRITICAL)
-- **`rtk` Proxy:** Binary: `/home/corozya/.local/bin/rtk`. Use `rtk gain` for stats.
+- **Model Priority:** ALWAYS prefer faster, cheaper, and smaller models (e.g., `gemini-1.5-flash`, `claude-3-haiku`) for routine tasks, research, and documentation. Use larger models (`pro`/`opus`) ONLY for complex architectural decisions or high-stakes refactoring.
+- **`rtk` Proxy:** Binary: `/home/corozya/.local/bin/rtk`. Use `rtk gain` for stats. Mandatory for all shell commands.
+- **Minimalist Communication:** 
+  - Skip conversational filler, greetings, and long summaries.
+  - Use code diffs and surgical reads instead of full file content.
+  - Provide direct, technical answers only.
 - **Grep before Read:** Never read a whole file to find one thing.
-- **No Re-reads:** Do not re-read files already loaded in session.
 - **Surgical Access:** Prefer diffs, slices, and symbol-level reads.
-- **No Filler:** Direct, technical answers only. Skip conversational filler.
