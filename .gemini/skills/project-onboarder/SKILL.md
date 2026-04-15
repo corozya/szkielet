@@ -10,13 +10,12 @@ This skill guides you through the process of onboarding a new project by proacti
 ## 🚀 Workflow
 
 ### 1. Proactive Analysis & Interview
-- **Analyze First**: Before asking questions, scan the workspace for existing configuration files (e.g., `package.json`, `composer.json`, `Cargo.toml`, `requirements.txt`, `.env`).
-- **Propose Stack**: Based on the scan or user assumptions, formulate a proposed tech stack (Backend, Frontend, DB, Tools).
-- **The Interview**: Present the proposed stack to the user for confirmation. Use [references/questions.md](references/questions.md) only to fill in the gaps or if the analysis is inconclusive.
-- **Tip**: If you need more details to make a decision, ask specific, targeted questions.
+- **Analyze First**: Before asking questions, scan the workspace for existing configuration files (e.g., `package.json`, `Cargo.toml`, `requirements.txt`, `.env`). **DO NOT** assume or ask about PHP or Databases unless they are explicitly detected.
+- **Propose Stack**: Based on the scan or user assumptions, formulate a proposed tech stack (Backend, Frontend, Tools). **Omit Database** from the proposal unless clearly necessary.
+- **The Interview**: Present the proposed stack to the user for confirmation. Use [references/questions.md](references/questions.md) only to fill in the gaps or if the analysis is inconclusive. **Avoid asking about PHP or Databases.**
 
 ### 2. AI Team Configuration
-- **Analyze Specialists**: Based on the confirmed tech stack (e.g., PHP, React, Python), propose a list of specialized agents.
+- **Analyze Specialists**: Based on the confirmed tech stack (e.g., Node.js, React, Python), propose a list of specialized agents.
 - **Role Creation**: For each confirmed specialist, create a role file in `docs/teams/NAME.md` using the [assets/role_template.md](assets/role_template.md) as a guide.
 - **Role Registration**: Update the "The Expert Team (Roles)" table in `docs/teams/COMMON.md` to include the new specialists.
 

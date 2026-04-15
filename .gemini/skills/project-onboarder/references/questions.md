@@ -13,7 +13,6 @@ Use this guide to verify the tech stack and fill in any gaps after the initial a
 - **Repository URL**: Where is the source code hosted?
 
 ## 🛠 Deep Dive (If needed)
-- **Database**: Which database system is in use?
 - **Additional Agents**: Are there any specific roles needed (e.g., DevOps, FrontendExpert)?
 - **Specific Standards**: Are there any project-specific coding or git standards?
 

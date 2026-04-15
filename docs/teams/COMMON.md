@@ -1,41 +1,42 @@
-# 🤝 Common Agent Standards & Team
+# 🤝 Wspólne Standardy Agentów i Zespół
 
-## 👥 The Expert Team (Roles)
+## 👥 Zespół Ekspertów (Role)
 
-| Agent | Role File | Competency |
+| Agent | Plik Roli | Kompetencje |
 |-------|-----------|------------|
-| **Architect** | `docs/teams/ARCHITECTURE.md` | High-level design, planning, system-wide logic. |
+| **Architekt** | `docs/teams/ARCHITECTURE.md` | Projektowanie wysokopoziomowe, planowanie, logika systemowa. |
+
+*Uwaga: Nowi agenci są dodawani do tej tabeli dopiero po zatwierdzeniu przez użytkownika w procesie wywiadu.*
 
 ---
 
-## 📡 Communication Protocol (Handoff)
-1. **Generalist** analyzes task -> writes to `handoff/TASK_ID.md`.
-2. **Specialists** read their Role File + `handoff/TASK_ID.md`.
-3. **Specialists** perform work -> Update `handoff/` status.
-4. **Generalist** verifies and closes the task.
+## 📡 Protokół Komunikacji (Handoff)
+1. **Orkiestrator (Gemini)** analizuje zadanie -> przeprowadza wywiad z użytkownikiem o potrzebnych agentach i ich **skillach**.
+2. **Orkiestrator** tworzy brief w `handoff/TASK_ID.md` oraz pliki ról w `docs/teams/`.
+3. **Specjaliści** czytają swój Plik Roli + `handoff/TASK_ID.md`.
+4. **Specjaliści** wykonują pracę -> Aktualizują status w `handoff/`.
+5. **Orkiestrator** weryfikuje i zamyka zadanie.
 
 ---
 
-## 🏛 Operational Standards
+## 🏛 Standardy Operacyjne
 
-### 📍 Source of Truth
-1. **Codebase:** The primary source of truth for the application state.
-2. **Documentation (`docs/teams/`):** The source of truth for **rules, architecture, and roles**.
+### 📍 Źródło Prawdy
+1. **Codebase:** Główne źródło prawdy o stanie aplikacji.
+2. **Dokumentacja (`docs/teams/`):** Źródło prawdy dla **zasad, architektury i ról**.
 
-### 📦 Repository Management (Git)
-- **Commits:** Every Expert Agent is responsible for committing their own changes.
-  - *Format:* `feat(scope): brief description` or `fix(scope): brief description`.
-- **Finalization & Push:** The **Main Agent (Generalist)** or **DevOps Agent** is responsible for the final push to the repository after task verification.
-- **Never Push to Production Directly:** All changes must go through the `beta` environment/tag first (see `DEVOPS.md`).
+### 📦 Zarządzanie Repozytorium (Git)
+- **Commits:** Każdy Agent Ekspert odpowiada za commitowanie własnych zmian.
+  - *Format:* `feat(scope): krótki opis` lub `fix(scope): krótki opis`.
+- **Finalizacja i Push:** Główny Agent (Gemini) lub Agent DevOps odpowiada za finalny push po weryfikacji zadania.
+- **Nigdy nie pushuj bezpośrednio na Production:** Wszystkie zmiany muszą najpierw przejść przez środowisko `beta` (patrz `DEVOPS.md`).
 
 ---
 
-## ⚡ Token Efficiency Mandates (CRITICAL)
-- **Model Priority:** ALWAYS prefer faster, cheaper, and smaller models (e.g., `gemini-1.5-flash`, `claude-3-haiku`) for routine tasks, research, and documentation. Use larger models (`pro`/`opus`) ONLY for complex architectural decisions or high-stakes refactoring.
-- **`rtk` Proxy:** Binary: `/home/corozya/.local/bin/rtk`. Use `rtk gain` for stats. Mandatory for all shell commands.
-- **Minimalist Communication:** 
-  - Skip conversational filler, greetings, and long summaries.
-  - Use code diffs and surgical reads instead of full file content.
-  - Provide direct, technical answers only.
-- **Grep before Read:** Never read a whole file to find one thing.
-- **Surgical Access:** Prefer diffs, slices, and symbol-level reads.
+## ⚡ Mandat Wydajności Tokenowej (KRYTYCZNE)
+- **Priorytet Modeli:** ZAWSZE preferuj szybsze i tańsze modele (np. `gemini-1.5-flash`) do rutynowych zadań i dokumentacji. Używaj większych modeli (`pro`) TYLKO do złożonych decyzji architektonicznych.
+- **`rtk` Proxy:** Używaj `rtk gain` dla statystyk. Obowiązkowe dla wszystkich komend shell.
+- **Minimalistyczna Komunikacja:** 
+  - Pomiń zbędne uprzejmości i długie podsumowania.
+  - Używaj diffów i chirurgicznych odczytów zamiast pełnej treści plików.
+- **Grep przed Read:** Nigdy nie czytaj całego pliku, aby znaleźć jedną rzecz.
