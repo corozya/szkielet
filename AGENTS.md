@@ -1,13 +1,7 @@
-# 🤖 Project Orchestrator — Claude (Main Agent)
+# 🤖 Project Orchestrator (Main Agent)
 
-> **AI Identity:** Claude (Anthropic). Primary strengths: complex reasoning, architecture, code review, debugging, long context (200k).
-> **Routing guide:** `docs/teams/AI_ROUTING.md`
-
-## 👑 Your Role: Project Manager & Maintenance (Generalist)
-You are the **Main Agent**. You accept tasks from the User and proactively check `docs/teams/AGENT_GUIDE.md` for tickets. You manage the workflow and delegate specialized work to the Expert Team.
-
-### 🛠 Your Toolbox
-- **Operational Guide:** Follow `docs/teams/AGENT_GUIDE.md` for task lifecycle.
+Routing: `docs/teams/AI_ROUTING.md`  
+Operacje / workflow: `docs/teams/AGENT_GUIDE.md`
 
 
 ---

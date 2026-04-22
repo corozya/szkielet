@@ -1,49 +1,82 @@
-# Architektura Projektu: [PROJECT_NAME]
+# Architecture: WorksOnMine
 
-> Dokument architekta. Ostatnia aktualizacja: [DATE].
+## Komponenty
 
-## Opis projektu
+- `backend-api/` (Laravel 12 + Inertia React): API + dashboard admina + integracje docelowe
+- `feedback-extension/` (Chrome MV3): zbiera debug pack (screenshot/console/network) i wysyła do API
 
-[PROJECT_DESCRIPTION]
+## Model danych
 
-## Technologie i Stack
+### Multi-tenancy
+- `Client` → posiada `User` (adminów) i `Project`
+- Izolacja po `client_id` na poziomie middleware i kontrolerów
 
-[OPIS_TECHNOLOGII_LUB_TABELA]
+### Role użytkowników (tylko administratorzy)
+- `superadmin` — zarządza klientami i zaproszeniami beta
+- `admin` — zarządza projektami, linkami zaproszeniowymi, integracjami
+- ~~`tester`~~ — **usunięty model**: testerzy nie mają kont w systemie
 
-## Struktura i Moduły
+### Testerzy (bez kont)
+- `Tester` — email + hashed API token (`wom_...`)
+- `ProjectInviteLink` — shareable link z opcjami: domena, limit użyć, wygaśnięcie
+- `project_tester` — pivot: który tester ma dostęp do którego projektu
 
-[OPIS_STRUKTURY_I_MODULOW]
+Jeden tester (email) może być zaproszony do wielu projektów różnych firm — ma jeden token per instancja WorksOnMine.
 
-## Domeny funkcjonalne / Funkcjonalności
+### Feedback
+- `FeedbackReport` — przechowuje dane od admina (`user_id`) LUB testera (`tester_id`)
 
-- [FEATURE_1]
-- [FEATURE_2]
+## Przepływ: dołączenie testera
 
-## Zespoły i odpowiedzialności
-
-| Zespół | Dokument | Zakres |
-|--------|----------|--------|
-| Architect | `docs/teams/ARCHITECTURE.md` | Planning & Design |
-
-## 👥 Agent Role: Architect
-
-**Your Mission:** Transform abstract ideas/tasks into concrete technical plans.
-
-### 🛠 Your Workflow
-1. **Analyze:** Read the task from the User or `handoff/`.
-2. **Draft Plan:** Design the solution considering the whole project impact.
-3. **Delegate:** Break down the plan into sub-tasks for specialized agents.
-4. **Handoff:** Write a brief to `handoff/TASK_ID.md` for the next agent:
-   - "[Module/Context]: [Specific change]"
-5. **Verify:** Check the `STATUS.md` or `handoff/` for completion.
-
-### 📝 Handoff Template (to `handoff/TASK_ID.md`)
-```markdown
-# Task: [ID] - [Title]
-## Context
-- [Brief background]
-## Sub-Tasks
-- [ ] @[Context]: [Specific change]
-## Validation
-- [How to test this]
 ```
+Admin → tworzy ProjectInviteLink → kopiuje URL → wysyła (Slack/email/cokolwiek)
+Tester → otwiera /join/{token} → podaje email
+       → backend tworzy/aktualizuje Tester, przypisuje do projektu
+       → zwraca api_token (wom_...) → strona wstrzykuje do #extension-config
+       → content.js zapisuje { testerToken, testerApiUrl } w chrome.storage.local
+       → wtyczka skonfigurowana
+```
+
+## Przepływ: wysyłka feedbacku
+
+```
+Extension popup → getProjectForUrl(url)
+  → próbuje testerToken: GET /api/v1/tester/check?url=
+  → próbuje saasApiKey:  GET /api/v1/projects/check?url=
+  → zwraca { project, _token, _url, _type }
+
+Użytkownik klika "Wyślij" → callSaaSWith(project, endpoint, 'POST', payload)
+  → _type='tester': POST /api/v1/tester/feedback
+  → _type='admin':  POST /api/v1/feedback
+```
+
+## API — endpointy extension
+
+| Endpoint | Auth | Opis |
+|---|---|---|
+| `GET /api/v1/tester/check` | `wom_...` token | Sprawdź URL dla testera |
+| `POST /api/v1/tester/feedback` | `wom_...` token | Wyślij feedback jako tester |
+| `GET /api/v1/projects/check` | Sanctum (admin) | Sprawdź URL dla admina |
+| `POST /api/v1/feedback` | Sanctum (admin) | Wyślij feedback jako admin |
+
+## Integracje docelowe (DestinationRegistry)
+
+Po zapisaniu `FeedbackReport` system próbuje automatycznie przekazać do skonfigurowanego destination:
+- **Kanboard** — tworzy kartę w wybranym projekcie/kolumnie
+- **GitHub** — tworzy issue w wybranym repo
+
+Konfiguracja per-projekt: `destination_type` + `destination_config` (JSON).
+
+## Granice bezpieczeństwa
+
+- Multi-tenancy po `client_id` (middleware `client_access`)
+- Tester token: `hash('sha256', 'wom_...')` w bazie, plaintext tylko przy generowaniu
+- Invite link: jednorazowy lub z limitem, opcjonalna domena emaila, można unieważnić
+- Pliki: walidacja ścieżki przed serwowaniem z `storage/app/public`
+- Signed routes dla jednorazowych linków admina (extension install)
+
+## Dokumenty operacyjne
+
+- Role i standardy: `docs/teams/COMMON.md`
+- Jak pracować z zadaniami: `docs/teams/AGENT_GUIDE.md`
+- Roadmap: `docs/ROADMAP.md`

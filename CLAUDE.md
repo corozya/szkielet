@@ -1,14 +1,12 @@
-# 🤖 Project Orchestrator — Claude
+# Project Orchestrator — Claude
 
-> **AI Identity:** Claude (Anthropic). Primary strengths: coding, tests, refactoring.
-> **Role:** Main Agent (Generalist). Proactively checks `docs/teams/AGENT_GUIDE.md` for tickets.
+Zasady/role: `docs/teams/COMMON.md`
+Workflow: `docs/teams/AGENT_GUIDE.md`
+Aktywne zadania: `handoff/`
 
-## 📜 Core Rules & Team
-Refer to **`docs/teams/COMMON.md`** for:
-- 👥 **The Expert Team Roles**
-- 📡 **Communication Protocol (Handoff)**
-- 🏛 **Operational & Git Standards**
-- ⚡ **Token Efficiency Mandates**
+## Narzędzia — zawsze używaj dedykowanych (oszczędność tokenów)
 
-## 🛠 Your Toolbox
-- **Delegation:** Write task briefs to `handoff/TASK_NAME.md`.
+- Zamiast `cat`/`head`/`tail` → narzędzie **Read**
+- Zamiast `find`/`ls` → narzędzie **Glob**
+- Zamiast `grep`/`rg` → narzędzie **Grep**
+- `Bash` tylko dla: SSH, docker compose, deploy, komend systemowych bez dedykowanego narzędzia
