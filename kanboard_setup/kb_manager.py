@@ -22,13 +22,19 @@ if _env_file.exists():
 URL = os.environ.get("KANBOARD_URL", "http://192.168.0.170:8080/jsonrpc.php")
 USER = os.environ.get("KANBOARD_USER", "jsonrpc")
 TOKEN = os.environ.get("KANBOARD_TOKEN")
-DEFAULT_PROJECT = os.environ.get("KANBOARD_PROJECT", "WorksOnMine")
+DEFAULT_PROJECT = os.environ.get("KANBOARD_PROJECT", "").strip()
+
+
+class ProjectNameRequiredError(Exception):
+    def __init__(self, request_path: Path):
+        self.request_path = request_path
+        super().__init__(f"Brak nazwy projektu. Zapisano w {request_path}.")
 
 
 class KanboardAgent:
     def __init__(self, url: str, user: str, token: str | None):
         if not token:
-            raise ValueError("Brak KANBOARD_TOKEN (ustaw zmienna srodowiskowa).")
+            raise ValueError("Brak KANBOARD_TOKEN.")
 
         self.url = url
         auth = f"{user}:{token}"
@@ -126,7 +132,7 @@ class KanboardAgent:
     def add_task(self, project_name: str, title: str, description: str = ""):
         project_id = self.get_project_id(project_name)
         if not project_id:
-            raise Exception(f"Projekt {project_name} nie istnieje.")
+            raise Exception(f"Brak projektu: {project_name}.")
         return self._call(
             "createTask",
             {"title": title, "project_id": project_id, "description": description},
@@ -173,6 +179,15 @@ class KanboardAgent:
         from base64 import b64decode
         return b64decode(b64)
 
+    def require_project_ref(self, project_ref: str | int | None, output_dir: Path | None = None) -> str | int:
+        if project_ref is None:
+            project_ref = ""
+        if str(project_ref).strip():
+            return project_ref
+
+        request_path = write_project_name_request(output_dir=output_dir)
+        raise ProjectNameRequiredError(request_path)
+
     def move_task(self, task_id: str | int, column_ref: str | int):
         task = self.get_task(task_id)
         project_id = int(task["project_id"])
@@ -199,6 +214,7 @@ class KanboardAgent:
         column_ref: str | int | None = "Backlog",
         limit: int = 1,
     ):
+        project_ref = self.require_project_ref(project_ref)
         claimed = []
         tasks = self.list_tasks(project_ref, column_ref)
 
@@ -214,10 +230,33 @@ class KanboardAgent:
 
 def print_usage() -> None:
     print(
-        "Dostepne komendy: list, show, handoff, claim, move\n"
+        "Komendy: list, show, handoff, claim, move\n"
         "handoff <id> [--force]\n"
-        "Legacy aliasy: init, add-task, comment"
+        "Legacy: init, add-task, comment"
     )
+
+
+def build_project_name_request_markdown() -> str:
+    return "\n".join([
+        "# ASK_PROJECT_NAME",
+        "",
+        "**Status:** Do uzupełnienia",
+        "",
+        "## Pytanie",
+        "- Podaj nazwę projektu Kanboard.",
+        "",
+        "## Powód",
+        "- `KANBOARD_PROJECT` jest pusty.",
+        "",
+    ])
+
+
+def write_project_name_request(output_dir: Path | None = None) -> Path:
+    output_dir = output_dir or Path.cwd() / "handoff"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    request_path = output_dir / "ASK_PROJECT_NAME.md"
+    request_path.write_text(build_project_name_request_markdown(), encoding="utf-8")
+    return request_path
 
 
 def print_list(tasks: list[dict]) -> None:
@@ -241,7 +280,7 @@ def _format_console_logs(console_logs: list[dict], limit: int = 20) -> list[str]
         msg = log.get("msg") or log.get("message") or ""
         lines.append(f"- [{log_type}] {msg}")
     if len(console_logs) > limit:
-        lines.append(f"- ... i jeszcze {len(console_logs) - limit} wpisów")
+        lines.append(f"- ... +{len(console_logs) - limit}")
     return lines
 
 
@@ -254,7 +293,7 @@ def _format_network_logs(network_logs: list[dict], limit: int = 10) -> list[str]
         duration = f" ({log['duration']}ms)" if log.get("duration") is not None else ""
         lines.append(f"- [{method}] {url} -> {status}{duration}")
     if len(network_logs) > limit:
-        lines.append(f"- ... i jeszcze {len(network_logs) - limit} wpisów")
+        lines.append(f"- ... +{len(network_logs) - limit}")
     return lines
 
 
@@ -289,7 +328,7 @@ def _format_task_files(task_files: list[dict], limit: int = 20) -> list[str]:
             lines.append(f"- {name}{suffix}")
 
     if len(task_files) > limit:
-        lines.append(f"- ... i jeszcze {len(task_files) - limit} plików")
+        lines.append(f"- ... +{len(task_files) - limit}")
     return lines
 
 
@@ -458,11 +497,7 @@ def build_handoff_markdown(
         if isinstance(task_file, dict) and task_file.get("local_path")
     ]
     environment_lines = [f"- {line}" for line in device_info_lines] if device_info_lines else ["- brak"]
-    user_actions_note = (
-        f"- User Actions: {user_actions_count} kroków ({user_actions_path})"
-        if user_actions_count
-        else "- User Actions: brak"
-    )
+    user_actions_note = f"- User Actions: {user_actions_count} ({user_actions_path})" if user_actions_count else "- User Actions: brak"
     description_summary = _summarize_text(description or "_Brak opisu_")
 
     return "\n".join([
@@ -474,10 +509,9 @@ def build_handoff_markdown(
         f"**Kolumna:** {column_id}" if column_id != "" else "**Kolumna:**",
         "",
         "## Start",
-        "- Najpierw przeanalizuj zgłoszenie i powiązany kod.",
-        "- Nie analizuj logów ani screenshotów automatycznie; sprawdzaj je tylko, gdy opis sugeruje problem w UI, renderowaniu albo konsoli.",
-        "- Jeśli opis jest niejasny lub brakuje danych, najpierw dopytaj użytkownika.",
-        "- Nie zaczynaj implementacji, dopóki zakres nie jest jasny.",
+        "- Przeanalizuj zgłoszenie i kod.",
+        "- Logi/screenshoty czytaj tylko gdy potrzebne.",
+        "- Braki danych -> dopytaj.",
         "",
         "## Środowisko",
         *environment_lines,
@@ -498,14 +532,14 @@ def build_handoff_markdown(
         "- Czytanie załączników tylko na żądanie lub gdy opis wskazuje, że są potrzebne.",
         "",
         "## Cel",
-        "- Ustal zakres zmiany na podstawie zgłoszenia",
-        "- Zapisz notatki techniczne w tym pliku",
+        "- Ustal zakres.",
+        "- Dopisz notatki.",
         "",
         "## Zakończenie",
-        "- Po zakończeniu pracy uruchom wymagane testy i sprawdź brak regresji.",
-        "- Zacommituj własne zmiany z poprawnym prefiksem, np. `fix(scope): opis`.",
-        "- Dodaj komentarz w KB z podsumowaniem wykonanej pracy i numerem commita.",
-        "- Przenieś zgłoszenie w Kanboard do kolumny `Done`.",
+        "- Uruchom testy.",
+        "- Commituj własne zmiany.",
+        "- Dodaj komentarz w KB.",
+        "- Przenieś task do `Done`.",
         "- Komenda: `python3 kanboard_setup/kb_manager.py move [ID_ZADANIA] \"Done\"`.",
         "",
         "## Notatki",
@@ -529,7 +563,7 @@ def write_handoff(
     brief_path = task_dir / "brief.md"
     if task_dir.exists():
         if not force:
-            raise FileExistsError(f"Katalog juz istnieje: {task_dir} (uzyj --force, aby nadpisac)")
+            raise FileExistsError(f"Katalog juz istnieje: {task_dir}")
         shutil.rmtree(task_dir)
     task_dir.mkdir(parents=True, exist_ok=True)
 
@@ -588,11 +622,11 @@ def main() -> int:
             task_id = sys.argv[2]
             task = agent.get_task(task_id)
             task_files = agent.get_task_files(task_id)
-            expected_project_id = agent.get_project_id(DEFAULT_PROJECT)
-            if expected_project_id is None or int(task.get("project_id", 0)) != expected_project_id:
+            expected_project_id = agent.get_project_id(DEFAULT_PROJECT) if DEFAULT_PROJECT else None
+            if DEFAULT_PROJECT and (expected_project_id is None or int(task.get("project_id", 0)) != expected_project_id):
                 expected_name = agent.get_project_name(DEFAULT_PROJECT) or DEFAULT_PROJECT
                 actual_name = agent.get_project_name(int(task.get("project_id", 0))) or task.get("project_id")
-                raise Exception(f"Task #{task_id} nie nalezy do domyslnego projektu '{expected_name}' (jest: '{actual_name}').")
+                raise Exception(f"Task #{task_id} nie nalezy do projektu '{expected_name}' (jest: '{actual_name}').")
 
             target = write_handoff(task, force=force, task_files=task_files, agent=agent)
             print(target)
@@ -637,6 +671,9 @@ def main() -> int:
 
         print_usage()
         return 1
+    except ProjectNameRequiredError as exc:
+        print(f"Podaj nazwe projektu. Zapisano w: {exc.request_path}")
+        return 2
     except Exception as exc:
         print(f"Blad: {exc}")
         return 1
