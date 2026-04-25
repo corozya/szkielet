@@ -122,6 +122,80 @@ function scaffoldAgentSkills(repoRoot) {
         "\n" +
         "## Important\n" +
         "- Do not commit `kanboard_setup/.env` (contains secrets).\n"
+    },
+    {
+      dir: path.join(repoRoot, ".gemini", "skills", "kb-backlog-review"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: kb-backlog-review\n" +
+        "description: Fetches Kanboard Backlog, selects top tasks, generates handoff briefs, and summarizes findings.\n" +
+        "---\n" +
+        "\n" +
+        "# kb-backlog-review Skill\n" +
+        "\n" +
+        "Use when the user asks to review Kanboard tickets/backlog for this repo (e.g. “pobierz zgłoszenia”, “sprawdź zgłoszenia”, “przejrzyj backlog”).\n" +
+        "\n" +
+        "## Preflight\n" +
+        "- If `kanboard_setup/.env` is missing or Kanboard calls fail, run `npm run init-kb` and retry.\n" +
+        "\n" +
+        "## Commands\n" +
+        "- `python3 kanboard_setup/kb_manager.py list \"<KANBOARD_PROJECT>\" Backlog`\n" +
+        "- `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
+        "\n" +
+        "## Deliverable\n" +
+        "- Create 1–3 briefs in `handoff/` and summarize priority + next actions.\n"
+    },
+    {
+      dir: path.join(repoRoot, ".codex", "skills", "kb-backlog-review"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: kb-backlog-review\n" +
+        "description: Fetches Kanboard Backlog, selects top tasks, generates handoff briefs, and summarizes findings.\n" +
+        "---\n" +
+        "\n" +
+        "# kb-backlog-review (Codex)\n" +
+        "\n" +
+        "Use this when the user asks any of: “pobierz zgłoszenia”, “sprawdź zgłoszenia”, “przejrzyj backlog”, “pobierz listę zadań z Kanboard”, “sprawdź co jest w Backlogu”.\n" +
+        "\n" +
+        "## Preflight (must do before fetching)\n" +
+        "1. Check Kanboard config: `kanboard_setup/.env` exists and has `KANBOARD_URL`, `KANBOARD_USER`, `KANBOARD_TOKEN`.\n" +
+        "2. If config is missing OR any Kanboard call fails: run `npm install` (if needed) then `npm run init-kb`, and retry.\n" +
+        "\n" +
+        "## Commands (repo standard)\n" +
+        "- List backlog:\n" +
+        "  - `python3 kanboard_setup/kb_manager.py list \"<KANBOARD_PROJECT>\" Backlog`\n" +
+        "\n" +
+        "- For selected tasks create brief(s) in `handoff/`:\n" +
+        "  - `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
+        "\n" +
+        "## Expected output\n" +
+        "- 1–3 handoff folders under `handoff/` (with `brief.md`)\n" +
+        "- A short summary: top 3 tasks (ID + title) and recommended order.\n"
+    },
+    {
+      dir: path.join(repoRoot, ".cursor", "skills", "kb-backlog-review"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: kb-backlog-review\n" +
+        "description: Fetches Kanboard Backlog, selects top tasks, generates handoff briefs, and summarizes findings.\n" +
+        "---\n" +
+        "\n" +
+        "# kb-backlog-review (Cursor)\n" +
+        "\n" +
+        "Use when asked to check Kanboard submissions/tickets.\n" +
+        "\n" +
+        "## Preflight\n" +
+        "- If `kanboard_setup/.env` is missing or Kanboard calls fail: run `npm run init-kb` and retry.\n" +
+        "\n" +
+        "## Commands\n" +
+        "- `python3 kanboard_setup/kb_manager.py list \"<KANBOARD_PROJECT>\" Backlog`\n" +
+        "- `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
+        "\n" +
+        "## Output\n" +
+        "- Brief(s) in `handoff/` + short prioritization summary.\n"
     }
   ];
 
