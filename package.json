@@ -5,7 +5,8 @@
   "description": "Workflow repo (Kanboard tooling + handoff).",
   "license": "UNLICENSED",
   "scripts": {
-    "init-kb": "node ./bin/init-kb.js"
+    "init-kb": "node ./bin/init-kb.js",
+    "start-project": "node ./bin/start-project.js"
   }
 }
 
