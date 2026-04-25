@@ -14,7 +14,8 @@ Use this when a developer/agent needs Kanboard access configured for this worksp
 This writes `kanboard_setup/.env` used by `kanboard_setup/kb_manager.py`.
 
 ## Non-interactive mode
-- `node ./bin/init-kb.js --url <URL> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]`
+- `node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]`
+- alias: `--url <JSONRPC_ENDPOINT>`
 
 ## Important
 - Do not commit `kanboard_setup/.env` (contains secrets).

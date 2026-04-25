@@ -18,7 +18,8 @@ Use this skill when Kanboard configuration is missing or a new developer/environ
   - `npm run init-kb`
 
 - Non-interactive (CI / pipe):
-  - `node ./bin/init-kb.js --url <URL> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]`
+  - `node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]`
+  - alias: `--url <JSONRPC_ENDPOINT>`
 
 ## Notes
 - Never commit `kanboard_setup/.env` (it contains secrets). Use `kanboard_setup/.env.example` for sharing defaults.

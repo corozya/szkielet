@@ -14,7 +14,8 @@ Use when Kanboard credentials/config are missing or a new environment needs setu
 - Confirm the connection test succeeded (`getVersion`)
 
 ## Non-interactive mode
-- `node ./bin/init-kb.js --url <URL> --user <USER> --token <TOKEN> [--project <NAME>] [--env-path <PATH>] [--no-test]`
+- `node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--env-path <PATH>] [--no-test]`
+- alias: `--url <JSONRPC_ENDPOINT>`
 
 ## Security
 - Treat `KANBOARD_TOKEN` as secret.

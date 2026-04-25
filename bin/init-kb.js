@@ -6,6 +6,7 @@ const readline = require("node:readline/promises");
 
 function parseArgs(argv) {
   const out = {
+    host: undefined,
     url: undefined,
     user: undefined,
     token: undefined,
@@ -17,6 +18,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--no-test") out.noTest = true;
+    else if (a === "--host") out.host = argv[++i];
     else if (a === "--url") out.url = argv[++i];
     else if (a === "--user") out.user = argv[++i];
     else if (a === "--token") out.token = argv[++i];
@@ -38,13 +40,26 @@ function normalizeUrl(input) {
   const raw = String(input || "").trim();
   if (!raw) return "";
   // If user pastes base URL, append /jsonrpc.php
-  if (!raw.includes("://")) return raw;
+  // If scheme is missing, assume http://
+  const withScheme = raw.includes("://") ? raw : `http://${raw}`;
   try {
-    const u = new URL(raw);
+    const u = new URL(withScheme);
     if (u.pathname === "/" || u.pathname === "") {
       u.pathname = "/jsonrpc.php";
     }
     return u.toString();
+  } catch {
+    return raw;
+  }
+}
+
+function baseFromEndpointUrl(input) {
+  const raw = String(input || "").trim();
+  if (!raw) return "";
+  const withScheme = raw.includes("://") ? raw : `http://${raw}`;
+  try {
+    const u = new URL(withScheme);
+    return u.origin;
   } catch {
     return raw;
   }
@@ -143,7 +158,8 @@ async function main() {
         "  npm run init-kb",
         "",
         "Tryb nieinteraktywny (CI / pipe):",
-        "  node ./bin/init-kb.js --url <URL> --user <USER> --token <TOKEN> [--project <NAME>] [--env-path <PATH>] [--no-test]",
+        "  node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--env-path <PATH>] [--no-test]",
+        "  (alias: --url <JSONRPC_ENDPOINT>)",
         "",
         "Zmienne .env:",
         "  KANBOARD_URL, KANBOARD_USER, KANBOARD_TOKEN, KANBOARD_PROJECT",
@@ -165,14 +181,14 @@ async function main() {
   const isInteractive = Boolean(process.stdin.isTTY);
   if (!isInteractive) {
     // Important: awaiting readline.question doesn't keep the event loop alive with closed stdin.
-    const url = normalizeUrl(args.url) || current.get("KANBOARD_URL") || "";
+    const url = normalizeUrl(args.host) || normalizeUrl(args.url) || current.get("KANBOARD_URL") || "";
     const user = String(args.user || current.get("KANBOARD_USER") || "").trim();
     const token = String(args.token || current.get("KANBOARD_TOKEN") || "").trim();
     const project = String(args.project || current.get("KANBOARD_PROJECT") || "").trim();
 
     if (!isNonEmptyString(url) || !isNonEmptyString(user) || !isNonEmptyString(token)) {
       throw new Error(
-        "Brak interaktywnego TTY. Podaj flagi: --url --user --token (opcjonalnie --project / --env-path)."
+        "Brak interaktywnego TTY. Podaj flagi: --host (lub --url) --user --token (opcjonalnie --project / --env-path)."
       );
     }
 
@@ -200,12 +216,13 @@ async function main() {
     console.log("init-kb: konfiguracja Kanboard (kanboard_setup/.env)");
     console.log("");
 
-    const defaultUrl = current.get("KANBOARD_URL") || "http://127.0.0.1:8080/jsonrpc.php";
+    const defaultEndpoint = current.get("KANBOARD_URL") || "http://127.0.0.1:8080/jsonrpc.php";
+    const defaultHost = baseFromEndpointUrl(defaultEndpoint) || "http://127.0.0.1:8080";
     const defaultUser = current.get("KANBOARD_USER") || "jsonrpc";
     const defaultProject = current.get("KANBOARD_PROJECT") || "";
 
-    const urlInput = await rl.question(`Adres JSON-RPC Kanboard [${defaultUrl}]: `);
-    const url = normalizeUrl(urlInput) || defaultUrl;
+    const hostInput = await rl.question(`Host Kanboard (base URL) [${defaultHost}]: `);
+    const url = normalizeUrl(hostInput) || defaultEndpoint;
     if (!isNonEmptyString(url)) throw new Error("KANBOARD_URL nie może być puste.");
 
     const userInput = await rl.question(`Użytkownik API [${defaultUser}]: `);
