@@ -40,6 +40,49 @@ function scaffoldAgentSkills(repoRoot) {
   // 1) Skill docs (Gemini / Codex / Cursor)
   const skills = [
     {
+      dir: path.join(repoRoot, ".claude", "skills", "init-kb"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: init-kb\n" +
+        "description: Initializes Kanboard config for this repo (prompts for host/user/token/project, writes kanboard_setup/.env, tests JSON-RPC).\n" +
+        "---\n" +
+        "\n" +
+        "# init-kb Skill\n" +
+        "\n" +
+        "Interactive one-command setup for Kanboard integration in this repo.\n" +
+        "\n" +
+        "## What it does\n" +
+        "- Collects Kanboard credentials: `KANBOARD_URL`, `KANBOARD_USER`, `KANBOARD_TOKEN`, `KANBOARD_PROJECT`\n" +
+        "- Writes them to `kanboard_setup/.env` (source of truth for all Kanboard tooling)\n" +
+        "- Tests JSON-RPC connection via `getVersion` to confirm credentials work\n" +
+        "\n" +
+        "## Usage\n" +
+        "\n" +
+        "**Interactive mode** (recommended):\n" +
+        "```bash\n" +
+        "npm install\n" +
+        "npm run init-kb\n" +
+        "```\n" +
+        "\n" +
+        "**Non-interactive mode** (CI/CD):\n" +
+        "```bash\n" +
+        "node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]\n" +
+        "# or\n" +
+        "node ./bin/init-kb.js --url <JSONRPC_ENDPOINT> --user <USER> --token <TOKEN> [--no-test]\n" +
+        "```\n" +
+        "\n" +
+        "## Environment variables created\n" +
+        "- `KANBOARD_URL` — Kanboard JSON-RPC endpoint\n" +
+        "- `KANBOARD_USER` — API user\n" +
+        "- `KANBOARD_TOKEN` — API token (secret!)\n" +
+        "- `KANBOARD_PROJECT` — Project name (optional)\n" +
+        "\n" +
+        "## Security note\n" +
+        "- `kanboard_setup/.env` contains secrets. Never commit it.\n" +
+        "- Use `kanboard_setup/.env.example` to share non-secret defaults.\n"
+    },
+    {
       dir: path.join(repoRoot, ".gemini", "skills", "init-kb"),
       file: "SKILL.md",
       // NOTE: keep this string free of unescaped backticks (it lives inside a JS template string).
@@ -204,6 +247,132 @@ function scaffoldAgentSkills(repoRoot) {
         "\n" +
         "## Output\n" +
         "- Briefs in `handoff/` for **all** Backlog tasks + summary of **all** tasks.\n"
+    },
+    {
+      dir: path.join(repoRoot, ".claude", "skills", "start-project"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: start-project\n" +
+        "description: One-command project initialization (clones app repos into apps/, adds .gitignore, runs init-kb).\n" +
+        "---\n" +
+        "\n" +
+        "# start-project Skill\n" +
+        "\n" +
+        "Complete project setup for a fresh environment.\n" +
+        "\n" +
+        "## What it does\n" +
+        "- Creates `apps/` directory (contains cloned application repos)\n" +
+        "- Adds `apps/` to `.gitignore` (repos are not committed, only references)\n" +
+        "- Prompts for git URLs of repositories to clone\n" +
+        "- Clones each repo to `apps/<reponame>`\n" +
+        "- Automatically runs `npm run init-kb` to configure Kanboard\n" +
+        "\n" +
+        "## Usage\n" +
+        "\n" +
+        "```bash\n" +
+        "npm install\n" +
+        "npm run start-project\n" +
+        "```\n" +
+        "\n" +
+        "Then:\n" +
+        "1. Enter git URLs of repos to attach (one per line, empty to finish)\n" +
+        "2. Each repo is cloned to `apps/<reponame>`\n" +
+        "3. Kanboard config is initialized (prompts for credentials if needed)\n" +
+        "\n" +
+        "## Output structure\n" +
+        "```\n" +
+        ".\n" +
+        "├── apps/\n" +
+        "│   ├── <app1>/    (cloned from git URL 1)\n" +
+        "│   ├── <app2>/    (cloned from git URL 2)\n" +
+        "│   └── .../\n" +
+        "├── kanboard_setup/\n" +
+        "│   └── .env       (Kanboard credentials, do not commit)\n" +
+        "└── ...\n" +
+        "```\n"
+    },
+    {
+      dir: path.join(repoRoot, ".gemini", "skills", "start-project"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: start-project\n" +
+        "description: One-command project initialization (clones app repos into apps/, adds .gitignore, runs init-kb).\n" +
+        "---\n" +
+        "\n" +
+        "# start-project Skill (Gemini)\n" +
+        "\n" +
+        "Use when setting up a fresh instance of this repo (developer/agent first time).\n" +
+        "\n" +
+        "## What happens\n" +
+        "1. Creates `apps/` directory\n" +
+        "2. Adds `apps/` to `.gitignore`\n" +
+        "3. Prompts you to paste git URLs (one per line, empty to finish)\n" +
+        "4. Clones each repo to `apps/<reponame>`\n" +
+        "5. Runs `npm run init-kb` (Kanboard setup)\n" +
+        "\n" +
+        "## Commands\n" +
+        "```bash\n" +
+        "npm install\n" +
+        "npm run start-project\n" +
+        "```\n" +
+        "\n" +
+        "## Notes\n" +
+        "- `apps/` is gitignored — repos are cloned separately, not committed\n" +
+        "- `kanboard_setup/.env` is created with Kanboard credentials (secret, not committed)\n"
+    },
+    {
+      dir: path.join(repoRoot, ".codex", "skills", "start-project"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: start-project\n" +
+        "description: One-command project initialization (clones app repos, adds .gitignore, runs init-kb).\n" +
+        "---\n" +
+        "\n" +
+        "# start-project Skill (Codex)\n" +
+        "\n" +
+        "Use for fresh project setup (first-time environment init).\n" +
+        "\n" +
+        "## Workflow\n" +
+        "1. Run `npm install` (once per clone)\n" +
+        "2. Run `npm run start-project`\n" +
+        "3. Enter git URLs when prompted (empty line to finish)\n" +
+        "4. Wait for cloning and Kanboard init to complete\n" +
+        "\n" +
+        "## Result\n" +
+        "- `apps/` contains cloned repositories\n" +
+        "- `.gitignore` updated to ignore `apps/`\n" +
+        "- `kanboard_setup/.env` created (Kanboard credentials)\n"
+    },
+    {
+      dir: path.join(repoRoot, ".cursor", "skills", "start-project"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: start-project\n" +
+        "description: One-command project initialization (clones repos into apps/, runs init-kb for Kanboard).\n" +
+        "---\n" +
+        "\n" +
+        "# start-project Skill (Cursor)\n" +
+        "\n" +
+        "Use for fresh project setup.\n" +
+        "\n" +
+        "## Commands\n" +
+        "```bash\n" +
+        "npm install\n" +
+        "npm run start-project\n" +
+        "```\n" +
+        "\n" +
+        "## What it does\n" +
+        "- Creates `apps/` and adds to `.gitignore`\n" +
+        "- Clones app repositories (you provide git URLs)\n" +
+        "- Sets up Kanboard config\n" +
+        "\n" +
+        "## Notes\n" +
+        "- Applications go in `apps/` but are not committed\n" +
+        "- Kanboard secrets stored in `kanboard_setup/.env`\n"
     }
   ];
 
