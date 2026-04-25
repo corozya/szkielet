@@ -4,6 +4,152 @@ const fs = require("node:fs");
 const path = require("node:path");
 const readline = require("node:readline/promises");
 
+function safeMkdirp(dirPath) {
+  fs.mkdirSync(dirPath, { recursive: true });
+}
+
+function ensureDirNotFile(dirPath) {
+  if (!fs.existsSync(dirPath)) return;
+  const st = fs.statSync(dirPath);
+  if (st.isDirectory()) return;
+
+  const backupPath = `${dirPath}.bak.${Date.now()}`;
+  fs.renameSync(dirPath, backupPath);
+}
+
+function writeFileIfMissing(filePath, content) {
+  if (fs.existsSync(filePath)) return false;
+  safeMkdirp(path.dirname(filePath));
+  fs.writeFileSync(filePath, content, "utf8");
+  return true;
+}
+
+function ensureMarkdownSection(filePath, heading, linesToInsert) {
+  const headingLine = `## ${heading}`;
+  const text = fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
+  if (text.includes(headingLine)) return false;
+
+  const insertion = `\n${headingLine}\n\n${linesToInsert.join("\n")}\n`;
+  const out = text.trimEnd() + insertion + "\n";
+  safeMkdirp(path.dirname(filePath));
+  fs.writeFileSync(filePath, out, "utf8");
+  return true;
+}
+
+function scaffoldAgentSkills(repoRoot) {
+  // 1) Skill docs (Gemini / Codex / Cursor)
+  const skills = [
+    {
+      dir: path.join(repoRoot, ".gemini", "skills", "init-kb"),
+      file: "SKILL.md",
+      // NOTE: keep this string free of unescaped backticks (it lives inside a JS template string).
+      content:
+        "---\n" +
+        "name: init-kb\n" +
+        "description: Initializes Kanboard config for this repo (asks for host/user/token/project, writes kanboard_setup/.env, tests connection via getVersion).\n" +
+        "---\n" +
+        "\n" +
+        "# init-kb Skill\n" +
+        "\n" +
+        "Use when Kanboard configuration is missing or a new developer/environment needs a one-command setup.\n" +
+        "\n" +
+        "## What it does\n" +
+        "- Runs `npm run init-kb` to collect `KANBOARD_URL`, `KANBOARD_USER`, `KANBOARD_TOKEN`, `KANBOARD_PROJECT`\n" +
+        "- Writes them to `kanboard_setup/.env` (the source of truth for Kanboard tooling in this repo)\n" +
+        "- Tests the JSON-RPC connection by calling `getVersion`\n" +
+        "\n" +
+        "## Usage\n" +
+        "- Interactive:\n" +
+        "  - `npm install`\n" +
+        "  - `npm run init-kb`\n" +
+        "\n" +
+        "- Non-interactive (CI / pipe):\n" +
+        "  - `node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]`\n" +
+        "  - alias: `--url <JSONRPC_ENDPOINT>`\n" +
+        "\n" +
+        "## Notes\n" +
+        "- Never commit `kanboard_setup/.env` (it contains secrets). Use `kanboard_setup/.env.example` for sharing defaults.\n"
+    },
+    {
+      dir: path.join(repoRoot, ".codex", "skills", "init-kb"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: init-kb\n" +
+        "description: Interactive Kanboard initializer (writes kanboard_setup/.env and tests JSON-RPC via getVersion).\n" +
+        "---\n" +
+        "\n" +
+        "# init-kb Skill (Codex)\n" +
+        "\n" +
+        "Use when Kanboard credentials/config are missing or a new environment needs setup.\n" +
+        "\n" +
+        "## Workflow\n" +
+        "- Run `npm install` (once per clone)\n" +
+        "- Run `npm run init-kb`\n" +
+        "- Confirm `kanboard_setup/.env` was created/updated\n" +
+        "- Confirm the connection test succeeded (`getVersion`)\n" +
+        "\n" +
+        "## Non-interactive mode\n" +
+        "- `node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--env-path <PATH>] [--no-test]`\n" +
+        "- alias: `--url <JSONRPC_ENDPOINT>`\n" +
+        "\n" +
+        "## Security\n" +
+        "- Treat `KANBOARD_TOKEN` as secret.\n" +
+        "- Never commit `kanboard_setup/.env` (use `kanboard_setup/.env.example` instead).\n"
+    },
+    {
+      dir: path.join(repoRoot, ".cursor", "skills", "init-kb"),
+      file: "SKILL.md",
+      content:
+        "---\n" +
+        "name: init-kb\n" +
+        "description: One-command Kanboard setup for this repo (writes kanboard_setup/.env, tests getVersion, enables kb tooling).\n" +
+        "---\n" +
+        "\n" +
+        "# init-kb Skill (Cursor)\n" +
+        "\n" +
+        "Use this when a developer/agent needs Kanboard access configured for this workspace.\n" +
+        "\n" +
+        "## What to run\n" +
+        "- `npm install`\n" +
+        "- `npm run init-kb`\n" +
+        "\n" +
+        "This writes `kanboard_setup/.env` used by `kanboard_setup/kb_manager.py`.\n" +
+        "\n" +
+        "## Non-interactive mode\n" +
+        "- `node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]`\n" +
+        "- alias: `--url <JSONRPC_ENDPOINT>`\n" +
+        "\n" +
+        "## Important\n" +
+        "- Do not commit `kanboard_setup/.env` (contains secrets).\n"
+    }
+  ];
+
+  // Handle pathological case: ".codex" exists as file in some repos.
+  ensureDirNotFile(path.join(repoRoot, ".codex"));
+  ensureDirNotFile(path.join(repoRoot, ".cursor"));
+  ensureDirNotFile(path.join(repoRoot, ".gemini"));
+
+  let createdCount = 0;
+  for (const s of skills) {
+    const did = writeFileIfMissing(path.join(s.dir, s.file), s.content);
+    if (did) createdCount += 1;
+  }
+
+  // 2) Lightweight “where is init” breadcrumbs (Claude + Gemini root docs)
+  const commonLines = [
+    "- Setup: `npm install` → `npm run init-kb`",
+    "- Konfiguracja ląduje w `kanboard_setup/.env` (sekrety; nie commitować)"
+  ];
+
+  const claudePath = path.join(repoRoot, "CLAUDE.md");
+  const geminiPath = path.join(repoRoot, "GEMINI.md");
+  const didClaude = ensureMarkdownSection(claudePath, "Kanboard (quick init)", commonLines);
+  const didGemini = ensureMarkdownSection(geminiPath, "Kanboard (quick init)", commonLines);
+
+  return { createdCount, didClaude, didGemini };
+}
+
 function parseArgs(argv) {
   const out = {
     host: undefined,
@@ -207,6 +353,12 @@ async function main() {
     const outText = serializeEnv(next, originalText);
     fs.writeFileSync(envPath, outText, "utf8");
     console.log(`Zapisano: ${path.relative(repoRoot, envPath)}`);
+    const scaff = scaffoldAgentSkills(repoRoot);
+    if (scaff.createdCount || scaff.didClaude || scaff.didGemini) {
+      console.log(
+        `Zaktualizowano skills/docs: created_skills=${scaff.createdCount}, CLAUDE.md=${scaff.didClaude ? "yes" : "no"}, GEMINI.md=${scaff.didGemini ? "yes" : "no"}`
+      );
+    }
     return;
   }
 
@@ -260,6 +412,12 @@ async function main() {
     fs.writeFileSync(envPath, outText, "utf8");
     console.log("");
     console.log(`Zapisano: ${path.relative(repoRoot, envPath)}`);
+    const scaff = scaffoldAgentSkills(repoRoot);
+    if (scaff.createdCount || scaff.didClaude || scaff.didGemini) {
+      console.log(
+        `Zaktualizowano skills/docs: created_skills=${scaff.createdCount}, CLAUDE.md=${scaff.didClaude ? "yes" : "no"}, GEMINI.md=${scaff.didGemini ? "yes" : "no"}`
+      );
+    }
     console.log("Gotowe. Możesz używać narzędzi w kanboard_setup/ (np. kb_manager.py).");
     console.log("");
   } finally {
