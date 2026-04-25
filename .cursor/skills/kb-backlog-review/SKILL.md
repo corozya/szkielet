@@ -17,5 +17,5 @@ Use when asked to check Kanboard submissions/tickets.
   - `python3 kanboard_setup/kb_manager.py handoff <ID>`
 
 ## Output
-- Brief(s) in `handoff/` + short prioritization summary.
+- Briefs in `handoff/` for **all** Backlog tasks + summary of **all** tasks.
 

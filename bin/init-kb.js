@@ -144,7 +144,8 @@ function scaffoldAgentSkills(repoRoot) {
         "- `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
         "\n" +
         "## Deliverable\n" +
-        "- Create 1–3 briefs in `handoff/` and summarize priority + next actions.\n"
+        "- Fetch and summarize **all** Backlog tasks.\n" +
+        "- Generate `handoff` briefs for **all** Backlog tasks (avoid `--force` unless asked).\n"
     },
     {
       dir: path.join(repoRoot, ".codex", "skills", "kb-backlog-review"),
@@ -167,12 +168,19 @@ function scaffoldAgentSkills(repoRoot) {
         "- List backlog:\n" +
         "  - `python3 kanboard_setup/kb_manager.py list \"<KANBOARD_PROJECT>\" Backlog`\n" +
         "\n" +
-        "- For selected tasks create brief(s) in `handoff/`:\n" +
+        "## Required behavior\n" +
+        "- Fetch **all** tasks in Backlog (not just top 3).\n" +
+        "- Summarize **each** task (ID + title + 1-line note).\n" +
+        "- Generate `handoff` **for all Backlog tasks**:\n" +
         "  - `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
         "\n" +
+        "## Safety (large backlogs)\n" +
+        "- If Backlog is very large, generate handoffs in batches (e.g. 10 at a time) until done.\n" +
+        "- If a handoff folder already exists, do not delete it unless explicitly requested (avoid `--force` by default).\n" +
+        "\n" +
         "## Expected output\n" +
-        "- 1–3 handoff folders under `handoff/` (with `brief.md`)\n" +
-        "- A short summary: top 3 tasks (ID + title) and recommended order.\n"
+        "- Handoff folders under `handoff/` for all Backlog tasks (each with `brief.md`)\n" +
+        "- A summary covering all tasks.\n"
     },
     {
       dir: path.join(repoRoot, ".cursor", "skills", "kb-backlog-review"),
@@ -195,7 +203,7 @@ function scaffoldAgentSkills(repoRoot) {
         "- `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
         "\n" +
         "## Output\n" +
-        "- Brief(s) in `handoff/` + short prioritization summary.\n"
+        "- Briefs in `handoff/` for **all** Backlog tasks + summary of **all** tasks.\n"
     }
   ];
 

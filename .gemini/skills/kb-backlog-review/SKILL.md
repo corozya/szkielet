@@ -15,5 +15,6 @@ Use when the user asks to review Kanboard tickets/backlog for this repo (e.g. â€
 - `python3 kanboard_setup/kb_manager.py handoff <ID>`
 
 ## Deliverable
-- Create 1â€“3 briefs in `handoff/` and summarize priority + next actions.
+- Fetch and summarize **all** Backlog tasks.
+- Generate `handoff` briefs for **all** Backlog tasks (avoid `--force` unless asked).
 
