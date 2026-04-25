@@ -30,10 +30,27 @@ Then:
 ```
 .
 ├── apps/
-│   ├── <app1>/    (cloned from git URL 1)
-│   ├── <app2>/    (cloned from git URL 2)
+│   ├── PROJECTS.json  (lista podłączonych projektów — dla agentów)
+│   ├── <app1>/        (cloned from git URL 1)
+│   ├── <app2>/        (cloned from git URL 2)
 │   └── .../
 ├── kanboard_setup/
-│   └── .env       (Kanboard credentials, do not commit)
+│   └── .env           (Kanboard credentials, do not commit)
 └── ...
 ```
+
+## apps/PROJECTS.json
+
+Po pobraniu repozytoriów skill tworzy `apps/PROJECTS.json` zawierający:
+```json
+[
+  {
+    "name": "repo-name",
+    "url": "https://github.com/...",
+    "path": "apps/repo-name",
+    "fullPath": "/absolute/path/to/apps/repo-name"
+  }
+]
+```
+
+**Dla agentów**: wczytaj ten plik żeby wiedzieć gdzie są projekty.

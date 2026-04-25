@@ -6,7 +6,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "init-kb": "node ./bin/init-kb.js",
-    "start-project": "node ./bin/start-project.js"
+    "start-project": "node ./bin/start-project.js",
+    "zgloszenia": "node ./bin/fetch-issues.js"
   }
 }
 

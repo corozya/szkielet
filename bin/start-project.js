@@ -78,6 +78,19 @@ async function main() {
   console.log("");
   run("npm", ["run", "-s", "init-kb"], { cwd: repoRoot });
 
+  // Zapisz listę projektów do apps/PROJECTS.json
+  if (attached.length > 0) {
+    const projectsData = attached.map((a) => ({
+      name: parseRepoNameFromUrl(a.url),
+      url: a.url,
+      path: path.relative(repoRoot, a.target),
+      fullPath: a.target
+    }));
+    const projectsFile = path.join(appsRoot, "PROJECTS.json");
+    fs.writeFileSync(projectsFile, JSON.stringify(projectsData, null, 2), "utf8");
+    console.log(`\nZapisano listę projektów do: apps/PROJECTS.json`);
+  }
+
   console.log("");
   console.log("Gotowe.");
   if (attached.length) {
