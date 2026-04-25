@@ -1,0 +1,11 @@
+{
+  "name": "szkielet-workflow",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Workflow repo (Kanboard tooling + handoff).",
+  "license": "UNLICENSED",
+  "scripts": {
+    "init-kb": "node ./bin/init-kb.js"
+  }
+}
+

@@ -1,0 +1,258 @@
+#!/usr/bin/env node
+/* eslint-disable no-console */
+const fs = require("node:fs");
+const path = require("node:path");
+const readline = require("node:readline/promises");
+
+function parseArgs(argv) {
+  const out = {
+    url: undefined,
+    user: undefined,
+    token: undefined,
+    project: undefined,
+    envPath: undefined,
+    noTest: false
+  };
+
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    if (a === "--no-test") out.noTest = true;
+    else if (a === "--url") out.url = argv[++i];
+    else if (a === "--user") out.user = argv[++i];
+    else if (a === "--token") out.token = argv[++i];
+    else if (a === "--project") out.project = argv[++i];
+    else if (a === "--env-path") out.envPath = argv[++i];
+    else if (a === "--help" || a === "-h") {
+      out.help = true;
+    }
+  }
+
+  return out;
+}
+
+function isNonEmptyString(v) {
+  return typeof v === "string" && v.trim().length > 0;
+}
+
+function normalizeUrl(input) {
+  const raw = String(input || "").trim();
+  if (!raw) return "";
+  // If user pastes base URL, append /jsonrpc.php
+  if (!raw.includes("://")) return raw;
+  try {
+    const u = new URL(raw);
+    if (u.pathname === "/" || u.pathname === "") {
+      u.pathname = "/jsonrpc.php";
+    }
+    return u.toString();
+  } catch {
+    return raw;
+  }
+}
+
+function parseEnvFile(text) {
+  const map = new Map();
+  const lines = text.split(/\r?\n/);
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const idx = trimmed.indexOf("=");
+    if (idx === -1) continue;
+    const key = trimmed.slice(0, idx).trim();
+    const value = trimmed.slice(idx + 1).trim();
+    if (key) map.set(key, value);
+  }
+  return map;
+}
+
+function serializeEnv(map, originalText) {
+  // Keep comments/unknown lines; only update/add known keys.
+  const keysToEnsure = ["KANBOARD_URL", "KANBOARD_USER", "KANBOARD_TOKEN", "KANBOARD_PROJECT"];
+  const existingLines = (originalText || "").split(/\r?\n/);
+  const outLines = [];
+  const seen = new Set();
+
+  for (const line of existingLines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#") || !trimmed.includes("=")) {
+      outLines.push(line);
+      continue;
+    }
+
+    const idx = trimmed.indexOf("=");
+    const key = trimmed.slice(0, idx).trim();
+    if (keysToEnsure.includes(key)) {
+      outLines.push(`${key}=${map.get(key) ?? ""}`);
+      seen.add(key);
+    } else {
+      outLines.push(line);
+    }
+  }
+
+  for (const key of keysToEnsure) {
+    if (!seen.has(key) && map.has(key)) outLines.push(`${key}=${map.get(key)}`);
+  }
+
+  // Always end with newline
+  return outLines.join("\n").replace(/\n?$/, "\n");
+}
+
+async function jsonRpcCall({ url, user, token, method, params }) {
+  const auth = Buffer.from(`${user}:${token}`, "utf8").toString("base64");
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${auth}`
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method,
+      id: 1,
+      params: params || {}
+    })
+  });
+
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}: ${text.slice(0, 400)}`);
+  }
+
+  let body;
+  try {
+    body = JSON.parse(text);
+  } catch {
+    throw new Error(`Niepoprawna odpowiedź JSON: ${text.slice(0, 400)}`);
+  }
+
+  if (body && body.error) {
+    throw new Error(body.error.message || JSON.stringify(body.error));
+  }
+  return body?.result;
+}
+
+async function main() {
+  const repoRoot = path.resolve(__dirname, "..");
+  const args = parseArgs(process.argv.slice(2));
+  if (args.help) {
+    console.log(
+      [
+        "init-kb — konfiguracja Kanboard dla tego repo",
+        "",
+        "Tryb interaktywny (zalecany):",
+        "  npm run init-kb",
+        "",
+        "Tryb nieinteraktywny (CI / pipe):",
+        "  node ./bin/init-kb.js --url <URL> --user <USER> --token <TOKEN> [--project <NAME>] [--env-path <PATH>] [--no-test]",
+        "",
+        "Zmienne .env:",
+        "  KANBOARD_URL, KANBOARD_USER, KANBOARD_TOKEN, KANBOARD_PROJECT",
+        ""
+      ].join("\n")
+    );
+    return;
+  }
+
+  const envPath = args.envPath
+    ? path.resolve(process.cwd(), String(args.envPath))
+    : path.join(repoRoot, "kanboard_setup", ".env");
+  const envDir = path.dirname(envPath);
+  fs.mkdirSync(envDir, { recursive: true });
+
+  const originalText = fs.existsSync(envPath) ? fs.readFileSync(envPath, "utf8") : "";
+  const current = parseEnvFile(originalText);
+
+  const isInteractive = Boolean(process.stdin.isTTY);
+  if (!isInteractive) {
+    // Important: awaiting readline.question doesn't keep the event loop alive with closed stdin.
+    const url = normalizeUrl(args.url) || current.get("KANBOARD_URL") || "";
+    const user = String(args.user || current.get("KANBOARD_USER") || "").trim();
+    const token = String(args.token || current.get("KANBOARD_TOKEN") || "").trim();
+    const project = String(args.project || current.get("KANBOARD_PROJECT") || "").trim();
+
+    if (!isNonEmptyString(url) || !isNonEmptyString(user) || !isNonEmptyString(token)) {
+      throw new Error(
+        "Brak interaktywnego TTY. Podaj flagi: --url --user --token (opcjonalnie --project / --env-path)."
+      );
+    }
+
+    if (!args.noTest) {
+      console.log("Test połączenia...");
+      const version = await jsonRpcCall({ url, user, token, method: "getVersion" });
+      console.log(`OK: Kanboard getVersion = ${String(version)}`);
+    }
+
+    const next = new Map(current);
+    next.set("KANBOARD_URL", url);
+    next.set("KANBOARD_USER", user);
+    next.set("KANBOARD_TOKEN", token);
+    next.set("KANBOARD_PROJECT", project);
+
+    const outText = serializeEnv(next, originalText);
+    fs.writeFileSync(envPath, outText, "utf8");
+    console.log(`Zapisano: ${path.relative(repoRoot, envPath)}`);
+    return;
+  }
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  try {
+    console.log("");
+    console.log("init-kb: konfiguracja Kanboard (kanboard_setup/.env)");
+    console.log("");
+
+    const defaultUrl = current.get("KANBOARD_URL") || "http://127.0.0.1:8080/jsonrpc.php";
+    const defaultUser = current.get("KANBOARD_USER") || "jsonrpc";
+    const defaultProject = current.get("KANBOARD_PROJECT") || "";
+
+    const urlInput = await rl.question(`Adres JSON-RPC Kanboard [${defaultUrl}]: `);
+    const url = normalizeUrl(urlInput) || defaultUrl;
+    if (!isNonEmptyString(url)) throw new Error("KANBOARD_URL nie może być puste.");
+
+    const userInput = await rl.question(`Użytkownik API [${defaultUser}]: `);
+    const user = (userInput || defaultUser).trim();
+    if (!isNonEmptyString(user)) throw new Error("KANBOARD_USER nie może być puste.");
+
+    let token = (current.get("KANBOARD_TOKEN") || "").trim();
+    if (!token) {
+      token = (await rl.question("Token API (KANBOARD_TOKEN): ")).trim();
+    } else {
+      const reuse = (await rl.question("Znaleziono KANBOARD_TOKEN w .env — użyć istniejącego? [Y/n]: ")).trim();
+      if (reuse.toLowerCase() === "n" || reuse.toLowerCase() === "no") {
+        token = (await rl.question("Token API (KANBOARD_TOKEN): ")).trim();
+      }
+    }
+    if (!isNonEmptyString(token)) throw new Error("KANBOARD_TOKEN nie może być puste.");
+
+    const projectInput = await rl.question(`Nazwa projektu (KANBOARD_PROJECT) [${defaultProject || "puste"}]: `);
+    const project = projectInput.trim() || defaultProject;
+
+    const next = new Map(current);
+    next.set("KANBOARD_URL", url);
+    next.set("KANBOARD_USER", user);
+    next.set("KANBOARD_TOKEN", token);
+    next.set("KANBOARD_PROJECT", project);
+
+    if (!args.noTest) {
+      console.log("");
+      console.log("Test połączenia...");
+      const version = await jsonRpcCall({ url, user, token, method: "getVersion" });
+      console.log(`OK: Kanboard getVersion = ${String(version)}`);
+    }
+
+    const outText = serializeEnv(next, originalText);
+    fs.writeFileSync(envPath, outText, "utf8");
+    console.log("");
+    console.log(`Zapisano: ${path.relative(repoRoot, envPath)}`);
+    console.log("Gotowe. Możesz używać narzędzi w kanboard_setup/ (np. kb_manager.py).");
+    console.log("");
+  } finally {
+    rl.close();
+  }
+}
+
+main().catch((err) => {
+  console.error("");
+  console.error(`Błąd init-kb: ${err && err.message ? err.message : String(err)}`);
+  process.exitCode = 1;
+});
+

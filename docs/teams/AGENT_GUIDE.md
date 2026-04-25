@@ -14,6 +14,9 @@
 - `KANBOARD_PROJECT` ustawia projekt
 - jeśli puste, zapytaj użytkownika i zapisz `handoff/ASK_PROJECT_NAME.md`
 
+### Szybki setup (nowy projekt / nowe środowisko)
+- `npm run init-kb` zapisuje `kanboard_setup/.env` i testuje połączenie z Kanboard (`getVersion`)
+
 ## Komendy
 - `list <project> Backlog`
 - `show <id>`
