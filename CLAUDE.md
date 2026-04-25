@@ -9,6 +9,11 @@ Aktywne zadania: `handoff/`
 - Setup: `npm install` → `npm run init-kb`
 - Konfiguracja ląduje w `kanboard_setup/.env` (sekrety; nie commitować)
 
+## Start projektu (repo + Kanboard)
+
+- Uruchom: `npm run start-project`
+- To podłączy repozytoria do `apps/` i zawsze odpali `npm run init-kb`
+
 ## Narzędzia — zawsze używaj dedykowanych (oszczędność tokenów)
 
 - Zamiast `cat`/`head`/`tail` → narzędzie **Read**

@@ -17,6 +17,9 @@
 ### Szybki setup (nowy projekt / nowe środowisko)
 - `npm run init-kb` zapisuje `kanboard_setup/.env` i testuje połączenie z Kanboard (`getVersion`)
 
+### Start projektu (repo + Kanboard)
+- `npm run start-project` podłącza repozytoria do `apps/` i zawsze uruchamia `npm run init-kb`
+
 ## Komendy
 - `list <project> Backlog`
 - `show <id>`

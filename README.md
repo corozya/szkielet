@@ -28,4 +28,4 @@ Proces:
 
 Regułka do wklejenia dla agentów:
 
-> Użyj skilla `project-start` i rozpocznij projekt: podłącz repozytoria do `apps/` (pytaj po jednym URL, zawsze `main`, nie nadpisuj istniejących katalogów), upewnij się że `apps/` jest w `.gitignore`, a potem zawsze uruchom `npm run init-kb` i doprowadź do poprawnej konfiguracji Kanboard.
+> Uruchom `npm run start-project`. Skrypt podłączy repozytoria do `apps/` (pyta po jednym URL, zawsze `main`, nie nadpisuje istniejących katalogów), dopisze `apps/` do `.gitignore`, a potem zawsze uruchomi `npm run init-kb` i doprowadzi do poprawnej konfiguracji Kanboard.
