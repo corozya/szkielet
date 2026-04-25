@@ -1,31 +1,106 @@
 # Common Standards
 
-## Roles
-- `ARCHITECTURE.md`
-- `PRODUCT_STRATEGIST.md`
-- `SAAS_ARCHITECT.md`
-- `EXTENSION_EXPERT.md`
-- `INTEGRATION_GURU.md`
-- `UX_DEVELOPER.md`
+## Roles & Workflow
 
-## Handoff
-1. Orkiestrator tworzy brief.
-2. Specjalista czyta brief i role.
-3. Specjalista wdraża zmianę i aktualizuje brief.
-4. Orkiestrator zamyka task.
+### 👨‍💼 Orchestrator (You)
+1. Write briefs for Architect → `handoff/TASK_NAME.md`
+2. Answer Architect's questions
+3. Merge and push code to main
+4. Release: `bash scripts/release-prod.sh`
 
-## DoD
-1. Kod przetestowany.
-2. Commit ma poprawny format.
-3. Brief zakończony.
-4. Brak regresji.
+### 🏗️ Architect Agent
+1. Read brief from Orchestrator (contains small tasks)
+2. Check if tasks are clear and small
+3. If unclear → ask Orchestrator individually
+4. **Monitor agents' progress** ← watch `handoff/`
+5. **Answer agents' questions in "Questions/Issues" section** ← MANDATORY
+6. Verify all ✅ tasks are complete
+
+### 👨‍💻 Specialists (Backend/Frontend/DevOps)
+1. Read brief (your role's section)
+2. Pick tasks yourself (mark status)
+3. Do work + tests
+4. Commit to `main` (`git commit`)
+5. If question/issue → add to brief
+6. Wait for push from Orchestrator/Architect
+
+### 📖 Documentation by Role
+- `ARCHITECTURE.md` — Architect Agent
+- `BACKEND.md` — Backend Developer
+- `FRONTEND.md` — Frontend Developer
+- `DEVOPS.md` — DevOps Engineer
+
+## Handoff — Process
+
+### Brief Template
+```
+handoff/TASK_NAME.md:
+
+# Task: [ID] - [Title]
+
+## Context
+[What's needed, why]
+
+## Expected Outcome
+[What should be done]
+
+## Backend Tasks
+- [ ] [Small task 1] `status: TODO`
+- [ ] [Small task 2] `status: TODO`
+
+## Frontend Tasks
+- [ ] [Small task 1] `status: TODO`
+- [ ] [Small task 2] `status: TODO`
+
+## DevOps Tasks
+- [ ] [Small task 1] `status: TODO`
+
+## Validation
+[How to test the complete task]
+
+## Questions/Issues for Architect
+(agents add questions here if needed)
+```
+
+### Workflow
+1. **Orchestrator** writes brief with small tasks (checkboxes)
+2. **Architect** reviews, asks Orchestrator if needed
+3. **Agents** (Backend/Frontend/DevOps):
+   - Read brief
+   - Pick tasks (mark `status: IN PROGRESS`)
+   - Do work + tests
+   - Commit to `main` (`git commit`)
+   - Mark ✅ (checkbox) when done / update brief
+   - If issue → add to "Questions/Issues" section
+4. **Architect** answers agents' questions (MANDATORY)
+5. **Architect** verifies completed tasks (tests pass, code OK)
+   - If OK → approve ✅
+   - If issue → add feedback to brief
+6. **Orchestrator** after ✅ all tasks + Architect verification: merge, push, release
+
+### Task Statuses
+- `TODO` — waiting
+- `IN PROGRESS` — someone is working
+- `DONE` ✅ — complete
+
+## Definition of Done
+1. Code tested.
+2. Commit has proper format.
+3. Brief completed.
+4. No regressions.
 
 ## Git
-- Każdy agent commituję własne zmiany.
-- Format: `feat(scope): opis` lub `fix(scope): opis`.
-- Push do `beta` przed `prod`.
+- Each agent commits own changes (locally on `main`).
+- Format: `feat(scope): description` or `fix(scope): description`.
+- Orchestrator or Architect does the push (after review).
+- Tests must pass before push.
 
-## Tokeny
-- Pisz krótko.
-- Czytaj tylko potrzebne fragmenty.
-- Używaj `rtk`.
+## Release
+- Orchestrator: `bash scripts/release-prod.sh`
+- Creates tag `prod-YYYYMMDD-HHMMSS`
+- GitHub Actions handles production deploy
+
+## Token Efficiency
+- Write concisely.
+- Read only what you need.
+- Use `rtk`.
