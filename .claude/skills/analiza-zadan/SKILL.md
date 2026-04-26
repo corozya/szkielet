@@ -1,12 +1,16 @@
 ---
 name: analiza-zadan
-description: Analizuje zadania z handoff/, tworzy briefs implementacyjne i deleguje pracę do agentów (Frontend, Backend, DevOps)
-triggers: ["analiza", "zadania", "implementuj", "analiza-zadan"]
+description: Analizuje zadania z handoff/, zbiera uwagi od agentów (Frontend/Backend/DevOps) i przygotowuje plan działań do akceptacji (bez implementacji)
+triggers: ["analiza", "zadania", "analiza-zadan", "handoff"]
 ---
 
 # analiza-zadan — Architekt Agent
 
-Skill działa jako **Architect Agent**. Czyta wszystkie pliki `handoff/TASK_*.md`, dla każdego zadania tworzy brief implementacyjny i deleguje pracę do wyspecjalizowanych agentów.
+Skill działa jako **Architect Agent** w trybie **analysis-only**.
+
+- Sub-agenci (**Frontend/Backend/DevOps**) mają **przeanalizować problem i zwrócić uwagi** (ryzyka, brakujące wymagania, potencjalne miejsca w kodzie, sugestie rozwiązań).
+- Architekt na podstawie tych uwag przygotowuje **plan działania**.
+- **Nikt nie implementuje zmian ani nie wykonuje działań modyfikujących repozytorium bez wiedzy użytkownika.**
 
 ## Wymagania wstępne
 
@@ -33,13 +37,12 @@ Pomiń pliki z tagiem `<!-- STATUS: DONE -->` na początku (otwórz plik i spraw
 Dla każdego znalezionego pliku `TASK_<id>_<title>.md`:
 
 1. **Oznacz status**: wstaw `<!-- STATUS: IN PROGRESS -->` na początku pliku zadania
-2. **Przeczytaj zadanie**: pełnie zrozum co trzeba zrobić
+2. **Przeczytaj zadanie**: zrozum cel, kontekst, ograniczenia i oczekiwany rezultat
 3. **Stwórz brief analizy**: nowy plik `handoff/TASK_<id>_ANALYSIS.md` wg szablonu poniżej
-4. **Klasyfikuj zadanie**: czy to Frontend, Backend, czy DevOps? (patrz tabela klasyfikacji poniżej)
-5. **Stwórz małe zadania**: podziel pracę na konkretne kroki dla każdej roli
-6. **Spawninguj sub-agentów**: użyj narzędzia `Agent` do spawningowania agentów (patrz Krok 3)
-7. **Weryfikuj pracę**: po zakończeniu sub-agentów, sprawdź rezultaty (patrz Krok 4)
-8. **Oznacz jako DONE**: po pozytywnej weryfikacji usuń plik TASK_*.md i plik ANALYSIS.md
+4. **Klasyfikuj typ**: Frontend / Backend / DevOps (może być mieszany; patrz tabela klasyfikacji poniżej)
+5. **Poproś agentów o analizę**: spawninguj sub-agentów tylko dla zaangażowanych typów (patrz Krok 3)
+6. **Zbierz uwagi i przygotuj plan**: po zakończeniu analiz agentów Architekt uzupełnia sekcję „Plan działania (Architect)”
+7. **Zakończ analizę**: ustaw w briefie `## Status: READY FOR USER` (do akceptacji użytkownika)
 
 ### Krok 3 — Spawning sub-agentów
 
@@ -49,25 +52,14 @@ Każdy sub-agent otrzymuje dedykowany prompt wg szablonu roli poniżej. **Nie sp
 
 **Agentów można spawningować równolegle** jeśli ich zadania są niezależne (np. Frontend i Backend bez wspólnych zmian).
 
-### Krok 4 — Weryfikacja Architekta
+### Krok 4 — Finalizacja (Architect)
 
-Po zakończeniu wszystkich sub-agentów:
+Po zakończeniu wszystkich sub-agentów Architekt:
 
-1. Przeczytaj plik `handoff/TASK_<id>_ANALYSIS.md` — sprawdź czy wszystkie checkboxy mają ✅
-2. Sprawdź git log w `apps/reczniki-haftowane/`:
-   ```bash
-   git -C /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane log --oneline -10
-   ```
-3. Jeśli są otwarte pytania w sekcji "Pytania/Problemy" → odpowiedz w briefie i re-spawninguj agenta jeśli potrzeba
-4. Uruchom testy (jeśli istnieją w `apps/reczniki-haftowane/`)
-5. Jeśli wszystko OK:
-   - Dodaj `<!-- STATUS: DONE -->` na początku oryginalnego pliku TASK_*.md
-   - Zaktualizuj brief z `## Status: ✅ DONE`
-   - Usuń oryginalny plik TASK_*.md:
-     ```bash
-     rm /home/corozya/www/reczniki-haftowane.pl/handoff/TASK_<id>_<title>.md
-     ```
-   - Opcjonalnie: usuń `TASK_<id>_ANALYSIS.md` albo zostaw dla historii
+1. Konsoliduje uwagi w `handoff/TASK_<id>_ANALYSIS.md` (sekcja „Uwagi agentów”)
+2. Odpowiada na otwarte pytania (jeśli da się bez implementacji)
+3. Przygotowuje **plan działania** (sekcja „Plan działania (Architect)”)
+4. Ustawia `## Status: READY FOR USER` (czeka na akceptację użytkownika)
 
 ---
 
@@ -92,7 +84,7 @@ Stwórz nowy plik z tą strukturą:
 
 **Źródło:** `handoff/TASK_<id>_<title>.md`
 **Data analizy:** <dzisiejsza data ISO: YYYY-MM-DD>
-**Status:** IN PROGRESS
+**Status:** IN PROGRESS (analysis-only)
 
 ## Kontekst zadania
 
@@ -106,40 +98,33 @@ Stwórz nowy plik z tą strukturą:
 
 (Zaznacz X dla typów zaangażowanych w to zadanie)
 
-## Zadania Frontend Developer
+## Uwagi agentów
 
-- [ ] <małe konkretne zadanie 1> `status: TODO`
-- [ ] <małe konkretne zadanie 2> `status: TODO`
+### Frontend (agent)
 
-(Jeśli brak Frontend pracy, usuń tę sekcję)
+- <Uwagi: ryzyka, edge-casy, potencjalne miejsca w kodzie, sugestie implementacji>
 
-## Zadania Backend Developer
+### Backend (agent)
 
-- [ ] <małe konkretne zadanie 1> `status: TODO`
+- <Uwagi: modele/routy/validacje, konsekwencje dla API, migracje (jeśli potrzebne)>
 
-(Jeśli brak Backend pracy, usuń tę sekcję)
+### DevOps (agent)
 
-## Zadania DevOps
+- <Uwagi: config/deploy/CI, ryzyka środowiskowe, potrzebne zmiany w infra>
 
-- [ ] <małe konkretne zadanie 1> `status: TODO`
+## Plan działania (Architect)
 
-(Jeśli brak DevOps pracy, usuń tę sekcję)
+- [ ] Krok 1: <co i gdzie> (Frontend/Backend/DevOps) — **wymaga akceptacji użytkownika**
+- [ ] Krok 2: <co i gdzie> (Frontend/Backend/DevOps) — **wymaga akceptacji użytkownika**
+- [ ] Test plan: <jak zweryfikować po wdrożeniu>
 
-## Weryfikacja (Architect)
+## Pytania/Problemy
 
-<Opisz konkretne kroki jak przetestować/zweryfikować że zadanie jest ukończone — URL do strony, command w CLI, etc.>
-
-Przykład:
-- Otwórz https://beta.strefakobiet.pl i sprawdź czy kod pocztowy jest ograniczony do PL
-- Uruchom `npm test` w `apps/reczniki-haftowane/frontend/` — powinny przejść wszystkie testy
-
-## Pytania/Problemy agentów
-
-(Agenci dodają tu swoje pytania/problemy w trakcie pracy)
+<Pytania do użytkownika albo rzeczy blokujące plan (jeśli są)>
 
 ## Status
 
-IN PROGRESS
+READY FOR USER
 ```
 
 ---
@@ -155,7 +140,9 @@ Jesteś **Frontend Developer** pracującym w projekcie reczniki-haftowane.pl.
 
 Przeczytaj brief: `handoff/TASK_<id>_ANALYSIS.md`
 
-Sekcja "Zadania Frontend Developer" zawiera listę zadań do wykonania. To są konkretne kroki do implementacji.
+Twoim celem jest **analiza problemu** i dopisanie uwag do sekcji „Uwagi agentów → Frontend (agent)”.
+
+**Nie implementuj zmian. Nie rób commitów. Nie modyfikuj repozytorium.** Wszystkie działania wykonawcze wymagają akceptacji użytkownika.
 
 ## Twoje środowisko
 
@@ -171,32 +158,13 @@ Sekcja "Zadania Frontend Developer" zawiera listę zadań do wykonania. To są k
 ## Procedura
 
 1. Przeczytaj pełny brief w `handoff/TASK_<id>_ANALYSIS.md`
-2. Zbadaj strukturę frontendu: `ls -la /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane/frontend/src/`
-3. Dla każdego zadania w "Zadania Frontend Developer":
-   a. Zaznacz `status: IN PROGRESS` w briefie (zmień plik!)
-   b. Przeszukaj relevant kod w `frontend/` — gdzie trzeba zmian?
-   c. Wprowadź zmiany w kodzie
-   d. Przetestuj lokalnie jeśli się da (npm run dev, przeglądalrka)
-   e. Commituj do git:
-      ```bash
-      cd /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane
-      git add -A
-      git commit -m "feat(frontend): <opis zmian>" --no-verify
-      ```
-      lub jeśli to bug fix: `git commit -m "fix(frontend): <opis>"`
-   f. Wróć do briefu i zaznacz ✅ oraz zmień status na `status: DONE`
-
-4. **Jeśli masz pytanie lub problem:**
-   - Nie zatrzymuj się — dodaj pytanie do sekcji "Pytania/Problemy agentów" w briefie
-   - Kontynuuj następne zadanie jeśli się da
-   - Architekt przeczyta Twoje pytania i odpowie
-
-5. **Na koniec:** Po wszystkich zadaniach — nie pushuj kodu do remote! Push należy do Orchestratora.
-
-## Konwencja commitów
-
-- Scope dla frontendu: `frontend`, `ui`, `wizard`, `cart`, `checkout`, `form`
-- Format: `feat(frontend): dodaj walidację formularza` lub `fix(ui): popraw wyrównanie buttona`
+2. Przeszukaj istotne miejsca w kodzie (tylko w celu zrozumienia) — wskaż pliki/komponenty, które prawdopodobnie trzeba będzie zmienić
+3. Dopisz do briefu:
+   - potencjalne przyczyny problemu i scenariusze odtworzenia
+   - propozycje podejścia (1-3 opcje) + trade-offy
+   - ryzyka i edge-casy
+   - listę plików/miejsc w kodzie do zmiany (orientacyjnie)
+4. Jeśli masz pytania do użytkownika — dopisz je do sekcji „Pytania/Problemy”
 
 Powodzenia! Zacznij od przeczytania briefu.
 ```
@@ -210,7 +178,9 @@ Jesteś **Backend Developer** pracującym w projekcie reczniki-haftowane.pl.
 
 Przeczytaj brief: `handoff/TASK_<id>_ANALYSIS.md`
 
-Sekcja "Zadania Backend Developer" zawiera listę zadań do wykonania.
+Twoim celem jest **analiza problemu** i dopisanie uwag do sekcji „Uwagi agentów → Backend (agent)”.
+
+**Nie implementuj zmian. Nie rób commitów. Nie modyfikuj repozytorium.** Wszystkie działania wykonawcze wymagają akceptacji użytkownika.
 
 ## Twoje środowisko
 
@@ -228,36 +198,13 @@ Sekcja "Zadania Backend Developer" zawiera listę zadań do wykonania.
 ## Procedura
 
 1. Przeczytaj pełny brief w `handoff/TASK_<id>_ANALYSIS.md`
-2. Zbadaj strukturę backendu: `ls -la /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane/backend/app/`
-3. Dla każdego zadania w "Zadania Backend Developer":
-   a. Zaznacz `status: IN PROGRESS` w briefie (zmień plik!)
-   b. Przeszukaj relevant kod — gdzie jest model, controller, route?
-   c. Wprowadź zmiany w kodzie
-   d. Jeśli trzeba migracji bazodanowej — stwórz migrację:
-      ```bash
-      cd /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane/backend
-      php artisan make:migration <nazwa>
-      ```
-   e. Commituj do git:
-      ```bash
-      cd /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane
-      git add -A
-      git commit -m "feat(backend): <opis zmian>" --no-verify
-      ```
-      lub jeśli to bug fix: `git commit -m "fix(backend): <opis>"`
-   f. Wróć do briefu i zaznacz ✅ oraz zmień status na `status: DONE`
-
-4. **Jeśli masz pytanie lub problem:**
-   - Dodaj pytanie do sekcji "Pytania/Problemy agentów" w briefie
-   - Kontynuuj następne zadanie jeśli się da
-   - Architekt przeczyta Twoje pytania i odpowie
-
-5. **Na koniec:** Po wszystkich zadaniach — nie pushuj kodu do remote!
-
-## Konwencja commitów
-
-- Scope dla backendu: `backend`, `api`, `models`, `migrations`, `filament`, `controller`, `auth`
-- Format: `feat(api): dodaj endpoint do pobierania produktów` lub `fix(models): napraw relację w modelu`
+2. Przeszukaj istotne miejsca w kodzie (tylko w celu zrozumienia) — wskaż modele/kontrolery/routy, które prawdopodobnie trzeba będzie zmienić
+3. Dopisz do briefu:
+   - wpływ na API/kontrakty, walidacje, autoryzację
+   - czy potrzebna migracja/zmiana schematu (tylko ocena)
+   - ryzyka (np. kompatybilność danych, performance)
+   - listę miejsc w kodzie do zmiany (orientacyjnie)
+4. Jeśli masz pytania do użytkownika — dopisz je do sekcji „Pytania/Problemy”
 
 Powodzenia! Zacznij od przeczytania briefu.
 ```
@@ -271,7 +218,9 @@ Jesteś **DevOps Engineer** pracującym w projekcie reczniki-haftowane.pl.
 
 Przeczytaj brief: `handoff/TASK_<id>_ANALYSIS.md`
 
-Sekcja "Zadania DevOps" zawiera listę zadań do wykonania.
+Twoim celem jest **analiza problemu** i dopisanie uwag do sekcji „Uwagi agentów → DevOps (agent)”.
+
+**Nie implementuj zmian. Nie rób commitów. Nie modyfikuj repozytorium.** Wszystkie działania wykonawcze wymagają akceptacji użytkownika.
 
 ## Twoje środowisko
 
@@ -286,36 +235,12 @@ Sekcja "Zadania DevOps" zawiera listę zadań do wykonania.
 ## Procedura
 
 1. Przeczytaj pełny brief w `handoff/TASK_<id>_ANALYSIS.md`
-2. Zbadaj strukturę DevOps: `ls -la /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane/ | grep -E "docker|\.github|scripts|deploy"`
-3. Dla każdego zadania w "Zadania DevOps":
-   a. Zaznacz `status: IN PROGRESS` w briefie (zmień plik!)
-   b. Przeszukaj relevant konfiguracyjne pliki — co trzeba zmienić?
-   c. Wprowadź zmiany (docker-compose, nginx config, GitHub Actions, itp)
-   d. Jeśli to konfiguracja Docker — sprawdź czy kompiluje się bez błędów:
-      ```bash
-      cd /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane
-      docker-compose config
-      ```
-   e. Commituj do git:
-      ```bash
-      cd /home/corozya/www/reczniki-haftowane.pl/apps/reczniki-haftowane
-      git add -A
-      git commit -m "feat(devops): <opis zmian>" --no-verify
-      ```
-      lub jeśli to bug fix: `git commit -m "fix(devops): <opis>"`
-   f. Wróć do briefu i zaznacz ✅ oraz zmień status na `status: DONE`
-
-4. **Jeśli masz pytanie lub problem:**
-   - Dodaj pytanie do sekcji "Pytania/Problemy agentów" w briefie
-   - Kontynuuj następne zadanie jeśli się da
-   - Architekt przeczyta Twoje pytania i odpowie
-
-5. **Na koniec:** Po wszystkich zadaniach — nie pushuj kodu do remote!
-
-## Konwencja commitów
-
-- Scope dla devops: `devops`, `docker`, `ci`, `deploy`, `nginx`, `github-actions`
-- Format: `feat(docker): dodaj serwis Redis do docker-compose.yml` lub `fix(ci): napraw GitHub Actions workflow`
+2. Przeszukaj istotne miejsca w konfiguracji (tylko w celu zrozumienia) — wskaż pliki, które potencjalnie wymagałyby zmiany
+3. Dopisz do briefu:
+   - ryzyka środowiskowe (beta/prod), zależności, zmienne env
+   - wpływ na CI/CD, build, docker, cache
+   - plan bezpiecznego wdrożenia (high-level)
+4. Jeśli masz pytania do użytkownika — dopisz je do sekcji „Pytania/Problemy”
 
 Powodzenia! Zacznij od przeczytania briefu.
 ```
@@ -336,22 +261,20 @@ W `handoff/` są 2 pliki:
 2. Dla `TASK_2`:
    - Tworzy `TASK_2_ANALYSIS.md` z briefem
    - Klasyfikuje: Frontend (form validation) + Backend (API response)
-   - Spawninguje Frontend Agent i Backend Agent równolegle
-   - Frontend: dodaje validację pola "postal code" — tylko PL
-   - Backend: sprawdza API czy zwraca validatory
-   - Architekt weryfikuje → usuwa TASK_2
+   - Spawninguje Frontend Agent i Backend Agent równolegle (analiza)
+   - Agenci dopisują uwagi/ryzyka/miejsca w kodzie do briefu
+   - Architekt przygotowuje plan działania → status `READY FOR USER`
 3. Dla `TASK_10`:
    - Tworzy `TASK_10_ANALYSIS.md` z briefem
    - Klasyfikuje: Frontend (wizard UI bug)
-   - Spawninguje Frontend Agent
-   - Frontend: bada wizard component, wprowadza fix
-   - Architekt weryfikuje → usuwa TASK_10
+   - Spawninguje Frontend Agent (analiza)
+   - Agent dopisuje uwagi/ryzyka/miejsca w kodzie do briefu
+   - Architekt przygotowuje plan działania → status `READY FOR USER`
 
 ### Output
 
-- 2 commity w `apps/reczniki-haftowane/` (Frontend i Backend)
-- 2 pliki `TASK_*_ANALYSIS.md` z historią
-- 0 plików `TASK_*.md` (usunięte po weryfikacji)
+- 2 pliki `TASK_*_ANALYSIS.md` z analizą i planem działania
+- 2 pliki `TASK_*.md` oznaczone jako `<!-- STATUS: IN PROGRESS -->` (bez implementacji)
 
 ---
 
@@ -363,11 +286,8 @@ Po przetworzeniu wszystkich zadań wypisz:
 ✅ Analiza zadań zakończona.
 
 Przetworzone: <N> zadań
-  ✅ Gotowe: TASK_2, TASK_10
-  ⚠️ Wymagają uwagi: <lista z powodami>
-
-Commity w apps/reczniki-haftowane/:
-<git log --oneline -10>
+  🟡 READY FOR USER: TASK_2, TASK_10
+  ⚠️ Blokery/pytania: <lista z powodami>
 ```
 
 ---
@@ -376,5 +296,5 @@ Commity w apps/reczniki-haftowane/:
 
 - `Read` — czytanie plików zadań
 - `Write` / `Edit` — tworzenie/edytowanie ANALYSIS.md
-- `Bash` — czytanie struktury katalogów, git commands
+- `Bash` — czytanie struktury katalogów (tylko jeśli potrzebne do analizy; bez zmian w repo)
 - `Agent` — spawningowanie Frontend/Backend/DevOps agentów
