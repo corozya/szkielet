@@ -179,16 +179,20 @@ async function main() {
       process.exit(1);
     }
 
-    // Count total tasks and collect for handoff
+    // Count tasks only from Backlog column - tylko otwarte (is_active === 1)
     let totalTasks = 0;
     const allTasks = [];
     board.forEach(swimlane => {
       if (swimlane.columns) {
         swimlane.columns.forEach(col => {
-          if (col.tasks) {
+          // Only process "Backlog" column
+          if (col.title === 'Backlog' && col.tasks) {
             col.tasks.forEach(task => {
-              totalTasks++;
-              allTasks.push({ task, column: col.title, swimlane: swimlane.name });
+              // Pobierz tylko otwarte zadania
+              if (task.is_active === 1) {
+                totalTasks++;
+                allTasks.push({ task, column: col.title, swimlane: swimlane.name });
+              }
             });
           }
         });
@@ -196,8 +200,8 @@ async function main() {
     });
 
     console.log(`✓ Projekt: ${project.name} (ID: ${projectId})`);
-    console.log(`✓ Swimlanes: ${board.length}`);
-    console.log(`✓ Zgłoszeń: ${totalTasks}\n`);
+    console.log(`✓ Pobieranie: tylko kolumna "Backlog"`);
+    console.log(`✓ Zgłoszeń w Backlog: ${totalTasks}\n`);
 
     if (totalTasks === 0) {
       console.log('Brak zgłoszeń w projekcie.');
@@ -213,12 +217,12 @@ async function main() {
       if (filename) {
         created++;
 
-        // Close task in Kanboard
+        // Close task in Kanboard (mark as Done)
         try {
           const result = await rpc('closeTask', { task_id: task.id });
           if (result) {
             closed++;
-            console.log(`   ✓ Zamknięto zadanie [${task.id}]`);
+            console.log(`   ✓ Zamknięto (Done) [${task.id}]`);
           }
         } catch (e) {
           console.error(`   ⚠ Błąd zamykania [${task.id}]: ${e.message}`);
@@ -226,25 +230,20 @@ async function main() {
       }
     }
 
-    // Display tasks by swimlane and column
+    // Display tasks from Backlog column only - tylko otwarte
     board.forEach((swimlane, swimlaneIdx) => {
-      if (swimlane.name !== 'Default swimlane' || board.length > 1) {
-        console.log(`🏊 ${swimlane.name}`);
-      }
-
       if (swimlane.columns) {
         swimlane.columns.forEach(column => {
-          if (column.tasks && column.tasks.length > 0) {
-            console.log(`  📌 ${column.title} (${column.tasks.length})`);
-            column.tasks.forEach(task => {
-              console.log(formatTask(task));
-            });
+          if (column.title === 'Backlog' && column.tasks && column.tasks.length > 0) {
+            const openTasks = column.tasks.filter(t => t.is_active === 1);
+            if (openTasks.length > 0) {
+              console.log(`📌 ${column.title} (${openTasks.length})`);
+              openTasks.forEach(task => {
+                console.log(formatTask(task));
+              });
+            }
           }
         });
-      }
-
-      if (swimlaneIdx < board.length - 1) {
-        console.log();
       }
     });
 
@@ -252,7 +251,7 @@ async function main() {
     console.log();
     if (created > 0) {
       console.log(`✅ Utworzono ${created} zadań w \`handoff/\` do przeanalizowania`);
-      console.log(`🔒 Zamknięto ${closed} zgłoszeń w Kanboard`);
+      console.log(`🔒 Zamknięto ${closed} zgłoszeń w Kanboard (zaznaczono jako Done)`);
     } else {
       console.log(`📝 Wszystkie zadania już istnieją w \`handoff/\``);
     }
