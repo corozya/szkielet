@@ -1,4 +1,3 @@
-<!-- STATUS: DONE -->
 # Zadanie: [10] [BUG] [BUG] Mały ale własny | Ręczniki haftowane na prezent | reczniki-haftowane.pl
 
 ## Projekt
