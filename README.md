@@ -16,6 +16,7 @@ Kod aplikacji jest w repozytorium produktu.
 Skrypt zapisze konfigurację do `kanboard_setup/.env` i zweryfikuje API metodą `getVersion`.
 Kanboard MCP wymaga jawnie ustawionych `KANBOARD_URL` i `KANBOARD_TOKEN`; bez tego serwer nie wystartuje.
 Pobieranie backlogu i ticketów odbywa się przez MCP tools, np. `kanboard_get_backlog`, `kanboard_get_task` i `kanboard_create_handoff`.
+Do aktualizacji parametrów z poziomu MCP użyj `kb_init` np. z `project`.
 Do szybkiej weryfikacji konfiguracji użyj `kanboard_connection_status` - pokazuje parametry połączenia i testuje `getVersion`.
 Start lokalny przez wrapper: `npm run kanboard-mcp`.
 

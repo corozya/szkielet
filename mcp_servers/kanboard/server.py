@@ -15,12 +15,16 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 ENV_FILE = REPO_ROOT / "kanboard_setup/.env"
 load_dotenv(ENV_FILE)
 
-URL = os.environ.get("KANBOARD_URL", "").strip()
-USER = os.environ.get("KANBOARD_USER", "jsonrpc")
-TOKEN = os.environ.get("KANBOARD_TOKEN", "").strip()
-DEFAULT_PROJECT = os.environ.get("KANBOARD_PROJECT", "").strip()
-
 mcp = FastMCP("Kanboard")
+
+
+@dataclass(frozen=True)
+class KanboardConfig:
+    url: str
+    user: str
+    token: str
+    project: str
+    env_file: str
 
 
 @dataclass(frozen=True)
@@ -47,11 +51,37 @@ class ConnectionStatus:
         )
 
 
-def validate_config() -> None:
+def read_env_file(env_path: Path) -> dict[str, str]:
+    values: dict[str, str] = {}
+    if not env_path.exists():
+        return values
+
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        values[key.strip()] = value.strip().strip('"')
+    return values
+
+
+def get_config(env_path: Path = ENV_FILE) -> KanboardConfig:
+    file_values = read_env_file(env_path)
+    return KanboardConfig(
+        url=(file_values.get("KANBOARD_URL") or os.environ.get("KANBOARD_URL", "")).strip(),
+        user=(file_values.get("KANBOARD_USER") or os.environ.get("KANBOARD_USER", "jsonrpc")).strip() or "jsonrpc",
+        token=(file_values.get("KANBOARD_TOKEN") or os.environ.get("KANBOARD_TOKEN", "")).strip(),
+        project=(file_values.get("KANBOARD_PROJECT") or os.environ.get("KANBOARD_PROJECT", "")).strip(),
+        env_file=str(env_path),
+    )
+
+
+def validate_config(config: KanboardConfig | None = None) -> None:
+    config = config or get_config()
     missing: list[str] = []
-    if not URL:
+    if not config.url:
         missing.append("KANBOARD_URL")
-    if not TOKEN:
+    if not config.token:
         missing.append("KANBOARD_TOKEN")
 
     if missing:
@@ -61,7 +91,7 @@ def validate_config() -> None:
             + " in kanboard_setup/.env or the process environment before starting MCP."
         )
 
-    parsed = urlparse(URL)
+    parsed = urlparse(config.url)
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         raise ValueError(
             "KANBOARD_URL must be an HTTP(S) JSON-RPC endpoint, for example "
@@ -125,15 +155,18 @@ class KanboardAgent:
         return str(version)
 
 _agent: Optional[KanboardAgent] = None
+_agent_config: Optional[KanboardConfig] = None
 
 
 validate_config()
 
 
-def get_agent() -> KanboardAgent:
-    global _agent
-    if not _agent:
-        _agent = KanboardAgent(URL, USER, TOKEN)
+def get_agent(config: KanboardConfig | None = None) -> KanboardAgent:
+    global _agent, _agent_config
+    config = config or get_config()
+    if not _agent or _agent_config != config:
+        _agent = KanboardAgent(config.url, config.user, config.token)
+        _agent_config = config
     return _agent
 
 
@@ -141,14 +174,29 @@ def slugify(text: str) -> str:
     return re.sub(r'[^a-z0-9]+', '_', text.lower()).strip('_')
 
 
+def normalize_url(input_value: str | None) -> str:
+    raw = str(input_value or "").strip()
+    if not raw:
+        return ""
+    with_scheme = raw if "://" in raw else f"http://{raw}"
+    try:
+        parsed = urlparse(with_scheme)
+        if parsed.path in {"", "/"}:
+            return parsed._replace(path="/jsonrpc.php").geturl()
+        return parsed.geturl()
+    except Exception:
+        return raw
+
+
 def get_connection_status() -> ConnectionStatus:
+    config = get_config()
     return ConnectionStatus(
-        url=URL,
-        user=USER,
-        project=DEFAULT_PROJECT,
-        env_file=str(ENV_FILE),
-        token_set=bool(TOKEN),
-        token_length=len(TOKEN),
+        url=config.url,
+        user=config.user,
+        project=config.project,
+        env_file=config.env_file,
+        token_set=bool(config.token),
+        token_length=len(config.token),
     )
 
 
@@ -195,7 +243,7 @@ def log_startup_diagnostics() -> None:
 def kanboard_get_backlog(project_ref: Optional[str] = None) -> str:
     """Get list of tasks from the Backlog column of a project."""
     agent = get_agent()
-    ref = project_ref or DEFAULT_PROJECT
+    ref = project_ref or get_config().project
     if not ref:
         return "Error: project_ref is required (no default set in .env)."
 
@@ -239,7 +287,7 @@ def kanboard_get_task(task_id: int) -> str:
 def kanboard_create_task(title: str, description: Optional[str] = None, project_ref: Optional[str] = None) -> str:
     """Create a new task in Kanboard."""
     agent = get_agent()
-    ref = project_ref or DEFAULT_PROJECT
+    ref = project_ref or get_config().project
     if not ref:
         return "Error: project_ref is required."
 
@@ -327,6 +375,118 @@ def kanboard_create_handoff(task_id: int) -> str:
 """
     brief_path.write_text(content, encoding="utf-8")
     return f"Created local handoff at {brief_path}"
+
+
+def serialize_env_file(current_text: str, updates: dict[str, str]) -> str:
+    keys_to_ensure = ["KANBOARD_URL", "KANBOARD_USER", "KANBOARD_TOKEN", "KANBOARD_PROJECT"]
+    existing_lines = current_text.splitlines()
+    output_lines: list[str] = []
+    seen: set[str] = set()
+
+    for raw_line in existing_lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            output_lines.append(raw_line)
+            continue
+
+        key, _ = line.split("=", 1)
+        key = key.strip()
+        if key in keys_to_ensure:
+            output_lines.append(f"{key}={updates.get(key, '')}")
+            seen.add(key)
+        else:
+            output_lines.append(raw_line)
+
+    for key in keys_to_ensure:
+        if key not in seen and key in updates:
+            output_lines.append(f"{key}={updates[key]}")
+
+    return "\n".join(output_lines).rstrip("\n") + "\n"
+
+
+def render_kb_init_questions(config: KanboardConfig) -> str:
+    lines = [
+        "kb_init needs these answers:",
+        f"- host/url: {config.url or '(required)'}",
+        f"- user: {config.user or 'jsonrpc'}",
+        f"- token: {'set' if config.token else '(required)'}",
+        f"- project: {config.project or '(optional)'}",
+        "",
+        "Provide the missing values in the next `kb_init` call.",
+        "Examples:",
+        'kb_init(host="http://127.0.0.1:8080", token="...", project="My Project")',
+        'kb_init(url="http://127.0.0.1:8080/jsonrpc.php", user="jsonrpc", token="...", project="My Project")',
+    ]
+    return "\n".join(lines)
+
+
+@mcp.tool()
+def kb_init(
+    host: Optional[str] = None,
+    url: Optional[str] = None,
+    user: Optional[str] = None,
+    token: Optional[str] = None,
+    project: Optional[str] = None,
+    env_path: Optional[str] = None,
+    no_test: bool = False,
+) -> str:
+    """Initialize or update Kanboard parameters from MCP."""
+    target_env = Path(env_path).expanduser().resolve() if env_path else ENV_FILE
+    target_env.parent.mkdir(parents=True, exist_ok=True)
+
+    current = get_config(target_env)
+    next_url = normalize_url(host or url) or current.url
+    next_user = (user or current.user or "jsonrpc").strip() or "jsonrpc"
+    next_token = (token or current.token).strip()
+    next_project = (project if project is not None else current.project).strip()
+
+    pending = KanboardConfig(
+        url=next_url,
+        user=next_user,
+        token=next_token,
+        project=next_project,
+        env_file=str(target_env),
+    )
+
+    if not pending.url or not pending.token:
+        return render_kb_init_questions(pending)
+
+    validate_config(pending)
+
+    agent = KanboardAgent(pending.url, pending.user, pending.token)
+    version = "skipped"
+    if not no_test:
+        version = agent.test_connection()
+
+    existing_text = target_env.read_text(encoding="utf-8") if target_env.exists() else ""
+    out_text = serialize_env_file(
+        existing_text,
+        {
+            "KANBOARD_URL": pending.url,
+            "KANBOARD_USER": pending.user,
+            "KANBOARD_TOKEN": pending.token,
+            "KANBOARD_PROJECT": pending.project,
+        },
+    )
+    target_env.write_text(out_text, encoding="utf-8")
+
+    os.environ["KANBOARD_URL"] = pending.url
+    os.environ["KANBOARD_USER"] = pending.user
+    os.environ["KANBOARD_TOKEN"] = pending.token
+    os.environ["KANBOARD_PROJECT"] = pending.project
+
+    global _agent, _agent_config
+    _agent = agent
+    _agent_config = pending
+
+    status = get_connection_status().render()
+    result = (
+        f"{status}\n"
+        f"- init: OK\n"
+        f"- saved: {target_env}\n"
+        f"- getVersion: {version}"
+    )
+    return result
 
 if __name__ == "__main__":
     log_startup_diagnostics()
