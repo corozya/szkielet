@@ -53,4 +53,8 @@ if ! command -v analytics-mcp >/dev/null 2>&1; then
   exit 1
 fi
 
+if [ -n "${GA4_PROPERTY_ID:-}" ]; then
+  exec python3 "${repo_root}/scripts/run-google-analytics-mcp-default-property.py"
+fi
+
 exec analytics-mcp
