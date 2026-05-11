@@ -2,6 +2,7 @@
 
 Zasady/role: `docs/teams/COMMON.md`
 Workflow: `docs/teams/AGENT_GUIDE.md`
+Hosty AI (Claude, Cursor, Codex, Gemini) + GitHub MCP: `docs/teams/AI_HOSTS_AND_MCP.md`
 Aktywne zadania: `handoff/`
 
 ## Kanboard (quick init)
@@ -20,3 +21,10 @@ Aktywne zadania: `handoff/`
 - Zamiast `find`/`ls` → narzędzie **Glob**
 - Zamiast `grep`/`rg` → narzędzie **Grep**
 - `Bash` tylko dla: SSH, docker compose, deploy, komend systemowych bez dedykowanego narzędzia
+
+## MCP rekomendowane dla tego repo
+
+- `GitHub MCP`
+- `Kanboard MCP`
+- `Context7 MCP`
+- `Playwright MCP` lokalny, tylko dla UI i E2E

@@ -3,6 +3,7 @@
 ## Sources
 - `docs/teams/COMMON.md`
 - `docs/teams/AI_ROUTING.md`
+- `docs/teams/AI_HOSTS_AND_MCP.md` (Claude, Cursor, Codex, Gemini — równorówny workflow; GitHub MCP per host)
 - `handoff/`
 
 ## Workflow
@@ -13,6 +14,10 @@
 ## Kanboard
 - `KANBOARD_PROJECT` ustawia projekt
 - jeśli puste, zapytaj użytkownika i zapisz `handoff/ASK_PROJECT_NAME.md`
+- Kanboard MCP wymaga ustawionych `KANBOARD_URL` i `KANBOARD_TOKEN`; bez tego serwer nie wystartuje
+- Lokalny start MCP: `npm run kanboard-mcp`
+- Pobieranie ticketów i backlogu odbywa się przez MCP tools, np. `kanboard_get_backlog`, `kanboard_get_task`, `kanboard_create_handoff`, `kanboard_move_task`
+- Status połączenia i test RPC: `kanboard_connection_status`
 
 ### Szybki setup (nowy projekt / nowe środowisko)
 - `npm run init-kb` zapisuje `kanboard_setup/.env` i testuje połączenie z Kanboard (`getVersion`)

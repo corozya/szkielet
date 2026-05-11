@@ -1,6 +1,7 @@
 # 🤖 Project Orchestrator (Main Agent)
 
 Routing: `docs/teams/AI_ROUTING.md`  
+Hosty (Claude, Cursor, Codex, Gemini) + GitHub MCP: `docs/teams/AI_HOSTS_AND_MCP.md`  
 Operacje / workflow: `docs/teams/AGENT_GUIDE.md`
 
 

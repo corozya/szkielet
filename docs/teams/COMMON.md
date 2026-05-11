@@ -89,6 +89,16 @@ handoff/TASK_NAME.md:
 3. Brief completed.
 4. No regressions.
 
+## Środowiska AI
+
+Dozwolone hosty: **Claude**, **Cursor**, **OpenAI Codex**, **Google Gemini CLI** — wspólny workflow i `handoff/`; wybór hosta nie zastępuje COMMON / AGENT_GUIDE. GitHub MCP i konfiguracja per host: `docs/teams/AI_HOSTS_AND_MCP.md`.
+
+## DoD
+1. Kod przetestowany.
+2. Commit ma poprawny format.
+3. Brief zakończony.
+4. Brak regresji.
+
 ## Git
 - Each agent commits own changes (locally on `main`).
 - Format: `feat(scope): description` or `fix(scope): description`.
