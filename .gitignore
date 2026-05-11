@@ -1,5 +1,6 @@
 .cursor/mcp.json
 
+.idea/
 kanboard_setup/__pycache__/
 kanboard_setup/.env
 .env
