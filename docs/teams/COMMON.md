@@ -91,7 +91,7 @@ handoff/TASK_NAME.md:
 
 ## Środowiska AI
 
-Dozwolone hosty: **Claude**, **Cursor**, **OpenAI Codex**, **Google Gemini CLI** — wspólny workflow i `handoff/`; wybór hosta nie zastępuje COMMON / AGENT_GUIDE. GitHub MCP i konfiguracja per host: `docs/teams/AI_HOSTS_AND_MCP.md`.
+Dozwolone hosty: **Claude**, **Cursor**, **OpenAI Codex**, **Google Gemini CLI** — wspólny workflow i `handoff/`; wybór hosta nie zastępuje COMMON / AGENT_GUIDE. GitHub MCP i konfiguracja per host: `docs/teams/AI_HOSTS_AND_MCP.md`. Dla pracy na plikach repo używaj lokalnego Filesystem MCP przez `npm run filesystem-mcp`.
 
 ## DoD
 1. Kod przetestowany.

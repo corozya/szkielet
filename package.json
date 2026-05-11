@@ -9,6 +9,7 @@
     "start-project": "node ./bin/start-project.js",
     "zgloszenia": "node ./bin/fetch-issues.js",
     "kanboard-mcp": "bash ./scripts/run-kanboard-mcp.sh",
+    "filesystem-mcp": "bash ./scripts/run-filesystem-mcp.sh",
     "mysql-mcp": "bash ./scripts/run-mysql-mcp.sh",
     "memory-mcp": "bash ./scripts/run-memory-mcp.sh"
   }

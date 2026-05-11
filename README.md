@@ -63,6 +63,15 @@ Serwer udostępnia narzędzia do:
 - opisu tabel
 - wykonywania wyłącznie read-only zapytań SQL
 
+### Filesystem MCP
+
+Lokalny serwer Filesystem startujesz przez:
+
+- `npm run filesystem-mcp`
+
+Domyślnie ma dostęp tylko do katalogu repozytorium, więc nie widzi całego `HOME`.
+To jest najbezpieczniejszy wariant, jeśli agent ma czytać i edytować pliki tego szkieletu.
+
 ### Memory MCP
 
 Lokalny serwer pamięci uruchamiasz przez:

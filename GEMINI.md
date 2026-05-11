@@ -15,5 +15,6 @@ Aktywne zadania: `handoff/`
 - `Kanboard MCP`
 - `Context7 MCP`
 - `Playwright MCP` lokalny, tylko dla UI i E2E
+- `Filesystem MCP` lokalny, tylko dla tego repo, najlepiej przez `npm run filesystem-mcp`
 
 Szczegóły konfiguracji: `docs/teams/AI_HOSTS_AND_MCP.md`

@@ -20,6 +20,11 @@ command = "npx"
 args = ["-y", "@playwright/mcp@latest"]
 cwd = "."
 
+[mcp_servers.filesystem]
+command = "bash"
+args = ["scripts/run-filesystem-mcp.sh"]
+cwd = "."
+
 [mcp_servers.analytics]
 command = "bash"
 args = ["scripts/run-google-analytics-mcp.sh"]

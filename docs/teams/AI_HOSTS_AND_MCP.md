@@ -40,6 +40,7 @@ Jeśli używasz tu `Codex`, `Gemini`, `Cursor` i `Claude`, najpraktyczniejszy ze
 - `Kanboard` jako lokalny serwer do backlogu i handoffów
 - `Context7` jako lokalny serwer do aktualnej dokumentacji bibliotek
 - `Playwright` jako lokalny serwer tylko dla zadań UI, smoke-testów i E2E
+- `Filesystem` jako lokalny serwer do pracy na plikach tego repo
 - `Google Analytics` jako lokalny serwer tylko dla analityki i raportów biznesowych
 - `MySQL` jako lokalny, read-only serwer do diagnostyki baz
 - `Memory` jako lokalny knowledge graph do trwałych notatek i relacji
@@ -52,6 +53,7 @@ W skrócie:
 | Kanboard | wszędzie w tym repo | bez przepisywania ticketów i statusów |
 | Context7 | wszędzie, gdy pracujesz z bibliotekami | aktualne API i mniej halucynacji |
 | Playwright | lokalnie, tylko przy UI/E2E | pewna weryfikacja frontu bez ręcznego klikania |
+| Filesystem | lokalnie, tylko dla tego repo | bezpieczny dostęp do plików projektu bez całego `$HOME` |
 | Google Analytics | lokalnie, tylko przy analytics | pytania o użytkowników, eventy i raporty bez ręcznego klikania po UI |
 | MySQL | lokalnie, gdy potrzebujesz podglądu bazy | schemat i dane bez wychodzenia z agenta |
 | Memory | lokalnie, gdy chcesz trwałej pamięci projektu | notatki i relacje między encjami bez ręcznego przepisywania |
@@ -61,10 +63,11 @@ Minimalny zestaw, który warto utrzymać stale:
 1. `GitHub`
 2. `Kanboard`
 3. `Context7`
-4. `Playwright` tylko jeśli regularnie sprawdzasz UI
-5. `Google Analytics` tylko jeśli faktycznie analizujesz GA
-6. `MySQL`, jeśli pracujesz z lokalną bazą
-7. `Memory`, jeśli chcesz zachować trwały kontekst projektu
+4. `Filesystem` tylko jeśli chcesz pracować na plikach repo z poziomu agenta
+5. `Playwright` tylko jeśli regularnie sprawdzasz UI
+6. `Google Analytics` tylko jeśli faktycznie analizujesz GA
+7. `MySQL`, jeśli pracujesz z lokalną bazą
+8. `Memory`, jeśli chcesz zachować trwały kontekst projektu
 
 ### Weryfikacja
 
@@ -83,6 +86,7 @@ Rekomendacja dla tego repo:
 - `kanboard` -> lokalny `scripts/run-kanboard-mcp.sh`
 - `context7` -> `npx -y @upstash/context7-mcp@latest`
 - `playwright` -> `npx -y @playwright/mcp@latest`
+- `filesystem` -> lokalny `scripts/run-filesystem-mcp.sh`
 - `mysql` -> lokalny `scripts/run-mysql-mcp.sh`
 - `memory` -> lokalny `scripts/run-memory-mcp.sh`
 

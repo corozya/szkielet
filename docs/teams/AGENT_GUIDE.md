@@ -10,6 +10,7 @@
 1. Weź brief.
 2. Zmień kod i uruchom testy.
 3. Zamknij brief.
+4. Jeśli agent ma czytać lub edytować pliki repo, użyj lokalnego Filesystem MCP: `npm run filesystem-mcp`.
 
 ## Kanboard
 - `KANBOARD_PROJECT` ustawia projekt
