@@ -43,6 +43,42 @@ Codex ma projektowy wpis MCP w [`.codex/config.toml`](/home/corozya/www/szkielet
 
 Szybki start MCP w Cursorze: skopiuj `.cursor/mcp.json.example` → `.cursor/mcp.json`, wstaw PAT, zrestartuj IDE.
 
+### MySQL MCP
+
+Lokalny, read-only serwer MySQL startujesz przez:
+
+- `npm run mysql-mcp`
+
+Konfiguracja trafia do `.env.mysql`:
+
+1. Skopiuj [`.env.mysql.example`](/home/corozya/www/szkielet/.env.mysql.example) do `.env.mysql`.
+2. Uzupełnij `MYSQL_HOST`, `MYSQL_USER` i opcjonalnie `MYSQL_PASSWORD` oraz `MYSQL_DATABASE`.
+3. Jeśli chcesz użyć innej ścieżki, ustaw `MYSQL_ENV_FILE`.
+
+Serwer udostępnia narzędzia do:
+
+- sprawdzania połączenia
+- listowania baz
+- listowania tabel
+- opisu tabel
+- wykonywania wyłącznie read-only zapytań SQL
+
+### Memory MCP
+
+Lokalny serwer pamięci uruchamiasz przez:
+
+- `npm run memory-mcp`
+
+Domyślnie zapisuje dane do `.memory/memory.jsonl`, więc pamięć jest lokalna dla repozytorium.
+Jeśli chcesz użyć innej ścieżki, ustaw `MEMORY_FILE_PATH` w `.env.memory`.
+
+Serwer udostępnia standardowy knowledge graph memory:
+
+- tworzenie encji
+- tworzenie relacji
+- dodawanie i usuwanie obserwacji
+- wyszukiwanie i odczyt grafu
+
 ### Analytics MCP
 
 Żeby `analytics` startował w nowym klonie, potrzebujesz:

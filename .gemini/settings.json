@@ -33,6 +33,20 @@
         "scripts/run-google-analytics-mcp.sh"
       ],
       "cwd": "."
+    },
+    "mysql": {
+      "command": "bash",
+      "args": [
+        "scripts/run-mysql-mcp.sh"
+      ],
+      "cwd": "."
+    },
+    "memory": {
+      "command": "bash",
+      "args": [
+        "scripts/run-memory-mcp.sh"
+      ],
+      "cwd": "."
     }
   }
 }

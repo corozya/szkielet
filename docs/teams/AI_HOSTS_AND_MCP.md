@@ -41,6 +41,8 @@ Jeśli używasz tu `Codex`, `Gemini`, `Cursor` i `Claude`, najpraktyczniejszy ze
 - `Context7` jako lokalny serwer do aktualnej dokumentacji bibliotek
 - `Playwright` jako lokalny serwer tylko dla zadań UI, smoke-testów i E2E
 - `Google Analytics` jako lokalny serwer tylko dla analityki i raportów biznesowych
+- `MySQL` jako lokalny, read-only serwer do diagnostyki baz
+- `Memory` jako lokalny knowledge graph do trwałych notatek i relacji
 
 W skrócie:
 
@@ -51,6 +53,8 @@ W skrócie:
 | Context7 | wszędzie, gdy pracujesz z bibliotekami | aktualne API i mniej halucynacji |
 | Playwright | lokalnie, tylko przy UI/E2E | pewna weryfikacja frontu bez ręcznego klikania |
 | Google Analytics | lokalnie, tylko przy analytics | pytania o użytkowników, eventy i raporty bez ręcznego klikania po UI |
+| MySQL | lokalnie, gdy potrzebujesz podglądu bazy | schemat i dane bez wychodzenia z agenta |
+| Memory | lokalnie, gdy chcesz trwałej pamięci projektu | notatki i relacje między encjami bez ręcznego przepisywania |
 
 Minimalny zestaw, który warto utrzymać stale:
 
@@ -59,6 +63,8 @@ Minimalny zestaw, który warto utrzymać stale:
 3. `Context7`
 4. `Playwright` tylko jeśli regularnie sprawdzasz UI
 5. `Google Analytics` tylko jeśli faktycznie analizujesz GA
+6. `MySQL`, jeśli pracujesz z lokalną bazą
+7. `Memory`, jeśli chcesz zachować trwały kontekst projektu
 
 ### Weryfikacja
 
@@ -77,6 +83,8 @@ Rekomendacja dla tego repo:
 - `kanboard` -> lokalny `scripts/run-kanboard-mcp.sh`
 - `context7` -> `npx -y @upstash/context7-mcp@latest`
 - `playwright` -> `npx -y @playwright/mcp@latest`
+- `mysql` -> lokalny `scripts/run-mysql-mcp.sh`
+- `memory` -> lokalny `scripts/run-memory-mcp.sh`
 
 Jeśli używasz jedynie Claude Desktop, trzymaj to samo zestawienie w jego configu poza repo.
 

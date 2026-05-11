@@ -25,6 +25,16 @@ command = "bash"
 args = ["scripts/run-google-analytics-mcp.sh"]
 cwd = "."
 
+[mcp_servers.mysql]
+command = "bash"
+args = ["scripts/run-mysql-mcp.sh"]
+cwd = "."
+
+[mcp_servers.memory]
+command = "bash"
+args = ["scripts/run-memory-mcp.sh"]
+cwd = "."
+
 [mcp_servers.analytics.tools.run_report]
 approval_mode = "approve"
 

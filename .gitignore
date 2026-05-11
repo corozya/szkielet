@@ -6,6 +6,9 @@ kanboard_setup/.env
 .env
 .mcp.json
 .env.analytics
+.env.mysql
+.env.memory
+.memory/
 handoff/AUDIT_RESULT.md
 apps/
 apps/

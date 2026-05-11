@@ -28,3 +28,5 @@ Aktywne zadania: `handoff/`
 - `Kanboard MCP`
 - `Context7 MCP`
 - `Playwright MCP` lokalny, tylko dla UI i E2E
+- `MySQL MCP` lokalny, read-only, jeśli repo korzysta z bazy
+- `Memory MCP` lokalny, jeśli chcesz trwałych notatek w repo
