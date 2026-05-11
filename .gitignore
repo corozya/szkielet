@@ -2,6 +2,8 @@
 
 kanboard_setup/__pycache__/
 kanboard_setup/.env
+.env
+.mcp.json
 .env.analytics
 handoff/AUDIT_RESULT.md
 apps/
