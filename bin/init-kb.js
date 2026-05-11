@@ -146,7 +146,7 @@ function scaffoldAgentSkills(repoRoot) {
       content:
         "---\n" +
         "name: init-kb\n" +
-        "description: One-command Kanboard setup for this repo (writes kanboard_setup/.env, tests getVersion, enables kb tooling).\n" +
+        "description: One-command Kanboard setup for this repo (writes kanboard_setup/.env, tests getVersion, enables Kanboard MCP tooling).\n" +
         "---\n" +
         "\n" +
         "# init-kb Skill (Cursor)\n" +
@@ -157,7 +157,7 @@ function scaffoldAgentSkills(repoRoot) {
         "- `npm install`\n" +
         "- `npm run init-kb`\n" +
         "\n" +
-        "This writes `kanboard_setup/.env` used by `kanboard_setup/kb_manager.py`.\n" +
+        "This writes `kanboard_setup/.env` used by the Kanboard MCP server.\n" +
         "\n" +
         "## Non-interactive mode\n" +
         "- `node ./bin/init-kb.js --host <HOST> --user <USER> --token <TOKEN> [--project <NAME>] [--no-test]`\n" +
@@ -183,8 +183,8 @@ function scaffoldAgentSkills(repoRoot) {
         "- If `kanboard_setup/.env` is missing or Kanboard calls fail, run `npm run init-kb` and retry.\n" +
         "\n" +
         "## Commands\n" +
-        "- `python3 kanboard_setup/kb_manager.py list \"<KANBOARD_PROJECT>\" Backlog`\n" +
-        "- `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
+        "- `kanboard_get_backlog(project_ref=\"<KANBOARD_PROJECT>\")`\n" +
+        "- `kanboard_create_handoff(task_id=<ID>)`\n" +
         "\n" +
         "## Deliverable\n" +
         "- Fetch and summarize **all** Backlog tasks.\n" +
@@ -209,13 +209,13 @@ function scaffoldAgentSkills(repoRoot) {
         "\n" +
         "## Commands (repo standard)\n" +
         "- List backlog:\n" +
-        "  - `python3 kanboard_setup/kb_manager.py list \"<KANBOARD_PROJECT>\" Backlog`\n" +
+        "  - `kanboard_get_backlog(project_ref=\"<KANBOARD_PROJECT>\")`\n" +
         "\n" +
         "## Required behavior\n" +
         "- Fetch **all** tasks in Backlog (not just top 3).\n" +
         "- Summarize **each** task (ID + title + 1-line note).\n" +
         "- Generate `handoff` **for all Backlog tasks**:\n" +
-        "  - `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
+        "  - `kanboard_create_handoff(task_id=<ID>)`\n" +
         "\n" +
         "## Safety (large backlogs)\n" +
         "- If Backlog is very large, generate handoffs in batches (e.g. 10 at a time) until done.\n" +
@@ -242,8 +242,8 @@ function scaffoldAgentSkills(repoRoot) {
         "- If `kanboard_setup/.env` is missing or Kanboard calls fail: run `npm run init-kb` and retry.\n" +
         "\n" +
         "## Commands\n" +
-        "- `python3 kanboard_setup/kb_manager.py list \"<KANBOARD_PROJECT>\" Backlog`\n" +
-        "- `python3 kanboard_setup/kb_manager.py handoff <ID>`\n" +
+        "- `kanboard_get_backlog(project_ref=\"<KANBOARD_PROJECT>\")`\n" +
+        "- `kanboard_create_handoff(task_id=<ID>)`\n" +
         "\n" +
         "## Output\n" +
         "- Briefs in `handoff/` for **all** Backlog tasks + summary of **all** tasks.\n"
@@ -669,7 +669,7 @@ async function main() {
         `Zaktualizowano skills/docs: created_skills=${scaff.createdCount}, CLAUDE.md=${scaff.didClaude ? "yes" : "no"}, GEMINI.md=${scaff.didGemini ? "yes" : "no"}`
       );
     }
-    console.log("Gotowe. Możesz używać narzędzi w kanboard_setup/ (np. kb_manager.py).");
+    console.log("Gotowe. Możesz używać narzędzi Kanboard MCP.");
     console.log("");
   } finally {
     rl.close();
@@ -681,4 +681,3 @@ main().catch((err) => {
   console.error(`Błąd init-kb: ${err && err.message ? err.message : String(err)}`);
   process.exitCode = 1;
 });
-

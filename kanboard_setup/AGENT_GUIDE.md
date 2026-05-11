@@ -12,6 +12,7 @@
 ## Kanboard
 - `KANBOARD_PROJECT` ustawia projekt
 - jeśli puste, zapytaj użytkownika i zapisz `handoff/ASK_PROJECT_NAME.md`
+- Pobieranie ticketów i backlogu odbywa się przez Kanboard MCP, nie przez lokalny wrapper CLI
 
 ## Komendy
 - `list <project> Backlog`
