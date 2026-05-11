@@ -42,3 +42,18 @@ Workflow i handoff są **wspólne** dla wszystkich tych środowisk. Sugestie „
 Codex ma projektowy wpis MCP w [`.codex/config.toml`](/home/corozya/www/szkielet/.codex/config.toml), bez twardej ścieżki do katalogu użytkownika. Jeśli Twoja instalacja używa tylko `~/.codex/config.toml`, skopiuj ten blok do konfiguracji globalnej i ustaw `cwd` na aktualny root repo.
 
 Szybki start MCP w Cursorze: skopiuj `.cursor/mcp.json.example` → `.cursor/mcp.json`, wstaw PAT, zrestartuj IDE.
+
+### Analytics MCP
+
+Żeby `analytics` startował w nowym klonie, potrzebujesz:
+
+1. Skopiować [`.env.analytics.example`](/home/corozya/www/szkielet/.env.analytics.example) do `.env.analytics`.
+2. Uzupełnić `GOOGLE_APPLICATION_CREDENTIALS` i `GOOGLE_PROJECT_ID`.
+3. Upewnić się, że plik credentials istnieje.
+4. Mieć w `PATH` binarkę `analytics-mcp`.
+
+Jeśli chcesz używać ADC przez `gcloud`, najprościej:
+
+- `gcloud auth application-default login`
+- sprawdź, czy istnieje `~/.config/gcloud/application_default_credentials.json`
+- ustaw `GOOGLE_PROJECT_ID` w `.env.analytics` albo w shellu

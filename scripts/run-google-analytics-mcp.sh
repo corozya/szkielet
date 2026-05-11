@@ -45,4 +45,12 @@ if [ -z "${GOOGLE_PROJECT_ID:-}" ]; then
 fi
 
 export GOOGLE_CLOUD_PROJECT="${GOOGLE_PROJECT_ID}"
+
+if ! command -v analytics-mcp >/dev/null 2>&1; then
+  echo "analytics-mcp is not available on PATH." >&2
+  echo "Install it before starting Codex, then retry." >&2
+  echo "If you are cloning this repo fresh, also check ${repo_root}/README.md -> Analytics MCP." >&2
+  exit 1
+fi
+
 exec analytics-mcp
