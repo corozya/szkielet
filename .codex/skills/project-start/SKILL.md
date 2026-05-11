@@ -1,6 +1,6 @@
 ---
 name: project-start
-description: One command onboarding: attach repos into apps/, ensure apps/ gitignored, then ALWAYS run npm run init-kb.
+description: "One command onboarding: attach repos into apps/, ensure apps/ gitignored, then ALWAYS run npm run init-kb."
 ---
 
 # project-start
@@ -21,4 +21,3 @@ Use when the user says: "start projektu", "zainicjuj projekt", "onboarding proje
 ## Guardrails
 - If `apps/<repoName>/` exists: stop (do not pull, do not delete)
 - Never commit secrets from `kanboard_setup/.env`
-

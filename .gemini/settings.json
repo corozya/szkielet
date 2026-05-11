@@ -1,0 +1,38 @@
+{
+  "mcpServers": {
+    "kanboard": {
+      "command": "python3",
+      "args": [
+        "mcp_servers/kanboard/server.py"
+      ],
+      "cwd": "."
+    },
+    "github": {
+      "httpUrl": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer $GITHUB_MCP_PAT"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "analytics": {
+      "command": "bash",
+      "args": [
+        "scripts/run-google-analytics-mcp.sh"
+      ],
+      "cwd": "."
+    }
+  }
+}

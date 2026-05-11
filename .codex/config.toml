@@ -1,0 +1,29 @@
+# Project-local Codex MCP config for this template.
+# Keep `cwd` relative so the repo works after cloning anywhere.
+
+[mcp_servers.kanboard]
+command = "bash"
+args = ["scripts/run-kanboard-mcp.sh"]
+cwd = "."
+
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+http_headers = { Authorization = "Bearer YOUR_GITHUB_PAT" }
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp@latest"]
+cwd = "."
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+cwd = "."
+
+[mcp_servers.analytics]
+command = "bash"
+args = ["scripts/run-google-analytics-mcp.sh"]
+cwd = "."
+
+[mcp_servers.analytics.tools.run_report]
+approval_mode = "approve"

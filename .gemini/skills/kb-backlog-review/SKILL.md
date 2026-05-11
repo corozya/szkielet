@@ -11,10 +11,9 @@ Use when the user asks to review Kanboard tickets/backlog for this repo (e.g. â€
 - If `kanboard_setup/.env` is missing or Kanboard calls fail, run `npm run init-kb` and retry.
 
 ## Commands
-- `python3 kanboard_setup/kb_manager.py list "<KANBOARD_PROJECT>" Backlog`
-- `python3 kanboard_setup/kb_manager.py handoff <ID>`
+- `kanboard_get_backlog(project_ref="<KANBOARD_PROJECT>")`
+- `kanboard_create_handoff(task_id=<ID>)`
 
 ## Deliverable
 - Fetch and summarize **all** Backlog tasks.
 - Generate `handoff` briefs for **all** Backlog tasks (avoid `--force` unless asked).
-

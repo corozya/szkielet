@@ -12,10 +12,9 @@ Use when asked to check Kanboard submissions/tickets.
 
 ## Commands
 - List backlog:
-  - `python3 kanboard_setup/kb_manager.py list "<KANBOARD_PROJECT>" Backlog`
+  - `kanboard_get_backlog(project_ref="<KANBOARD_PROJECT>")`
 - Generate brief:
-  - `python3 kanboard_setup/kb_manager.py handoff <ID>`
+  - `kanboard_create_handoff(task_id=<ID>)`
 
 ## Output
 - Briefs in `handoff/` for **all** Backlog tasks + summary of **all** tasks.
-
