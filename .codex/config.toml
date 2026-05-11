@@ -27,3 +27,6 @@ cwd = "."
 
 [mcp_servers.analytics.tools.run_report]
 approval_mode = "approve"
+
+[mcp_servers.analytics.tools.get_account_summaries]
+approval_mode = "approve"
