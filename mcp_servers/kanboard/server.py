@@ -340,6 +340,23 @@ def kanboard_move_task(task_id: int, column_name: str) -> str:
     return f"Moved task #{task_id} to {column_name}" if success else "Error: Failed to move task."
 
 @mcp.tool()
+def kanboard_delete_task(task_id: int, confirm: bool = False) -> str:
+    """Delete a task from Kanboard. Requires explicit confirmation."""
+    if not confirm:
+        return (
+            f"Refusing to delete task #{task_id} without confirmation. "
+            "Call again with confirm=true to proceed."
+        )
+
+    agent = get_agent()
+    task = agent._call("getTask", {"task_id": task_id})
+    if not task:
+        return f"Error: Task #{task_id} not found."
+
+    success = agent._call("removeTask", {"task_id": task_id})
+    return f"Deleted task #{task_id}" if success else f"Error: Failed to delete task #{task_id}."
+
+@mcp.tool()
 def kanboard_create_handoff(task_id: int) -> str:
     """Initialize a local handoff brief from a Kanboard task."""
     agent = get_agent()

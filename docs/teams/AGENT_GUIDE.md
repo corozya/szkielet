@@ -17,6 +17,7 @@
 - Kanboard MCP wymaga ustawionych `KANBOARD_URL` i `KANBOARD_TOKEN`; bez tego serwer nie wystartuje
 - Lokalny start MCP: `npm run kanboard-mcp`
 - Pobieranie ticketów i backlogu odbywa się przez MCP tools, np. `kanboard_get_backlog`, `kanboard_get_task`, `kanboard_create_handoff`, `kanboard_move_task`
+- Usuwanie ticketu: `kanboard_delete_task(task_id, confirm=true)` używa Kanboard `removeTask`
 - Inicjalizacja / aktualizacja konfiguracji z MCP: `kb_init(host, url, user, token, project)`; jeśli brakuje danych, tool zwraca pytania i czeka na ponowne wywołanie z odpowiedziami
 - Status połączenia i test RPC: `kanboard_connection_status`
 
