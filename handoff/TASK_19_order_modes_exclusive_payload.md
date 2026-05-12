@@ -55,11 +55,18 @@
 
 ## Status
 - owner: Backend (Claude)
-- state: **ready-for-claude** (frontend done, backend snapshot+service do dorobienia)
+- state: done
 - **Suggested AI:** Claude
 - **Fallback AI:** Codex
 - **Context size needed:** Medium
 - **Baseline commit:** `cde75e1` (apps/reczniki-haftowane@main, pushnięty na origin 2026-04-26)
+
+## Weryfikacja
+- Commit: `0946f06` (`fix(task-19): keep description snapshots empty`)
+- Testy:
+  - `php artisan test --filter=AddCartItemTest`
+  - `php artisan test --filter=CartApiValidationTest`
+  - `php artisan test --filter=OrderTotalsTest`
 
 ## Ready for Claude — brief
 
@@ -224,4 +231,3 @@ Po commitach powyżej **rzeczywiste pozostałe luki spec TASK_19** to tylko:
 | `66c5878` | fix(task-19): wizard mode toggle + auto-option visualization | Domknięcie frontu (PersonalizationIntro toggle + visualization fallback) |
 | `cde75e1` | feat(task-20): per-slot custom_notes + cart edit endpoint | TASK_20 (pokrywa też filament admin / email) |
 | **TBD** | fix(task-19): backend snapshot + service nullable options | **Czeka na Claude'a (TASK_19a + 19b)** |
-
