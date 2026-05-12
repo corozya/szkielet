@@ -6,6 +6,9 @@ command = "bash"
 args = ["scripts/run-kanboard-mcp.sh"]
 cwd = "."
 
+[mcp_servers.kanboard.tools.kanboard_get_backlog]
+approval_mode = "approve"
+
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"
 http_headers = { Authorization = "Bearer YOUR_GITHUB_PAT" }
@@ -35,10 +38,32 @@ command = "bash"
 args = ["scripts/run-mysql-mcp.sh"]
 cwd = "."
 
+[mcp_servers.mysql.tools.mysql_list_databases]
+approval_mode = "approve"
+
 [mcp_servers.memory]
 command = "bash"
 args = ["scripts/run-memory-mcp.sh"]
 cwd = "."
+
+[mcp_servers.sentry]
+command = "bash"
+args = ["scripts/run-sentry-mcp.sh"]
+cwd = "."
+
+[mcp_servers.google-ads]
+command = "bash"
+args = ["scripts/run-google-ads-mcp.sh"]
+cwd = "."
+
+[mcp_servers.memory.tools.create_entities]
+approval_mode = "approve"
+
+[mcp_servers.memory.tools.create_relations]
+approval_mode = "approve"
+
+[mcp_servers.memory.tools.search_nodes]
+approval_mode = "approve"
 
 [mcp_servers.analytics.tools.run_report]
 approval_mode = "approve"
