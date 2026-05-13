@@ -81,7 +81,7 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 | :--- | :---: | :--- |
 | 1a. Feed produkcyjny | ✅ | URL `…/feed/google-merchant.xml` — źródło dla Merchant Center. |
 | 1b. Mirror w repo | ✅ | [google_merchant_feed.xml](google_merchant_feed.xml) zsynchronizowany z produkcją (dodatkowe obrazy, wagi, `identifier_exists`, kategoria tekstowa). |
-| 1c. Merchant Center | ⏳ | W panelu: **scheduled fetch** na URL produkcyjny (nie plik lokalny z laptopa). |
+| 1c. Merchant Center | ✅ | Nowy feed w GMC, produkty zaktualizowane. Utrzymaj **scheduled fetch** na `https://reczniki-haftowane.pl/feed/google-merchant.xml` i monitoruj „Ostatni import”. |
 | 2. Tracking | ✅ / ⏳ | Clarity aktywne; dokończyć weryfikację tagów w panelu. |
 | 3. Launch Shopping | ⏳ | Utworzyć kampanię Standard Shopping w Google Ads. |
 | 4. Launch Search (opcjonalnie) | ⏳ | Po stabilnym Shopping lub z osobnym capie budżetu. |
@@ -100,4 +100,36 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 
 ---
 
-*Plan zaktualizowany: spójność z feedem (`price_60_99`, produkt 17), Search vs Shopping, ROAS, status feedu vs MC.*
+## 7) Weryfikacja domknięcia (checklist)
+
+**Domknięte (potwierdzone / technicznie OK):**
+
+| Punkt | Uwagi |
+|--------|--------|
+| Feed URL | `GET https://reczniki-haftowane.pl/feed/google-merchant.xml` → **200**, treść XML (weryfikacja zdalna 2026-05-13). |
+| GMC — import | Potwierdzone przez Ciebie: nowy feed, produkty zaktualizowane. |
+| Mirror w repo | [google_merchant_feed.xml](google_merchant_feed.xml) — do ewentualnego diffu z produkcją po zmianach w sklepie. |
+
+**Do potwierdzenia w panelach (5–10 min):**
+
+| Punkt | Gdzie | Co sprawdzić |
+|--------|--------|----------------|
+| Ostatni fetch | GMC → **Produkty** / źródło danych | Status **ukończony**, brak masowych błędów; data ostatniego przetworzenia. |
+| Diagnostyka | GMC | Brak **krytycznych** alertów na poziomie konta i produktów (cena, dostępność, zdjęcia, `identifier_exists`). |
+| Połączenie z Ads | GMC / Ads | Konto Merchant **połączone** z kontem Google Ads, które uruchomi Shopping. |
+| Domena i zweryfikowany sklep | GMC | Claim strony / weryfikacja zgodna z praktyką konta. |
+| GA4 + konwersje | GA4 / Ads | Import konwersji „zakup” (lub primary conversion) do Ads — **Test** w tagu lub pierwsze testowe zamówienie. |
+| Clarity | Clarity | Nagrania / tagi `Wizard_*` jeśli nadal włączasz optymalizację kreatora. |
+
+**Nadal otwarte względem planu uruchomienia kampanii:**
+
+| Krok | Status |
+|------|--------|
+| **3. Launch Shopping** | ⏳ Dopóki w Ads nie ma utworzonej kampanii Standard Shopping z tym Merchant ID — **to jest następny „twardy” krok.** |
+| **4. Search** | ⏳ Opcjonalnie po stabilnym Shopping. |
+| **5. Optymalizacja** | ⏳ Po ~7 dniach od startu reklam (negatywy, ROAS per SKU). |
+| **2. Tracking** | ✅ / ⏳ Domknij weryfikację tagów w GA4/GTM jeśli coś jeszcze nie jest „Verified” w Ads. |
+
+---
+
+*Plan zaktualizowany: GMC z nowym feedem; checklista domknięcia sekcja 7.*
