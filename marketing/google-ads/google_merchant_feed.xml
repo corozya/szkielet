@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Mirror treści z https://reczniki-haftowane.pl/feed/google-merchant.xml (kanoniczne źródło dla GMC). -->
-<!-- Repozytorium: używaj tego pliku do diffów / review; w Merchant Center ustaw scheduled fetch na URL produkcyjny. -->
+<!-- Feed zoptymalizowany marketingowo — NIE jest mirrorem produkcji. -->
+<!-- Używaj jako supplemental feed w GMC lub wdróż tytuły/opisy do aplikacji. -->
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
     <title>reczniki-haftowane.pl</title>
@@ -8,8 +8,8 @@
     <description>Personalizowane ręczniki z haftem na prezent</description>
     <item>
       <g:id>17</g:id>
-      <g:title>Rodzinny zestaw ręczników z haftem XXL</g:title>
-      <g:description>4 ręczniki kąpielowe 70×140 cm • 4 indywidualne hafty • w dużym ozdobnym koszu</g:description>
+      <g:title>Rodzinny Komplet Prezentowy XXL | 4 Ręczniki z Haftem w Koszu</g:title>
+      <g:description>4 ręczniki kąpielowe 70×140 cm, bawełna 500 g/m² • 4 indywidualne hafty (imię, inicjały lub dedykacja) • gotowe do wręczenia w dużym ozdobnym koszu</g:description>
       <g:link>https://reczniki-haftowane.pl/products/zestaw-recznikow-xxl</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KPBE74X0P5T5TF7AQSXEES9Z.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KP8M5EH9ZJMS721MM7D4CTG0.png</g:additional_image_link>
@@ -24,7 +24,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>ślub</g:custom_label_0>
       <g:custom_label_1>rodzina</g:custom_label_1>
@@ -32,8 +32,8 @@
     </item>
     <item>
       <g:id>8</g:id>
-      <g:title>Rodzinny zestaw ręczników z haftem</g:title>
-      <g:description>2 duże 70×140 cm + 2 średnie 50×100 cm • 4 indywidualne hafty • w ozdobnym koszu</g:description>
+      <g:title>Rodzinny Komplet Prezentowy | 4 Ręczniki z Haftem (Imiona/Inicjały) w Koszu</g:title>
+      <g:description>2 duże 70×140 cm + 2 średnie 50×100 cm, bawełna 500 g/m² • 4 indywidualne hafty (imię, inicjały lub dedykacja) • gotowy do wręczenia w ozdobnym koszu</g:description>
       <g:link>https://reczniki-haftowane.pl/products/2-male-2-duze-kosz</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/realizations/01KNE62VHDEY14ADXSESW73WE8.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KNRS5K687P6Y42Z71TW661BP.png</g:additional_image_link>
@@ -49,7 +49,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>ślub</g:custom_label_0>
       <g:custom_label_1>rodzina</g:custom_label_1>
@@ -57,8 +57,8 @@
     </item>
     <item>
       <g:id>7</g:id>
-      <g:title>Zestaw ręczników na parapetówkę i rocznicę z haftem na prezent</g:title>
-      <g:description>2 ręczniki kąpielowe 70x140 cm • w ozdobnym koszu. • Personalizacja monogramem, inicjałami lub dedykacją.</g:description>
+      <g:title>Ekskluzywny Prezent na Ślub lub Rocznicę | 2 Ręczniki 70x140 w Koszu z Haftem</g:title>
+      <g:description>2 ręczniki kąpielowe 70×140 cm, bawełna 500 g/m² • personalizacja: monogram, inicjały lub dedykacja • gotowe do wręczenia w ozdobnym koszu</g:description>
       <g:link>https://reczniki-haftowane.pl/products/2-duze-reczniki-kosz</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/realizations/618lyh618lyh618l.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KNRXXE9MW9QEF2M1YN1F0S6N.png</g:additional_image_link>
@@ -76,7 +76,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>rocznica</g:custom_label_0>
       <g:custom_label_1>para</g:custom_label_1>
@@ -84,8 +84,8 @@
     </item>
     <item>
       <g:id>16</g:id>
-      <g:title>Zestaw ręczników na prezent z haftem</g:title>
-      <g:description>1 ręcznik 70×140 cm + 1 ręcznik 50×100 cm • haft dla dwóch osób • w ozdobnym koszu</g:description>
+      <g:title>Prezent dla Dwojga | Zestaw 2 Ręczników z Haftem w Koszu (Imiona/Inicjały)</g:title>
+      <g:description>1 ręcznik 70×140 cm + 1 ręcznik 50×100 cm, bawełna 500 g/m² • haft dla dwóch osób (imiona, inicjały lub dedykacja) • gotowe do wręczenia w ozdobnym koszu</g:description>
       <g:link>https://reczniki-haftowane.pl/products/duzy-i-maly-w-koszu</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/uploads/01KP8BZ8542X4W37NR33QVTNEJ.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KNRZNEFT5E5XJJBTY477X087.png</g:additional_image_link>
@@ -102,7 +102,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>imieniny</g:custom_label_0>
       <g:custom_label_1>osoba</g:custom_label_1>
@@ -110,8 +110,8 @@
     </item>
     <item>
       <g:id>3</g:id>
-      <g:title>Ręcznik kąpielowy z haftem na prezent</g:title>
-      <g:description>70×140 cm, bawełna 500 GSM • w ozdobnym koszu • haft: imię, inicjały lub dedykacja</g:description>
+      <g:title>Ręcznik Kąpielowy z Haftem na Prezent | 70x140 w Ozdobnym Koszu</g:title>
+      <g:description>Ręcznik kąpielowy 70×140 cm, bawełna 500 g/m² • haft: imię, inicjały lub dedykacja • gotowy do wręczenia w ozdobnym koszu</g:description>
       <g:link>https://reczniki-haftowane.pl/products/1-duzy-recznik-w-koszu</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/uploads/01KP8BZ86009TBMQQYS4ZM0MJH.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KNS09RCG1R0S0NEQ531HJDSB.png</g:additional_image_link>
@@ -128,7 +128,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>imieniny</g:custom_label_0>
       <g:custom_label_1>osoba</g:custom_label_1>
@@ -136,8 +136,8 @@
     </item>
     <item>
       <g:id>1</g:id>
-      <g:title>Ręcznik kąpielowy z haftem</g:title>
-      <g:description>70×140 cm, bawełna 500 GSM • haft: imię, inicjały lub dedykacja • gotowy do wręczenia w 3–5 dni</g:description>
+      <g:title>Ręcznik Kąpielowy z Haftem na Prezent | Imię lub Inicjały | Gotowy w 3-5 Dni</g:title>
+      <g:description>Ręcznik kąpielowy 70×140 cm, bawełna 500 g/m² • haft: imię, inicjały lub dedykacja • gotowy do wręczenia w 3–5 dni roboczych</g:description>
       <g:link>https://reczniki-haftowane.pl/products/1-duzy-recznik</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/uploads/01KP8BZ852JM878R4ZTGQJP6RW.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/recznik.png</g:additional_image_link>
@@ -151,7 +151,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>imieniny</g:custom_label_0>
       <g:custom_label_1>osoba</g:custom_label_1>
@@ -159,8 +159,8 @@
     </item>
     <item>
       <g:id>6</g:id>
-      <g:title>Zestaw 2 ręczników z haftem</g:title>
-      <g:description>2 ręczniki 50×100 cm • każdy z osobnym haftem • zapakowane w ozdobny kosz</g:description>
+      <g:title>Prezent dla Pary | Zestaw 2 Ręczników z Haftem w Ozdobnym Koszu</g:title>
+      <g:description>2 ręczniki 50×100 cm, bawełna 500 g/m² • każdy z osobnym haftem (imię lub inicjały) • gotowe do wręczenia w ozdobnym koszu</g:description>
       <g:link>https://reczniki-haftowane.pl/products/2-male-reczniki-kosz</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/realizations/618lyh618lyh618l.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KNRXXVPWGTRJSJMKGQJQD3A0.png</g:additional_image_link>
@@ -169,7 +169,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>rocznica</g:custom_label_0>
       <g:custom_label_1>para</g:custom_label_1>
@@ -177,8 +177,8 @@
     </item>
     <item>
       <g:id>4</g:id>
-      <g:title>Ręcznik podręczny z haftem</g:title>
-      <g:description>50×100 cm, miękka bawełna • haft: imię, monogram lub dedykacja • lekki i praktyczny</g:description>
+      <g:title>Ręcznik z Haftem na Prezent | 50x100 cm z Imieniem lub Monogramem</g:title>
+      <g:description>Ręcznik 50×100 cm, miękka bawełna 500 g/m² • haft: imię, monogram lub dedykacja • lekki prezent gotowy w 3–5 dni</g:description>
       <g:link>https://reczniki-haftowane.pl/products/sredni-recznik-personalizowany</g:link>
       <g:image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/uploads/01KP8BZ85YZVV4FJ6VD6AS5WCA.png</g:image_link>
       <g:additional_image_link>https://reczniki-haftowane.pl/cache/1200x1200/media/01KNRZB39KYQ3E259QGTMMGH46.png</g:additional_image_link>
@@ -189,7 +189,7 @@
       <g:brand>reczniki-haftowane.pl</g:brand>
       <g:condition>new</g:condition>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Home &amp; Garden &gt; Linens &amp; Bedding &gt; Towels &gt; Bath Towels &amp; Washcloths</g:google_product_category>
+      <g:google_product_category>566</g:google_product_category>
       <g:product_type>Dom i ogród &gt; Łazienka &gt; Ręczniki personalizowane</g:product_type>
       <g:custom_label_0>imieniny</g:custom_label_0>
       <g:custom_label_1>osoba</g:custom_label_1>
