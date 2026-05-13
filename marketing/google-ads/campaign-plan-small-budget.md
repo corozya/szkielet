@@ -4,6 +4,8 @@ Cel: zdobycie średnio 1 zamówienia dziennie przy budżecie **30 zł/dzień**, 
 
 **Kontekst strategii:** [marketing/MARKETING_PLAN.md](../MARKETING_PLAN.md). Frazy i grupy pod Search: [docs/ads_ready_phrases.md](../../docs/ads_ready_phrases.md).
 
+**Konto Google Ads (produkcja):** „Ręczniki Haftowane”, **customer ID `513-517-5046`**. Kampanie **Shopping** / **Search** uruchamiaj na tym CID. W GMC podpięte jest też drugie konto Ads — **nie** używaj go do kampanii sklepu (albo odłącz w GMC, jeśli zbędne).
+
 ---
 
 ## 1) Produkty priorytetowe
@@ -116,7 +118,7 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 |--------|--------|----------------|
 | Ostatni fetch | GMC → **Produkty** / źródło danych | Status **ukończony**, brak masowych błędów; data ostatniego przetworzenia. |
 | Diagnostyka | GMC | Brak **krytycznych** alertów na poziomie konta i produktów (cena, dostępność, zdjęcia, `identifier_exists`). |
-| Połączenie z Ads | GMC / Ads | Konto Merchant **połączone** z kontem Google Ads, które uruchomi Shopping. |
+| Połączenie z Ads | GMC / Ads | Merchant połączony z Ads; **kampanie tylko na CID `513-517-5046`** (Ręczniki Haftowane). |
 | Domena i zweryfikowany sklep | GMC | Claim strony / weryfikacja zgodna z praktyką konta. |
 | GA4 + konwersje | GA4 / Ads | Import konwersji „zakup” (lub primary conversion) do Ads — **Test** w tagu lub pierwsze testowe zamówienie. |
 | Clarity | Clarity | Nagrania / tagi `Wizard_*` jeśli nadal włączasz optymalizację kreatora. |
@@ -134,7 +136,7 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 
 ## 8) Pierwsza kampania Standard Shopping (krok po kroku)
 
-**Warunek:** konto Google Ads połączone z tym samym kontem Merchant Center, na którym jest feed (patrz checklist §7).
+**Warunek:** to samo konto **Merchant Center** co feed oraz konto Google Ads **513-517-5046** (patrz nagłówek dokumentu i checklist §7).
 
 1. W Google Ads: **Utwórz** → **Nowa kampania** (lub odpowiednik w Twojej wersji językowej panelu).
 2. Cel: np. **Sprzedaż** / **Sprzedawaj produkty z katalogu** — wybierz ścieżkę prowadzącą do **Shopping**.
@@ -151,4 +153,4 @@ Dokumentacja Google (oficjalna, UI bywa aktualizowany): [Tworzenie kampanii Shop
 
 ---
 
-*Plan zaktualizowany: brak kampanii w Ads — dodano §8 instrukcja Standard Shopping.*
+*Plan zaktualizowany: docelowe konto Ads CID 513-517-5046.*
