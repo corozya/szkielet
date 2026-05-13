@@ -34,7 +34,7 @@ Persony wiążą się z nawigacją okolicznościową: [docs/occasions_plan.md](.
 | Kanał | Rola | Materiały w repo |
 |-------|------|------------------|
 | **SEO + treść** | Trwały ruch na frazy okolicznościowe i produktowe; spójność z menu OKAZJE | [docs/occasions_plan.md](../docs/occasions_plan.md), [docs/redirects_plan_301.md](../docs/redirects_plan_301.md), [docs/urls_audit_pages.csv](../docs/urls_audit_pages.csv) |
-| **Google Ads (Shopping)** | Szybka widoczność na intencję zakupową, katalog 8 SKU | [marketing/google-ads/campaign-plan-small-budget.md](google-ads/campaign-plan-small-budget.md), [marketing/google-ads/google_merchant_feed.xml](google-ads/google_merchant_feed.xml) |
+| **Google Ads (Shopping)** | Szybka widoczność na intencję zakupową, katalog 8 SKU | Plan: [google-ads/campaign-plan-small-budget.md](google-ads/campaign-plan-small-budget.md). **Feed GMC:** [https://reczniki-haftowane.pl/feed/google-merchant.xml](https://reczniki-haftowane.pl/feed/google-merchant.xml); mirror w repo: [google-ads/google_merchant_feed.xml](google-ads/google_merchant_feed.xml) |
 | **Google Ads (Search)** | Frazy z potencjałem, słabsza pozycja organiczna; ścisła kontrola zapytań | [docs/ads_ready_phrases.md](../docs/ads_ready_phrases.md) |
 | **Remarketing / e-mail** | Odzyskanie porzuconych konfiguracji w kreatorze, powroty sezonowe | Wymaga list odbiorców (Ads, klient sklepu) i zgód RODO — wdrożenie poza tym plikiem |
 | **Social** | Dowód społeczny, sezonowe kampanie (Meta itd.) | Nie opisane w repo — rezerwuj budżet i kalendarz jeśli aktywne |

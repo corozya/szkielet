@@ -17,7 +17,7 @@ Cel: zdobycie średnio 1 zamówienia dziennie przy budżecie **30 zł/dzień**, 
 
 3. **Zestaw ID 17** — XXL, 339 zł: potencjalnie wysoka marża jednostkowa; obserwuj ROAS w raporcie produktów GMC/Ads. Jeśli CR lub marża gorsze niż 7/8, **nie podbijaj** CPC ponad Tier A bez danych.
 
-Pozostałe SKU z feedu ([marketing/google-ads/google_merchant_feed.xml](google_merchant_feed.xml)) dopełniają katalog Shopping (łącznie **8 produktów**).
+**Źródło danych dla GMC:** kanoniczny feed produkcyjny [https://reczniki-haftowane.pl/feed/google-merchant.xml](https://reczniki-haftowane.pl/feed/google-merchant.xml) (scheduled fetch). Plik [marketing/google-ads/google_merchant_feed.xml](google_merchant_feed.xml) w repo jest **mirrorem** do review i diffów — utrzymuj go zgodnie z URL (lub generuj z aplikacji). Łącznie **8 produktów**.
 
 ---
 
@@ -79,8 +79,9 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 
 | Krok | Status | Zadanie |
 | :--- | :---: | :--- |
-| 1a. Feed XML w repo | ✅ | Utrzymywać [google_merchant_feed.xml](google_merchant_feed.xml). |
-| 1b. Merchant Center | ⏳ | **Publikacja:** scheduled fetch / upload do GMC — do potwierdzenia w panelu (nie mylić z „gotowością pliku w repo”). |
+| 1a. Feed produkcyjny | ✅ | URL `…/feed/google-merchant.xml` — źródło dla Merchant Center. |
+| 1b. Mirror w repo | ✅ | [google_merchant_feed.xml](google_merchant_feed.xml) zsynchronizowany z produkcją (dodatkowe obrazy, wagi, `identifier_exists`, kategoria tekstowa). |
+| 1c. Merchant Center | ⏳ | W panelu: **scheduled fetch** na URL produkcyjny (nie plik lokalny z laptopa). |
 | 2. Tracking | ✅ / ⏳ | Clarity aktywne; dokończyć weryfikację tagów w panelu. |
 | 3. Launch Shopping | ⏳ | Utworzyć kampanię Standard Shopping w Google Ads. |
 | 4. Launch Search (opcjonalnie) | ⏳ | Po stabilnym Shopping lub z osobnym capie budżetu. |
