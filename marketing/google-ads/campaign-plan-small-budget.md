@@ -138,9 +138,24 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 
 **Warunek:** to samo konto **Merchant Center** co feed oraz konto Google Ads **513-517-5046** (patrz nagłówek dokumentu i checklist §7).
 
+### Jeśli w lewym menu widzisz „Performance Max” (a nie Standard Shopping)
+
+W nowym kreatorze Google często po celu **Zakupy** od razu wchodzi się w **Performance Max** (m.in. krok „Tematy wyszukiwania”). To **inny** typ kampanii niż u nas w [§4](#4-struktura-kampanii-w-google-ads).
+
+**Co zrobić:** nie kontynuuj tego kreatora, jeśli chcesz **Standard Shopping**.
+
+1. **Anuluj** kreator albo cofaj (**Wstecz**) do pierwszego ekranu wyboru celu.
+2. Wybierz **„Utwórz kampanię bez wskazówek dotyczących celu”** / **„Bez przewodnika po celach”** (brzmienie zależy od wersji językowej) — albo link **tryb ekspercki** / **Expert**, jeśli jest widoczny na starcie.
+3. Na etapie **typu kampanii** wybierz **Zakupy** / **Shopping**, a następnie **standardową kampanię produktową** (**Standard Shopping**), **nie** Performance Max.
+4. Dalej: Merchant Center, kraj sprzedaży, budżet, **Manual CPC** — jak w punktach poniżej.
+
+Oficjalna ścieżka Google (aktualizacje UI): [Tworzenie kampanii Shopping](https://support.google.com/google-ads/answer/3455581).
+
+---
+
 1. W Google Ads: **Utwórz** → **Nowa kampania** (lub odpowiednik w Twojej wersji językowej panelu).
-2. Cel: np. **Sprzedaż** / **Sprzedawaj produkty z katalogu** — wybierz ścieżkę prowadzącą do **Shopping**.
-3. **Ważne:** wybierz typ **Standardowa kampania produktowa** (**Standard Shopping**), **nie** Performance Max — zgodnie z [§4](#4-struktura-kampanii-w-google-ads) tego dokumentu (kontrola budżetu i CPC przy małym daily cap).
+2. **Zalecany start:** cel **„bez wskazówek co do celu”** → typ **Shopping** → **Standard Shopping** (unikasz domyślnego PMax). Alternatywnie cel **Sprzedaż**, ale **tylko** jeśli w następnym kroku wybierzesz wyraźnie **Standard Shopping**, a nie Performance Max.
+3. **Ważne:** typ **Standardowa kampania produktowa** (**Standard Shopping**), **nie** Performance Max — zgodnie z [§4](#4-struktura-kampanii-w-google-ads) tego dokumentu (kontrola budżetu i CPC przy małym daily cap).
 4. Powiąż **konto Merchant Center** (wybierz właściwe ID sklepu).
 5. **Kraj sprzedaży:** Polska (lub zgodnie z wysyłką). **Oferty:** z podłączonego katalogu (8 produktów z feedu).
 6. **Budżet:** ok. **30 zł/dzień** (kampania tylko Shopping; Search dodasz później osobno).
@@ -153,4 +168,4 @@ Dokumentacja Google (oficjalna, UI bywa aktualizowany): [Tworzenie kampanii Shop
 
 ---
 
-*Plan zaktualizowany: docelowe konto Ads CID 513-517-5046.*
+*Plan zaktualizowany: obejście kreatora Performance Max → Standard Shopping (§8).*
