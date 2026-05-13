@@ -83,7 +83,7 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 | 1b. Mirror w repo | ✅ | [google_merchant_feed.xml](google_merchant_feed.xml) zsynchronizowany z produkcją (dodatkowe obrazy, wagi, `identifier_exists`, kategoria tekstowa). |
 | 1c. Merchant Center | ✅ | Nowy feed w GMC, produkty zaktualizowane. Utrzymaj **scheduled fetch** na `https://reczniki-haftowane.pl/feed/google-merchant.xml` i monitoruj „Ostatni import”. |
 | 2. Tracking | ✅ / ⏳ | Clarity aktywne; dokończyć weryfikację tagów w panelu. |
-| 3. Launch Shopping | ⏳ | Utworzyć kampanię Standard Shopping w Google Ads. |
+| 3. Launch Shopping | ⏳ | **Brak kampanii w Ads** — następny krok: utworzyć **Standard Shopping** (nie PMax), patrz [§8](#8-pierwsza-kampania-standard-shopping-krok-po-kroku). |
 | 4. Launch Search (opcjonalnie) | ⏳ | Po stabilnym Shopping lub z osobnym capie budżetu. |
 | 5. Optymalizacja | ⏳ | Po ~7 dniach: negatywy z search terms (**Search i Shopping**), przegląd produktów o słabym ROAS. |
 
@@ -125,11 +125,30 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 
 | Krok | Status |
 |------|--------|
-| **3. Launch Shopping** | ⏳ Dopóki w Ads nie ma utworzonej kampanii Standard Shopping z tym Merchant ID — **to jest następny „twardy” krok.** |
+| **3. Launch Shopping** | ⏳ **Nie utworzono** — pierwsza kampania w Google Ads; postępuj wg [§8](#8-pierwsza-kampania-standard-shopping-krok-po-kroku). |
 | **4. Search** | ⏳ Opcjonalnie po stabilnym Shopping. |
 | **5. Optymalizacja** | ⏳ Po ~7 dniach od startu reklam (negatywy, ROAS per SKU). |
 | **2. Tracking** | ✅ / ⏳ Domknij weryfikację tagów w GA4/GTM jeśli coś jeszcze nie jest „Verified” w Ads. |
 
 ---
 
-*Plan zaktualizowany: GMC z nowym feedem; checklista domknięcia sekcja 7.*
+## 8) Pierwsza kampania Standard Shopping (krok po kroku)
+
+**Warunek:** konto Google Ads połączone z tym samym kontem Merchant Center, na którym jest feed (patrz checklist §7).
+
+1. W Google Ads: **Utwórz** → **Nowa kampania** (lub odpowiednik w Twojej wersji językowej panelu).
+2. Cel: np. **Sprzedaż** / **Sprzedawaj produkty z katalogu** — wybierz ścieżkę prowadzącą do **Shopping**.
+3. **Ważne:** wybierz typ **Standardowa kampania produktowa** (**Standard Shopping**), **nie** Performance Max — zgodnie z [§4](#4-struktura-kampanii-w-google-ads) tego dokumentu (kontrola budżetu i CPC przy małym daily cap).
+4. Powiąż **konto Merchant Center** (wybierz właściwe ID sklepu).
+5. **Kraj sprzedaży:** Polska (lub zgodnie z wysyłką). **Oferty:** z podłączonego katalogu (8 produktów z feedu).
+6. **Budżet:** ok. **30 zł/dzień** (kampania tylko Shopping; Search dodasz później osobno).
+7. **Strategia ofert:** **Ręczne ustawianie stawek CPC** (Manual CPC); opcjonalnie włącz **ulepszanie CPC** (eCPC), jeśli akceptujesz automatyczne korekty stawki w granicach celu.
+8. Utwórz **grupę reklam** — przy ośmiu SKU możesz zacząć od **wszystkich produktów** w jednej grupie; później podział po `custom_label_2` (`price_100_plus` vs `price_60_99`) pod różne stawki.
+9. Zapisz kampanię; sprawdź status **kwalifikacji** reklam i czy produkty nie są odrzucone (szczegóły w GMC).
+10. Po 24–48 h: pierwsze wrażenia z wyświetleń / kliknięć; po **~7 dniach** przejdź do kroku harmonogramu **5** (negatywy, ROAS).
+
+Dokumentacja Google (oficjalna, UI bywa aktualizowany): [Tworzenie kampanii Shopping](https://support.google.com/google-ads/answer/3455581).
+
+---
+
+*Plan zaktualizowany: brak kampanii w Ads — dodano §8 instrukcja Standard Shopping.*
