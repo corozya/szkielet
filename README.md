@@ -6,6 +6,13 @@
 
 Kod aplikacji jest w repozytorium produktu.
 
+## Dokumentacja marketingowa
+
+- **Strategia (mix kanałów, kalendarz, cele):** [marketing/MARKETING_PLAN.md](marketing/MARKETING_PLAN.md)
+- **Google Ads (kampania, budżet, Shopping/Search):** [marketing/google-ads/campaign-plan-small-budget.md](marketing/google-ads/campaign-plan-small-budget.md)
+- **Frazy pod Search (GSC):** [docs/ads_ready_phrases.md](docs/ads_ready_phrases.md)
+- **Feed Merchant Center (XML w repo):** [marketing/google-ads/google_merchant_feed.xml](marketing/google-ads/google_merchant_feed.xml)
+
 ## Setup Kanboard (one-command)
 
 1. Zainstaluj zależności (Node.js 18+):
