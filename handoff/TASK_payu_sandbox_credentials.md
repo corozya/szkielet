@@ -58,3 +58,7 @@ Chcemy móc utrzymywać **osobne klucze dla sandbox i produkcji** — tak żeby 
 - Nie commitować kluczy — tylko `.env.example` z pustymi wartościami
 - Staging/RPi powinien mieć `PAYU_SANDBOX=true` z sandboxowymi kluczami
 - Produkcja OVH: `PAYU_SANDBOX=false` z produkcyjnymi kluczami
+
+## Po zakończeniu
+
+Usunąć ten plik z `handoff/` i dopisać wpis do sekcji „Zakończone” w `handoff/README.md`.

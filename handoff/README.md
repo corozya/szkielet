@@ -9,9 +9,14 @@
 ## Stan zadań
 
 ### Aktywne
-- brak
+
+Pliki briefów w `handoff/` (tylko te zadania wymagają pracy):
+
+- `TASK_payu_sandbox_credentials.md` — osobne credentials PayU dla sandbox vs produkcja (`config/payu.php`, serwis, `.env.example`).
+- `TASK_naglowek_za_wysoki_mobile.md` — `/order/success`: zbyt wysoki hero na mobile, wybór płatności poniżej folda (`OrderSuccessPage.jsx`).
 
 ### Zakończone
+- `TASK_email_order_cta_button.md` - `done` - CTA w mailu: `<x-mail::button>` w `confirmation.blade.php` i `confirmation-resend.blade.php` (brief usunięty 2026-05-14)
 - `TASK_22_occasion_navigation_structure.md` - `done` - osobne landing pages bez zmian w headerze
 - `TASK_9_ANALYSIS.md` - `done` - smoke test przechodzi
 - `TASK_23_internal_mode_ga4_payu_sandbox.md` - `done` - GTM nie bootstrappuje się przed wykryciem internal mode
