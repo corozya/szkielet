@@ -19,6 +19,7 @@ Pliki briefów w `handoff/` (tylko te zadania wymagają pracy):
 - `TASK_backend_order_number_allocator.md` — numeracja zamówień bez pełnego skanu tabeli.
 - `TASK_frontend_wizard_preview_override_sync.md` — synchronizacja lokalnego override podgladu kreatora.
 - `TASK_frontend_wizard_settings_single_source.md` — jedno zrodlo settingsow kreatora.
+- `TASK_frontend_order_success_polling_optimization.md` — optymalizacja pollowania statusu płatności na stronie sukcesu.
 
 ### Zakończone
 - `TASK_analytics_fix_double_tracking.md` - `done` - usunięty ręczny `page_view` z `usePageTracking`; `App.jsx` nie rejestruje już RouteTracker (2026-05-14)
