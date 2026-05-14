@@ -42,6 +42,51 @@ Regułka do wklejenia dla agentów:
 
 > Uruchom `npm run start-project`. Skrypt podłączy repozytoria do `apps/` (pyta po jednym URL, zawsze `main`, nie nadpisuje istniejących katalogów), dopisze `apps/` do `.gitignore`, a potem zawsze uruchomi `npm run init-kb` i doprowadzi do poprawnej konfiguracji Kanboard.
 
+## Test E2E procesu zakupowego (purchase-flow)
+
+Ręczny smoke test uruchamiany lokalnie po każdym wdrożeniu. Playwright steruje Chromium, który trafia na produkcję.
+
+**Co robi test:**
+1. Aktywuje produkt testowy (1 zł) przez SQL
+2. Przechodzi przez kreator haftu → dodaje do koszyka → wypełnia checkout
+3. Składa zamówienie (potwierdzenie trafia na corozya@gmail.com)
+4. Klika „Zapłać przez PayU" i czeka na redirect do bramki PayU
+5. Weryfikuje dane zamówienia w bazie (grand_total, status płatności)
+6. Deaktywuje produkt testowy
+
+**Wymagania jednorazowe:**
+
+1. Utwórz w bazie produkcji produkt testowy: `is_active=0`, `base_price=100` (1 zł), zanotuj jego `id` i `slug`.
+
+2. Dodaj do produkcyjnego `.env` backendu:
+   ```
+   RECAPTCHA_BYPASS_TOKEN=<losowy-string-min-32-znaki>
+   ```
+
+3. Utwórz plik `.env.e2e` w katalogu głównym repo (nie jest commitowany):
+   ```bash
+   E2E_BASE_URL=https://reczniki-haftowane.pl
+   TEST_PRODUCT_ID=<id>
+   TEST_PRODUCT_SLUG=<slug>
+   RECAPTCHA_BYPASS_TOKEN=<ten-sam-token-co-w-backendzie>
+   E2E_DB_HOST=127.0.0.1   # lub przez SSH tunnel
+   E2E_DB_PORT=3306
+   E2E_DB_USER=<user>
+   E2E_DB_PASSWORD=<hasło>
+   E2E_DB_NAME=reczniki
+   ```
+   Jeśli baza jest za firewallem: `ssh -L 3307:localhost:3306 user@serwer`, potem `E2E_DB_PORT=3307`.
+
+**Uruchomienie:**
+```bash
+./scripts/run-purchase-e2e.sh             # headless
+./scripts/run-purchase-e2e.sh --headed    # widoczna przeglądarka
+```
+
+Trace z błędami: `apps/reczniki-haftowane/frontend/playwright-results/`
+
+---
+
 ## Agenci: Claude, Cursor, Codex, Gemini
 
 Workflow i handoff są **wspólne** dla wszystkich tych środowisk. Sugestie „który model na jaki typ zadania” są w `docs/teams/AI_ROUTING.md`; pełna lista hostów, zasady i **GitHub MCP** (Cursor, Claude, Codex, Gemini): `docs/teams/AI_HOSTS_AND_MCP.md`.
