@@ -73,7 +73,7 @@ echo ""
 info "=== Purchase E2E Test ==="
 info "Środowisko : ${E2E_BASE_URL}"
 info "Produkt    : ID=${TEST_PRODUCT_ID}  slug=${TEST_PRODUCT_SLUG}"
-info "Baza       : ${E2E_DB_USER}@${E2E_DB_HOST}:${E2E_DB_PORT}/${E2E_DB_NAME}"
+info "Token API  : ${E2E_API_TOKEN:0:8}..."
 [[ -n "$HEADED" ]] && info "Tryb       : headed (widoczna przeglądarka)"
 echo ""
 
@@ -82,7 +82,6 @@ cd "${FRONTEND_DIR}"
 
 set +e
 npx playwright test purchase-flow \
-  --project=chromium \
   --reporter=list \
   ${HEADED} \
   ${DEBUG_FLAG}
