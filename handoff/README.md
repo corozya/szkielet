@@ -21,6 +21,9 @@ Pliki briefów w `handoff/` (tylko te zadania wymagają pracy):
 - `TASK_frontend_wizard_settings_single_source.md` — jedno zrodlo settingsow kreatora.
 
 ### Zakończone
+- `TASK_analytics_fix_double_tracking.md` - `done` - usunięty ręczny `page_view` z `usePageTracking`; `App.jsx` nie rejestruje już RouteTracker (2026-05-14)
+- `TASK_analytics_fix_ecommerce_pricing.md` - `done` - `cartItemsToGa4()` liczy premiumy z konfiguracji i używa rzeczywistej ceny jednostkowej (2026-05-14)
+- `TASK_analytics_add_view_cart.md` - `done` - `trackViewCart()` + automatyczne wysyłanie na `/cart` po załadowaniu koszyka (2026-05-14)
 - `TASK_payu_sandbox_credentials.md` - `done` - sandbox credentials w `config/payu.php` + `PayUService::resolveConfig()` + `.env.example` (2026-05-14)
 - `TASK_backend_payu_ipn_transaction.md` - `done` - `DB::transaction()` wokół `firstOrCreate`+update w `PayUNotifyController`, 13/13 testów zielonych (2026-05-14)
 - `TASK_email_order_cta_button.md` - `done` - CTA w mailu: `<x-mail::button>` w `confirmation.blade.php` i `confirmation-resend.blade.php` (brief usunięty 2026-05-14)
