@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # Uruchamia test E2E pełnego procesu zakupowego (purchase-flow.spec.js).
-# Aktywuje produkt testowy przez SQL, przechodzi przez kreator → checkout → PayU,
-# weryfikuje zamówienie w bazie, a na koniec deaktywuje produkt.
+# Aktywuje produkt testowy przez API backendu, przechodzi przez kreator → checkout → PayU,
+# weryfikuje zamówienie przez API, a na koniec deaktywuje produkt.
 #
 # Użycie:
 #   ./scripts/run-purchase-e2e.sh [--headed] [--debug]
 #
-# Zmienne środowiskowe (można też ustawić w .env.e2e obok tego skryptu):
+# Zmienne środowiskowe (można też ustawić w .env.e2e w katalogu głównym repo):
 #   E2E_BASE_URL          URL środowiska (domyślnie: https://reczniki-haftowane.pl)
 #   TEST_PRODUCT_ID       ID produktu testowego w bazie (wymagane)
 #   TEST_PRODUCT_SLUG     Slug produktu testowego (wymagane)
 #   RECAPTCHA_BYPASS_TOKEN  Token bypass z backendu .env (wymagane)
-#   E2E_DB_HOST / PORT / USER / PASSWORD / NAME  Dane MySQL
-#   BETA_AUTH_USER / BETA_AUTH_PASSWORD           Basic auth (jeśli potrzebne)
+#   E2E_API_TOKEN         Token chroniący /api/v1/e2e/* (wymagane)
+#   BETA_AUTH_USER / BETA_AUTH_PASSWORD  Basic auth (jeśli potrzebne)
 
 set -euo pipefail
 
@@ -45,14 +45,11 @@ done
 
 # ── Wartości domyślne ─────────────────────────────────────────
 export E2E_BASE_URL="${E2E_BASE_URL:-https://reczniki-haftowane.pl}"
-export E2E_DB_HOST="${E2E_DB_HOST:-127.0.0.1}"
-export E2E_DB_PORT="${E2E_DB_PORT:-3306}"
-export E2E_DB_NAME="${E2E_DB_NAME:-reczniki}"
 export INCLUDE_PURCHASE_E2E=1
 
 # ── Walidacja wymaganych zmiennych ────────────────────────────
 MISSING=0
-for var in TEST_PRODUCT_ID TEST_PRODUCT_SLUG RECAPTCHA_BYPASS_TOKEN E2E_DB_USER E2E_DB_PASSWORD; do
+for var in TEST_PRODUCT_ID TEST_PRODUCT_SLUG RECAPTCHA_BYPASS_TOKEN E2E_API_TOKEN; do
   if [[ -z "${!var:-}" ]]; then
     error "Brak zmiennej: ${var}"
     MISSING=1
@@ -66,10 +63,7 @@ if [[ $MISSING -eq 1 ]]; then
   echo "    TEST_PRODUCT_ID=<id>"
   echo "    TEST_PRODUCT_SLUG=<slug>"
   echo "    RECAPTCHA_BYPASS_TOKEN=<token z backendu .env>"
-  echo "    E2E_DB_USER=<user>"
-  echo "    E2E_DB_PASSWORD=<hasło>"
-  echo "    E2E_DB_HOST=<host>  (domyślnie: 127.0.0.1)"
-  echo "    E2E_DB_NAME=<baza>  (domyślnie: reczniki)"
+  echo "    E2E_API_TOKEN=<token z backendu .env>"
   echo ""
   exit 1
 fi

@@ -66,16 +66,11 @@ Ręczny smoke test uruchamiany lokalnie po każdym wdrożeniu. Playwright steruj
 3. Utwórz plik `.env.e2e` w katalogu głównym repo (nie jest commitowany):
    ```bash
    E2E_BASE_URL=https://reczniki-haftowane.pl
-   TEST_PRODUCT_ID=<id>
-   TEST_PRODUCT_SLUG=<slug>
+   TEST_PRODUCT_ID=18
+   TEST_PRODUCT_SLUG=idywidualny-projekt-haftu
    RECAPTCHA_BYPASS_TOKEN=<ten-sam-token-co-w-backendzie>
-   E2E_DB_HOST=127.0.0.1   # lub przez SSH tunnel
-   E2E_DB_PORT=3306
-   E2E_DB_USER=<user>
-   E2E_DB_PASSWORD=<hasło>
-   E2E_DB_NAME=reczniki
+   E2E_API_TOKEN=<ten-sam-token-co-w-backendzie>
    ```
-   Jeśli baza jest za firewallem: `ssh -L 3307:localhost:3306 user@serwer`, potem `E2E_DB_PORT=3307`.
 
 **Uruchomienie:**
 ```bash
