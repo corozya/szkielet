@@ -6,16 +6,23 @@
 - po zakończeniu usuń brief z `handoff/`
 - zasady: `docs/teams/COMMON.md`
 
+## Plan sprintu
+
+Szczegółowy plan z priorytetami: `SPRINT_PLAN.md`
+
 ## Stan zadań
 
 ### Aktywne
 
 Pliki briefów w `handoff/` (tylko te zadania wymagają pracy):
 
-- `TASK_payu_sandbox_credentials.md` — osobne credentials PayU dla sandbox vs produkcja (`config/payu.php`, serwis, `.env.example`).
-- `TASK_naglowek_za_wysoki_mobile.md` — `/order/success`: zbyt wysoki hero na mobile, wybór płatności poniżej folda (`OrderSuccessPage.jsx`).
+- `TASK_backend_order_number_allocator.md` — numeracja zamówień bez pełnego skanu tabeli.
+- `TASK_frontend_wizard_preview_override_sync.md` — synchronizacja lokalnego override podgladu kreatora.
+- `TASK_frontend_wizard_settings_single_source.md` — jedno zrodlo settingsow kreatora.
 
 ### Zakończone
+- `TASK_payu_sandbox_credentials.md` - `done` - sandbox credentials w `config/payu.php` + `PayUService::resolveConfig()` + `.env.example` (2026-05-14)
+- `TASK_backend_payu_ipn_transaction.md` - `done` - `DB::transaction()` wokół `firstOrCreate`+update w `PayUNotifyController`, 13/13 testów zielonych (2026-05-14)
 - `TASK_email_order_cta_button.md` - `done` - CTA w mailu: `<x-mail::button>` w `confirmation.blade.php` i `confirmation-resend.blade.php` (brief usunięty 2026-05-14)
 - `TASK_22_occasion_navigation_structure.md` - `done` - osobne landing pages bez zmian w headerze
 - `TASK_9_ANALYSIS.md` - `done` - smoke test przechodzi
@@ -27,6 +34,9 @@ Pliki briefów w `handoff/` (tylko te zadania wymagają pracy):
 - `TASK_10_ANALYSIS.md` - `done` - inbox kontaktów w panelu wystarcza
 - `TASK_12_frontend_fix_options_required_description_mode.md` - `done`
 - `TASK_13_frontend_hide_steps_header_on_intro.md` - `done`
+- `TASK_naglowek_za_wysoki_mobile.md` - `done` - zmniejszone padding/ikonka/typografia hero na mobile w `OrderSuccessPage.jsx` (2026-05-14)
+- `TASK_frontend_checkout_analytics_one_shot.md` - `done` - `useCheckoutAnalytics` z `useRef` — eventy tylko po faktycznej zmianie selekcji, 6/6 testów (2026-05-14)
+- `TASK_frontend_internal_mode_bootstrap_race.md` - `done` - `useInternalMode` czyta wyłącznie localStorage, brak drugiego fetchu i race z GTM, 4/4 testów (2026-05-14)
 
 ### Usunięte
 - `TASK_sentry_frontend_production_integration.md`
