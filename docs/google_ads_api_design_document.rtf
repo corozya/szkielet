@@ -1,0 +1,69 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Times New Roman;}}
+\f0\fs24
+
+{\b\fs32 Google Ads API Tool Design Document}\par
+{\fs20 Applicant: Maciej Andrzejewski | reczniki-haftowane.pl | 2026}\par
+\par
+
+{\b\fs26 1. Company Overview}\par
+\par
+Company name: Reczniki Haftowane\par
+Website: https://reczniki-haftowane.pl\par
+Business type: E-commerce \endash  embroidered towels and textile products\par
+Country: Poland\par
+\par
+The company operates an online store selling handcrafted embroidered towels. Google Ads is used to drive traffic to the store and promote products to potential customers.\par
+\par
+
+{\b\fs26 2. Tool Description}\par
+\par
+The tool is an internal AI-powered assistant built with Claude Code (Anthropic) and a Google Ads MCP (Model Context Protocol) server. It is used exclusively by the business owner to monitor and manage Google Ads campaigns.\par
+\par
+The MCP server (third-party integration) connects to the Google Ads API on behalf of the owner and exposes campaign data and management functions to the AI agent. The AI agent interprets the data, suggests optimizations, and executes changes as instructed by the user.\par
+\par
+
+{\b\fs26 3. Use Cases}\par
+\par
+\bullet  Viewing campaign performance metrics (impressions, clicks, cost, conversions)\par
+\bullet  Adjusting bids and budgets based on performance data\par
+\bullet  Creating and pausing ad groups or campaigns\par
+\bullet  Reviewing keyword performance\par
+\bullet  Generating simple reports for internal use\par
+\par
+
+{\b\fs26 4. Data Access and Storage}\par
+\par
+\bullet  The tool accesses only the Google Ads account associated with MCC ID 721-197-3072\par
+\bullet  No customer personal data is stored or processed\par
+\bullet  Campaign data is used in-session for analysis and is not persisted to external databases\par
+\bullet  API credentials are stored securely in environment variables on the local machine\par
+\par
+
+{\b\fs26 5. User Access}\par
+\par
+The tool is used exclusively by the business owner (internal use only). No third parties, clients, or external users have access to the tool or the API token.\par
+\par
+
+{\b\fs26 6. API Features Used}\par
+\par
+\bullet  CampaignService \endash  read and manage campaigns\par
+\bullet  AdGroupService \endash  read and manage ad groups\par
+\bullet  GoogleAdsService \endash  reporting and search queries\par
+\bullet  BudgetService \endash  view and adjust budgets\par
+\par
+
+{\b\fs26 7. Compliance}\par
+\par
+The tool will be used in full compliance with the Google Ads API Terms of Service. No automated click generation, fraudulent activity, or policy violations are intended or implemented. The tool does not redistribute API data to third parties.\par
+\par
+
+{\b\fs26 8. Technical Architecture}\par
+\par
+\bullet  AI Agent: Claude Code (claude-sonnet model, Anthropic)\par
+\bullet  Integration layer: Google Ads MCP server (Model Context Protocol)\par
+\bullet  Runtime environment: Local machine (Linux), single user\par
+\bullet  Authentication: OAuth 2.0 with developer token\par
+\bullet  No public-facing API endpoints exposed\par
+\par
+}
