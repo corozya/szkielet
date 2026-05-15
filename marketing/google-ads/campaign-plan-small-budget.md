@@ -85,7 +85,7 @@ Pozostałe etykiety (`custom_label_0` / `1`) służą segmentacji okazji i typu 
 | 1b. Mirror w repo | ✅ | [google_merchant_feed.xml](google_merchant_feed.xml) zsynchronizowany z produkcją (dodatkowe obrazy, wagi, `identifier_exists`, kategoria tekstowa). |
 | 1c. Merchant Center | ✅ | Nowy feed w GMC, produkty zaktualizowane. Utrzymaj **scheduled fetch** na `https://reczniki-haftowane.pl/feed/google-merchant.xml` i monitoruj „Ostatni import”. |
 | 2. Tracking | ✅ / ⏳ | Clarity aktywne; dokończyć weryfikację tagów w panelu. |
-| 3. Launch Shopping | ⏳ | **Brak kampanii w Ads** — następny krok: utworzyć **Standard Shopping** (nie PMax), patrz [§8](#8-pierwsza-kampania-standard-shopping-krok-po-kroku). |
+| 3. Launch Shopping | ✅ | Kampania `Shopping | Bestsellers | Manual CPC` uruchomiona 2026-05-13. Reklamy zatwierdzone i aktywne. Szczegóły: [§9](#9-aktualna-konfiguracja-kampanii-stan-na-2026-05-13). |
 | 4. Launch Search (opcjonalnie) | ⏳ | Po stabilnym Shopping lub z osobnym capie budżetu. |
 | 5. Optymalizacja | ⏳ | Po ~7 dniach: negatywy z search terms (**Search i Shopping**), przegląd produktów o słabym ROAS. |
 
@@ -169,3 +169,50 @@ Dokumentacja Google (oficjalna, UI bywa aktualizowany): [Tworzenie kampanii Shop
 ---
 
 *Plan zaktualizowany: obejście kreatora Performance Max → Standard Shopping (§8).*
+
+---
+
+## 9) Aktualna konfiguracja kampanii (stan na 2026-05-13)
+
+### Kampania: `Shopping | Bestsellers | Manual CPC`
+
+- **Customer ID:** `513-517-5046` (Ręczniki Haftowane)
+- **Status:** Aktywna / Odpowiednia (reklamy zatwierdzone przez Google)
+- **Budżet:** 30,00 zł/dzień
+- **Strategia stawek:** Manual CPC
+
+### Geotargeting
+
+- **Kierowanie:** Polska (wszystkie województwa)
+
+### Urządzenia
+
+| Urządzenie | Korekta stawek |
+|---|---|
+| Komputery | brak (100%) |
+| Tablety | brak (100%) |
+| Telefony komórkowe | **-100%** (wykluczone) |
+
+> Powód: kreator haftu działa znacznie lepiej na desktopie — reklamy mobilne przepalałyby budżet bez konwersji.
+
+### Grupy produktów
+
+| Grupa | Produkt | Maks. CPC |
+|---|---|---|
+| ID 7 | Ekskluzywny Prezent na Ślub lub Rocznicę \| 2 Ręczniki 70x140 w Koszu z Haftem (219 zł) | **1,50 zł** |
+| ID 8 | Rodzinny Komplet Prezentowy \| 4 Ręczniki z Haftem (Imiona/Inicjały) w Koszu (299 zł) | **1,50 zł** |
+| Pozostałe produkty | Wszystkie pozostałe z feedu | 0,75 zł |
+
+> Produkty ID 7 i 8 to Tier A (bestsellery) — wyższy CPC zwiększa ich widoczność względem pozostałych SKU.
+
+---
+
+## 10) Google Ads API — status dostępu
+
+| Poziom | Status | Data |
+|--------|--------|------|
+| Basic Access | ⏳ **Oczekuje na rozpatrzenie** | wniosek złożony przed 2026-05-13 |
+
+Google Ads API Compliance Team potwierdził przyjęcie wniosku o Basic Access. Czas rozpatrywania jest wydłużony ze względu na większy niż zwykle wolumen aplikacji.
+
+**Następny krok:** czekać na e-mail od Google Ads API Compliance Team na adres kontaktowy dewelopera.

@@ -9,6 +9,12 @@ cwd = "."
 [mcp_servers.kanboard.tools.kanboard_get_backlog]
 approval_mode = "approve"
 
+[mcp_servers.kanboard.tools.kanboard_create_handoff]
+approval_mode = "approve"
+
+[mcp_servers.kanboard.tools.kanboard_connection_status]
+approval_mode = "approve"
+
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"
 http_headers = { Authorization = "Bearer YOUR_GITHUB_PAT" }
@@ -41,6 +47,9 @@ cwd = "."
 [mcp_servers.mysql.tools.mysql_list_databases]
 approval_mode = "approve"
 
+[mcp_servers.mysql.tools.mysql_connection_status]
+approval_mode = "approve"
+
 [mcp_servers.memory]
 command = "bash"
 args = ["scripts/run-memory-mcp.sh"]
@@ -55,6 +64,22 @@ cwd = "."
 command = "bash"
 args = ["scripts/run-google-ads-mcp.sh"]
 cwd = "."
+startup_timeout_sec = 120
+
+[mcp_servers.gsc]
+command = "bash"
+args = ["scripts/run-search-console-mcp.sh"]
+cwd = "."
+startup_timeout_sec = 120
+
+[mcp_servers.gsc.tools.reauthenticate]
+approval_mode = "approve"
+
+[mcp_servers.gsc.tools.list_properties]
+approval_mode = "approve"
+
+[mcp_servers.gsc.tools.get_sitemaps]
+approval_mode = "approve"
 
 [mcp_servers.memory.tools.create_entities]
 approval_mode = "approve"
@@ -70,3 +95,11 @@ approval_mode = "approve"
 
 [mcp_servers.analytics.tools.get_account_summaries]
 approval_mode = "approve"
+
+[mcp_servers.analytics.tools.run_realtime_report]
+approval_mode = "approve"
+
+[mcp_servers.clarity]
+command = "bash"
+args = ["scripts/run-clarity-mcp.sh"]
+cwd = "."

@@ -54,6 +54,34 @@
         "scripts/run-memory-mcp.sh"
       ],
       "cwd": "."
+    },
+    "sentry": {
+      "command": "bash",
+      "args": [
+        "scripts/run-sentry-mcp.sh"
+      ],
+      "cwd": "."
+    },
+    "gsc": {
+      "command": "bash",
+      "args": [
+        "scripts/run-search-console-mcp.sh"
+      ],
+      "cwd": "."
+    },
+    "clarity": {
+      "command": "bash",
+      "args": [
+        "scripts/run-clarity-mcp.sh"
+      ],
+      "cwd": "."
+    },
+    "google-ads": {
+      "command": "bash",
+      "args": [
+        "scripts/run-google-ads-mcp.sh"
+      ],
+      "cwd": "."
     }
   }
 }

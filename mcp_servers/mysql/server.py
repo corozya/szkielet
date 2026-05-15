@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
 REPO_ROOT = Path(__file__).parent.parent.parent
-ENV_FILE = REPO_ROOT / ".env.mysql"
+ENV_FILE = REPO_ROOT / ".env"
 load_dotenv(ENV_FILE)
 
 mcp = FastMCP("MySQL")
@@ -130,7 +130,7 @@ def validate_config(config: MySQLConfig | None = None) -> None:
         raise ValueError(
             "MySQL MCP requires configuration. Set "
             + ", ".join(missing)
-            + " in .env.mysql or the process environment before starting MCP."
+            + " in .env or the process environment before starting MCP."
         )
 
     if config.port <= 0:

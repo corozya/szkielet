@@ -8,9 +8,9 @@
       "cwd": "."
     },
     "github": {
-      "httpUrl": "https://api.githubcopilot.com/mcp/",
+      "url": "https://api.githubcopilot.com/mcp/",
       "headers": {
-        "Authorization": "Bearer $GITHUB_MCP_PAT"
+        "Authorization": "Bearer ${GITHUB_PAT_TOKEN}"
       }
     },
     "context7": {
@@ -66,6 +66,13 @@
       "command": "bash",
       "args": [
         "scripts/run-search-console-mcp.sh"
+      ],
+      "cwd": "."
+    },
+    "facebook": {
+      "command": "bash",
+      "args": [
+        "scripts/run-facebook-mcp.sh"
       ],
       "cwd": "."
     },

@@ -45,6 +45,11 @@ Jeśli używasz tu `Codex`, `Gemini`, `Cursor` i `Claude`, najpraktyczniejszy ze
 - `MySQL` jako lokalny, read-only serwer do diagnostyki baz
 - `Memory` jako lokalny knowledge graph do trwałych notatek i relacji
 
+### Jeden lokalny `.env`
+
+W tym repo najwygodniej utrzymywać wszystkie lokalne sekrety w jednym repo-root `.env`.
+Wrappers MCP czytają go jako pierwszy. Starsze pliki typu `.env.analytics`, `.env.google-ads`, `.env.gsc` i `kanboard_setup/.env` są nadal wspierane jako kompatybilne override, ale dla MySQL zalecamy wyłącznie `.env`.
+
 W skrócie:
 
 | MCP | Zalecenie | Powód |
@@ -68,6 +73,67 @@ Minimalny zestaw, który warto utrzymać stale:
 6. `Google Analytics` tylko jeśli faktycznie analizujesz GA
 7. `MySQL`, jeśli pracujesz z lokalną bazą
 8. `Memory`, jeśli chcesz zachować trwały kontekst projektu
+
+### Google Ads MCP
+
+Do zarządzania kampaniami Google Ads używaj lokalnego wrappera `scripts/run-google-ads-mcp.sh`.
+Serwer: [`googleads/google-ads-mcp`](https://github.com/googleads/google-ads-mcp) (oficjalny, od Google).
+
+#### Wymagania
+
+- **Developer token** w trybie **Standard Access** — wymagany do pracy na prawdziwych danych kampanii.
+  Wniosek o token złożony 2026-05-13 przez formularz: https://support.google.com/adspolicy/contact/new_token_application
+  Po akceptacji (ok. 3 dni robocze) Google wyśle odpowiedź na `corozya@gmail.com`.
+  Token wklej do `.env.google-ads` jako `GOOGLE_ADS_DEVELOPER_TOKEN`.
+- `GOOGLE_APPLICATION_CREDENTIALS` — plik JSON z OAuth2 (jak w Analytics)
+- `GOOGLE_PROJECT_ID` — projekt w Google Cloud
+- MCC ID: `721-197-3072`
+
+> Bez Standard Access token działa tylko w trybie testowym (fikcyjne dane).
+
+Dodaj do konfiguracji MCP hosta:
+
+```json
+{
+  "google-ads": {
+    "command": "bash",
+    "args": ["scripts/run-google-ads-mcp.sh"],
+    "cwd": "."
+  }
+}
+```
+
+---
+
+### Google Analytics MCP
+
+Do Analytics w tym repo używaj lokalnego wrappera `scripts/run-google-analytics-mcp.sh` albo skrótu `npm run analytics-mcp`.
+Serwer udostępnia `get_account_summaries` bez `property_id`; `GA4_PROPERTY_ID` wpływa tylko na narzędzia raportowe, które pracują na konkretnej właściwości.
+
+Gotowe konfiguracje per host:
+
+- Cursor: skopiuj `.cursor/mcp.json.example` do `.cursor/mcp.json`
+- Claude: użyj `.claude/mcp.json.example` jako źródła dla `claude mcp add-json` albo Desktop configu
+- Codex: wpis jest już obecny w `.codex/config.toml`
+- Gemini: wpis jest już obecny w `.gemini/settings.json`
+
+Jeśli chcesz wkleić to ręcznie, ten sam serwer wygląda tak:
+
+```json
+{
+  "analytics": {
+    "command": "bash",
+    "args": ["scripts/run-google-analytics-mcp.sh"],
+    "cwd": "."
+  }
+}
+```
+
+Ważne:
+
+- `GOOGLE_APPLICATION_CREDENTIALS` i `GOOGLE_PROJECT_ID` muszą być ustawione
+- `GA4_PROPERTY_ID` jest opcjonalne i potrzebne tylko wtedy, gdy chcesz domyślną właściwość dla raportów
+- jeśli host ma whitelistę MCP, dodaj tam też serwer `analytics`
 
 ### Weryfikacja
 

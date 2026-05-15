@@ -6,8 +6,15 @@ kanboard_setup/.env
 .env
 .mcp.json
 .env.analytics
-.env.mysql
+.env.gsc
+.env.google-ads
 .env.memory
+.env.e2e
+mcp_servers/gsc/
+mcp_servers/facebook/
+.claude/mcp.json
+.claude/settings.json
+.playwright-mcp/
 .memory/
 handoff/AUDIT_RESULT.md
 apps/

@@ -22,14 +22,15 @@
 
 | # | Zadanie | Plik | Typ |
 |---|---------|------|-----|
-| — | Synchronizacja lokalnego override podglądu kreatora | `TASK_frontend_wizard_preview_override_sync.md` | Frontend |
+| ~~—~~ | ~~Synchronizacja lokalnego override podglądu kreatora~~ | ~~`TASK_frontend_wizard_preview_override_sync.md`~~ | ~~Frontend~~ ✅ done |
 | ~~—~~ | ~~Numeracja zamówień bez pełnego skanu tabeli~~ | ~~`TASK_backend_order_number_allocator.md`~~ | ~~Backend~~ ✅ done |
-| — | Jedno źródło settingsów kreatora | `TASK_frontend_wizard_settings_single_source.md` | Frontend |
+| ~~—~~ | ~~Jedno źródło settingsów kreatora~~ | ~~`TASK_frontend_wizard_settings_single_source.md`~~ | ~~Frontend~~ ✅ done |
 
 ### Zakończone w tym sprincie
 
 | # | Zadanie | Plik | Typ |
 |---|---------|------|-----|
+| ~~P2~~ | ~~Optymalizacja pollowania statusu płatności na stronie sukcesu~~ | ~~`TASK_frontend_order_success_polling_optimization.md`~~ | ~~Frontend~~ ✅ done |
 | ~~P2~~ | ~~Fix: Double-tracking GA4 (GTM vs hook)~~ | ~~`TASK_analytics_fix_double_tracking.md`~~ | ~~Analytics~~ ✅ done |
 | ~~P2~~ | ~~Fix: Ecommerce prices (customization premiums)~~ | ~~`TASK_analytics_fix_ecommerce_pricing.md`~~ | ~~Analytics~~ ✅ done |
 | ~~P2~~ | ~~Add: Missing view_cart event~~ | ~~`TASK_analytics_add_view_cart.md`~~ | ~~Analytics~~ ✅ done |

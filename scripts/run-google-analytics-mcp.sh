@@ -5,12 +5,10 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 env_file="${repo_root}/.env.analytics"
 default_adc="${HOME}/.config/gcloud/application_default_credentials.json"
 
-if [ -f "${env_file}" ]; then
-  set -a
-  # Local, untracked secrets/config for Analytics MCP.
-  . "${env_file}"
-  set +a
-fi
+source "${repo_root}/scripts/load-env.sh"
+
+load_env_file "${repo_root}/.env"
+load_env_file "${env_file}"
 
 if [ -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ] && [ -f "${default_adc}" ]; then
   export GOOGLE_APPLICATION_CREDENTIALS="${default_adc}"
@@ -29,7 +27,8 @@ fi
 
 if [ -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
   echo "GOOGLE_APPLICATION_CREDENTIALS is not set and ${default_adc} does not exist." >&2
-  echo "Create ${repo_root}/.env.analytics from .env.analytics.example or run: gcloud auth application-default login" >&2
+  echo "Set it in ${repo_root}/.env or create ${repo_root}/.env.analytics from .env.analytics.example." >&2
+  echo "You can also run: gcloud auth application-default login" >&2
   exit 1
 fi
 
@@ -40,7 +39,7 @@ fi
 
 if [ -z "${GOOGLE_PROJECT_ID:-}" ]; then
   echo "GOOGLE_PROJECT_ID is not set." >&2
-  echo "Set it in ${repo_root}/.env.analytics or your shell environment." >&2
+  echo "Set it in ${repo_root}/.env or ${repo_root}/.env.analytics, or export it in your shell." >&2
   exit 1
 fi
 
