@@ -16,9 +16,15 @@
 
 ## Backlog sprintu (od najważniejszego)
 
-| # | Warstwa | Zadanie | Brief | Status |
-|---|---------|---------|--------|--------|
-| 1 | **P2** | Hero images LCP — skopiować pliki z serwera do repo | — | ⏳ zablokowane (SSH/serwer) |
+*Brak aktywnych zadań — wszystkie blokery rozwiązane.*
+
+---
+
+## Ostatnio zamknięte — Sprint 3 cont. (2026-05-16)
+
+| Zadanie | Uwagi |
+|---------|-------|
+| Hero images LCP | Pliki `hero-banner.jpg/webp` już w repo od `7bed8ce` — bloker był fałszywy |
 
 ---
 
@@ -48,8 +54,7 @@
 
 ## Blokery / otwarte
 
-- **Hero images LCP:** pliki `hero-banner.jpg/webp` są tylko na serwerze. Skopiować do `frontend/public/mockups/` i commitować — to główna przyczyna LCP 8.6s.
-- **Drawing templates prod — GOTOWE DO DEPLOY:** `php artisan migrate` na prod uruchomi kolejno: `2026_05_16_000000` (wgra settings) → `2026_05_15_120000` (stworzy tabele i wypełni z settings) → `2026_05_15_130000` (merge slots do JSON). Kolejność timestamps jest poprawna.
+- **Drawing templates prod — GOTOWE DO DEPLOY:** `php artisan migrate` na prod uruchomi kolejno: `2026_05_16_000000` (wgra settings) → `2026_05_15_120000` (stworzy tabele i wypełni z settings) → `2026_05_15_130000` (merge slots do JSON).
 - **UX-M9** (lazy loading wzorów): pominięte — większa zmiana, osobny sprint.
 - **Kontrast kolorów** (PageSpeed a11y): wymaga inspekcji CSS — pominięte.
 
