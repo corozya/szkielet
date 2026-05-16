@@ -11,6 +11,6 @@ if [[ -z "${MS_CLARITY:-}" ]]; then
   exit 1
 fi
 
-export CLARITY_API_TOKEN="${MS_CLARITY}"
-
-exec clarity-mcp-server
+# Oficjalny serwer MCP — bez globalnej instalacji (`npm i -g`).
+# Dokumentacja: https://github.com/microsoft/clarity-mcp-server
+exec npx -y @microsoft/clarity-mcp-server --clarity_api_token="${MS_CLARITY}"

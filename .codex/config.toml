@@ -29,6 +29,9 @@ command = "npx"
 args = ["-y", "@playwright/mcp@latest"]
 cwd = "."
 
+[mcp_servers.playwright.tools.browser_tabs]
+approval_mode = "approve"
+
 [mcp_servers.filesystem]
 command = "bash"
 args = ["scripts/run-filesystem-mcp.sh"]
