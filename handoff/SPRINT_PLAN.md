@@ -1,7 +1,7 @@
 # Plan sprintu — reczniki-haftowane.pl
 
-**Ostatnia aktualizacja:** 2026-05-16 (sprint 2 zakończony)
-**Aktywne briefy produkcyjne:** 2
+**Ostatnia aktualizacja:** 2026-05-16 (sprint 3 zakończony)
+**Aktywne briefy produkcyjne:** 1
 
 ---
 
@@ -18,8 +18,17 @@
 
 | # | Warstwa | Zadanie | Brief | Status |
 |---|---------|---------|--------|--------|
-| 1 | **P2** | Drawing templates — migracja prod + transfer danych z lokala | `TASK_drawing_templates_source_of_truth.md` | ⏳ zablokowane (dane) |
-| 2 | **P3** | Dopasowanie wizualne slot-template ↔ kreator | `slot-template-editor-i-kreator.md` | ⏳ częściowo (image slot config przez app.py) |
+| 1 | **P2** | Hero images LCP — skopiować pliki z serwera do repo | — | ⏳ zablokowane (SSH/serwer) |
+
+---
+
+## Ostatnio zamknięte — Sprint 3 (2026-05-16)
+
+| Zadanie | Plik | Uwagi |
+|---------|------|-------|
+| Drawing templates — seeder na prod | `migrations/2026_05_16_000000_seed_drawing_slot_templates_settings.php` | Wgrywa settings przed migrate; gotowe do `php artisan migrate` |
+| Slot editor — image slot w SVG builderze | `wizzardClientSvg.js` | Już zaimplementowane poprawnie; brak zmian do zrobienia |
+| Slot editor — image slot jako pole tekstowe | `PersonalizationStepSlot.jsx:109` | Już naprawione w poprzednim sprincie |
 
 ---
 
@@ -28,19 +37,19 @@
 | Zadanie | Commity | Uwagi |
 |---------|---------|-------|
 | Dead clicks + landings (P0) | `fc52380` | WeddingGiftPage cards → `/wizard/{slug}` |
-| Mobile flow kreatora (P0) — Sprint 1 | `fc52380` | M7: preview padding; M4/M5/M8/M11 już były ok |
+| Mobile flow kreatora — Sprint 1 | `fc52380` | M7: preview padding; M4/M5/M8/M11 już były ok |
 | Mobile flow kreatora — Sprint 2 | `eb9d4c2` | M1 auto-open, M2 onboarding tab, M3 collapse, drawing_position fallback |
 | Mobile flow kreatora — Sprint 3 sticky CTA | `9cfb9e1` | M12 sticky DODAJ DO KOSZYKA, M14 summary order, M15 sticky checkout |
 | Google → ślub paraliż (P0) | `fc52380` | ProductCard URL fix merged do sprint 1 PR |
 | PageSpeed / nginx / vite (P1) | `78fd260` | robots.txt, Cache-Control immutable, gzip staging, vendor-sentry chunk |
-| Slot editor drawing_position (P3) | `eb9d4c2` | 1-liner fallback w wizzardClientSvg.js |
+| Slot editor drawing_position fallback | `eb9d4c2` | 1-liner fallback w wizzardClientSvg.js |
 
 ---
 
 ## Blokery / otwarte
 
-- **Drawing templates prod:** `settings.drawing_slot_templates` NIE istnieje na prod. Przed `php artisan migrate` na prod przenieść dane z lokalnej instancji (export JSON → import lub SQL dump).
-- **Hero images LCP:** pliki `hero-banner.jpg/webp` są tylko na serwerze — nie w repo. Główna przyczyna LCP 8.6s. Do skopiowania do `frontend/public/mockups/` i dodania do repo lub pipeline deploy.
+- **Hero images LCP:** pliki `hero-banner.jpg/webp` są tylko na serwerze. Skopiować do `frontend/public/mockups/` i commitować — to główna przyczyna LCP 8.6s.
+- **Drawing templates prod — GOTOWE DO DEPLOY:** `php artisan migrate` na prod uruchomi kolejno: `2026_05_16_000000` (wgra settings) → `2026_05_15_120000` (stworzy tabele i wypełni z settings) → `2026_05_15_130000` (merge slots do JSON). Kolejność timestamps jest poprawna.
 - **UX-M9** (lazy loading wzorów): pominięte — większa zmiana, osobny sprint.
 - **Kontrast kolorów** (PageSpeed a11y): wymaga inspekcji CSS — pominięte.
 
@@ -48,5 +57,4 @@
 
 ## Uwagi architektoniczne
 
-- **Drawing templates:** na prod brak tabel `drawing_templates` — przed rolloutem UI sprawdzić `migrate:status`. Migracja additive (bezpieczna), ale data migration wymaga `settings.drawing_slot_templates` — trzeba przenieść z lokala.
 - **Hero images:** nginx serwuje z `frontend/dist/mockups/` — pliki muszą być w `frontend/public/mockups/` żeby Vite je skopiował do dist.

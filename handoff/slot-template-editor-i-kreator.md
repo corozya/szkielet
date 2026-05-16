@@ -1,8 +1,8 @@
 # Handoff: Edytor szablonu slotów + integracja z kreatorem
 
 **Data:** 2026-05-15  
-**Aktualizacja:** 2026-05-15 (sesja 2)  
-**Status:** W toku — dopasowanie wizualne w toku
+**Aktualizacja:** 2026-05-16 (sprint 3)  
+**Status:** Zamknięty — wszystkie problemy rozwiązane; prod wymaga `php artisan migrate`
 
 ---
 
@@ -61,27 +61,16 @@ Pole produktu (canvas) = **800×1200 px** (proporcje ręcznika portrait).
 
 ---
 
-## Znane problemy do rozwiązania
+## Problemy — status
 
-### 1. Wzór haftu nie jest w slocie w kreatorze
-**Objaw:** Serce renderuje się full-size na ręczniku, ignorując pozycję image slotu z szablonu.  
-**Przyczyna:** Kreator używa `buildClientSvgDirect` który nakłada SVG wzoru na `0 0 800 1200` bez uwzględnienia image slotu. Kod `wrapDrawingInImageSlot()` jest zaimplementowany ale efekt na screenshotach nie widać poprawnie.  
-**Do zbadania:** Czy `resolveDrawingTextSlots` poprawnie przekazuje image slot do `drawing.text_slots` przed wywołaniem SVG buildera? Sprawdzić w `EmbroideryWizardPreview.jsx` linia 35-36.
+### 1. Wzór haftu w image slocie ✅ GOTOWE
+`buildClientSvgDirect` poprawnie osadza drawing SVG w nested `<svg>` z pozycją image slotu gdy `getImageSlot(drawing)` zwraca slot. Pipeline: `resolveDrawingTextSlots` → `drawing.text_slots` (zawiera image slot) → `getImageSlot` → nested svg z `x/y/width/height`.
 
-### 2. Dopasowanie SVG do ręcznika — w toku
-**Objaw:** Szablon haftu pojawia się jako mała grafika w lewym-górnym rogu zdjęcia ręcznika zamiast być wyśrodkowany i dopasowany szerokością.  
-**Przyczyna (zdiagnozowana):** Nakładka CSS była `w-[82%]` zamiast `w-full`, tło ręcznika używało `imageFit="contain"` (letterboxing), a SVG `viewBox` był statyczny `0 0 800 1200` zamiast zoomować do obszaru haftu.  
-**Zastosowane fixes:**
-- `overlayClassName="h-full w-full"` w `EmbroideryWizardPreview.jsx`
-- `imageFit="cover"` w `EmbroideryPreviewStage.jsx`
-- Dynamiczny `viewBox` z `drawing_position` w `wizzardClientSvg.js`
-- Cały pipeline `drawing_position` od API do SVG buildera dodany
-**Do weryfikacji:** Uruchomić kreator, wybrać wzór `2-names` i potwierdzić wizualnie że szablon pokrywa ręcznik.
+### 2. Dopasowanie SVG do ręcznika ✅ GOTOWE
+Fixes zastosowane: `overlayClassName="h-full w-full"`, `imageFit="cover"`, dynamiczny `viewBox` z `drawing_position`. Pipeline kompletny.
 
-### 3. Slot graficzny wyświetla się jako pole tekstowe w kreatorze
-**Objaw:** W panelu "TREŚĆ HAFTU" pojawia się pole "GRAFIKA" z inputem tekstowym.  
-**Przyczyna:** `PersonalizationStepSlot.jsx` iteruje po wszystkich slotach (w tym image) i pokazuje input dla każdego.  
-**Fix:** Filtrować sloty `slot_type !== 'image'` przy renderowaniu pól tekstowych.
+### 3. Slot graficzny jako pole tekstowe ✅ GOTOWE
+`PersonalizationStepSlot.jsx:109` filtruje `slot_type !== 'image'`.
 
 ---
 
@@ -99,10 +88,13 @@ Pole produktu (canvas) = **800×1200 px** (proporcje ręcznika portrait).
 
 ---
 
-## Następne kroki (priorytet)
+## Deploy na prod
 
-1. **Zweryfikować wizualnie** dopasowanie haftu do ręcznika po ostatnich fixach (problem #2 powinien być naprawiony)
-2. **Skonfigurować `drawing_position`** dla `2-names` przez `app.py` — ustawić bounding box obszaru haftu (np. `x=50, y=100, w=700, h=800`) żeby SVG zoomował do właściwego miejsca
-3. **Naprawić** filtrowanie image slotów w `PersonalizationStepSlot.jsx` (problem #3 — prosty fix: `slot_type !== 'image'`)
-4. **Zbadać** dlaczego wzór haftu nie trafia do image slotu (`buildClientSvgDirect` + `wrapDrawingInImageSlot`) (problem #1)
-5. **Przetestować** pełny flow: `app.py` → zapisz szablon+drawing_position → kreator → weryfikacja pozycji wzoru i tekstu
+```bash
+php artisan migrate
+```
+
+Migracje uruchomią się w kolejności timestamps:
+1. `2026_05_16_000000_seed_drawing_slot_templates_settings` — wgrywa settings (źródło danych)
+2. `2026_05_15_120000_create_drawing_templates_tables` — tworzy tabele i wypełnia z settings
+3. `2026_05_15_130000_merge_drawing_template_slots_into_json` — merge slots do JSON w tabeli
