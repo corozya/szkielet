@@ -1,48 +1,52 @@
 # Plan sprintu — reczniki-haftowane.pl
 
-**Ostatnia aktualizacja:** 2026-05-16  
-**Aktywne briefy produkcyjne:** 8 (+ 1 brief testowy workflow — poza sprintem)
+**Ostatnia aktualizacja:** 2026-05-16 (sprint 2 zakończony)
+**Aktywne briefy produkcyjne:** 2
 
 ---
 
 ## Logika kolejności (ważność)
 
-1. **Ścieżka konwersji** — martwe kliknięcia i blokady w konfiguratorze / landingach (bezpośredni utracony revenue).
-2. **Widoczne błędy po zakupie i przy pozyskaniu ruchu** — zepsuty podgląd na success, słaby LCP/SEO dotykają zaufania i wejść organicznych.
-3. **Stabilizacja modelu danych kreatora** — dług strukturalny; bez domknięcia wraca ryzyko rozjazdów edytora vs frontend vs eksport.
-4. **Mobile funnel** — duży udział ruchu mobilnego; poprawki UX kreatora podnoszą konwersję szerzej niż pojedynczy kanał presetów.
-5. **Domknięcie presetów z realizacji** — funkcja w kodzie; krótki koszt operacyjny (migracja, env, E2E) odblokowuje marketing.
-6. **Edytor slotów ↔ kreator (wizualnie)** — narzędzie/spójność operacyjna; ważne dla zespołu, mniejszy wpływ bezpośredni na klienta końcowego niż punkty 1–4.
+1. **Ścieżka konwersji** — martwe kliknięcia, mobile flow kreatora, landing ślub z Google.
+2. **Widoczne błędy i zaufanie** — PageSpeed / SEO / LCP na całym site.
+3. **Stabilizacja modelu danych kreatora** — template source of truth + deploy migracji na prod.
+4. **Spójność wizualna** — edytor slotów ↔ kreator.
 
 ---
 
 ## Backlog sprintu (od najważniejszego)
 
-| # | Warstwa | Zadanie | Brief |
-|---|---------|---------|--------|
-| 1 | **P0** | Martwe kliknięcia na ścieżce konwersji (kreator + landingi) — brief ustala **P0** | `TASK_UX_clarity_session_fixes_dead_clicks_landings.md` |
-| 2 | **P1** | Brak tekstu w podglądzie haftu na stronie sukcesu zamówienia | `TASK_wizard_preview_missing_text_font_issue.md` |
-| 3 | **P1** | PageSpeed / LCP / robots / SEO / kontrast (wpływ na cały site) | `TASK_performance_pagespeed_optimization_benchmark.md` |
-| 4 | **P2** | Drawing templates — domknięcie legacy, cleanup helperów, desktop editor | `TASK_drawing_templates_source_of_truth.md` |
-| 5 | **P2** | Optymalizacja UX kreatora na mobile | `UX-mobile-kreator-optymalizacja.md` |
-| 6 | **P3** | Preset linki z realizacji — migracja, `FRONTEND_URL`, test E2E | `TASK_wizard_preset_links_from_realizations.md` |
-| 7 | **P3** | Dopasowanie wizualne slot-template ↔ kreator | `slot-template-editor-i-kreator.md` |
-| 8 | **TBD** | Kreator: moment pobierania list katalogowych (`/drawings` itd.) vs lazy + cache | `TASK_frontend_wizard_lazy_catalog_fetch.md` |
-
-**Poza sprintem:** `TASK_font_a1_ascender_clipping_fix.md` — brief testowy workflow; nie blokuje roadmapy produkcyjnej.
+| # | Warstwa | Zadanie | Brief | Status |
+|---|---------|---------|--------|--------|
+| 1 | **P2** | Drawing templates — migracja prod + transfer danych z lokala | `TASK_drawing_templates_source_of_truth.md` | ⏳ zablokowane (dane) |
+| 2 | **P3** | Dopasowanie wizualne slot-template ↔ kreator | `slot-template-editor-i-kreator.md` | ⏳ częściowo (image slot config przez app.py) |
 
 ---
 
-## Ostatnio zamknięte (brief usunięty)
+## Ostatnio zamknięte — Sprint 2 (2026-05-16)
 
-- Optymalizacja pollowania statusu płatności na `/order/success` — interwał 60 s, query włączone tylko dla stanów w toku (`OrderSuccessPage.jsx`).
-- Jedno źródło settingsów kreatora — `TASK_frontend_wizard_settings_single_source.md`.
-- Fix pozycji canvas / szkieletów SVG — `fix-template-position-canvas-size.md`, `fix-skeleton-svg-dompurify-id.md`.
-- Sprint 2026-05-14: PayU sandbox/IPN, nagłówek mobile, checkout analytics, internal mode race, analytics GA4 (double tracking, ceny, view_cart), allocator zamówień, preview override sync — wg wpisów w `README.md` sekcja „Zakończone”.
+| Zadanie | Commity | Uwagi |
+|---------|---------|-------|
+| Dead clicks + landings (P0) | `fc52380` | WeddingGiftPage cards → `/wizard/{slug}` |
+| Mobile flow kreatora (P0) — Sprint 1 | `fc52380` | M7: preview padding; M4/M5/M8/M11 już były ok |
+| Mobile flow kreatora — Sprint 2 | `eb9d4c2` | M1 auto-open, M2 onboarding tab, M3 collapse, drawing_position fallback |
+| Mobile flow kreatora — Sprint 3 sticky CTA | `9cfb9e1` | M12 sticky DODAJ DO KOSZYKA, M14 summary order, M15 sticky checkout |
+| Google → ślub paraliż (P0) | `fc52380` | ProductCard URL fix merged do sprint 1 PR |
+| PageSpeed / nginx / vite (P1) | `78fd260` | robots.txt, Cache-Control immutable, gzip staging, vendor-sentry chunk |
+| Slot editor drawing_position (P3) | `eb9d4c2` | 1-liner fallback w wizzardClientSvg.js |
+
+---
+
+## Blokery / otwarte
+
+- **Drawing templates prod:** `settings.drawing_slot_templates` NIE istnieje na prod. Przed `php artisan migrate` na prod przenieść dane z lokalnej instancji (export JSON → import lub SQL dump).
+- **Hero images LCP:** pliki `hero-banner.jpg/webp` są tylko na serwerze — nie w repo. Główna przyczyna LCP 8.6s. Do skopiowania do `frontend/public/mockups/` i dodania do repo lub pipeline deploy.
+- **UX-M9** (lazy loading wzorów): pominięte — większa zmiana, osobny sprint.
+- **Kontrast kolorów** (PageSpeed a11y): wymaga inspekcji CSS — pominięte.
 
 ---
 
 ## Uwagi architektoniczne
 
-- **Drawing templates** — po stabilizacji usunąć martwy fallback i legacy cache związane ze starym modelem slotów.
-- **Kanboard:** śmieci z innych projektów usuwane ad hoc (np. vendelo.pl).
+- **Drawing templates:** na prod brak tabel `drawing_templates` — przed rolloutem UI sprawdzić `migrate:status`. Migracja additive (bezpieczna), ale data migration wymaga `settings.drawing_slot_templates` — trzeba przenieść z lokala.
+- **Hero images:** nginx serwuje z `frontend/dist/mockups/` — pliki muszą być w `frontend/public/mockups/` żeby Vite je skopiował do dist.
