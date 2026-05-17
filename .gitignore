@@ -1,4 +1,6 @@
 .cursor/mcp.json
+.cursor/hooks/state/
+__pycache__/
 
 .idea/
 kanboard_setup/__pycache__/

@@ -15,6 +15,12 @@ approval_mode = "approve"
 [mcp_servers.kanboard.tools.kanboard_connection_status]
 approval_mode = "approve"
 
+[mcp_servers.kanboard.tools.kanboard_get_task]
+approval_mode = "approve"
+
+[mcp_servers.kanboard.tools.kanboard_create_task]
+approval_mode = "approve"
+
 [mcp_servers.github]
 url = "https://api.githubcopilot.com/mcp/"
 http_headers = { Authorization = "Bearer YOUR_GITHUB_PAT" }

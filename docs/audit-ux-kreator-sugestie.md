@@ -2,7 +2,7 @@
 
 **Cel:** jeden plik na **wszystkie sugestie UX** z audytu; kolejne wpisy dopisywane na podstawie wiadomości (wklejek) w czacie.
 
-**Powiązania:** `docs/audit-kreator-haftu.md`, `handoff/UX-mobile-kreator-optymalizacja.md`.
+**Powiązania:** `docs/audit-kreator-haftu.md`, `handoff/TASK_ux_wizard_mobile_panel_flow.md`.
 
 ---
 

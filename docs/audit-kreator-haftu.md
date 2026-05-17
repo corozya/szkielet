@@ -63,7 +63,7 @@ Szczegóły migracji: `handoff/TASK_drawing_templates_source_of_truth.md` (`draw
 | Pozycja haftu / viewBox / `drawing_position` | `handoff/slot-template-editor-i-kreator.md`, `fix-template-position-canvas-size.md` |
 | DOMPurify + szkielety SVG | `handoff/fix-skeleton-svg-dompurify-id.md` |
 | Przycinanie liter (czcionka A1) | `handoff/TASK_font_a1_ascender_clipping_fix.md` |
-| Mobile UX (scroll, sticky tabs, wyszukiwarka wzorów) | `handoff/UX-mobile-kreator-optymalizacja.md` |
+| Mobile UX (scroll, sticky tabs, wyszukiwarka wzorów) | `handoff/TASK_ux_wizard_mobile_panel_flow.md` |
 | Numery wzorów (`drawing.id` na karcie) | `handoff/TASK_wizard_pattern_catalog_numbers.md` |
 
 Te punkty warto **łączyć z nagraniami Clarity** (gdzie użytkownicy się cofają, rage clicks, porzucenia na konkretnym kroku).
@@ -131,7 +131,7 @@ Inni hosty (Claude / Codex / Gemini): wpis jak w **`.cursor/mcp.json.example`** 
 - [ ] Clarity: nagrania sesji z tagami `Wizard_Step` / `Wizard_Product` / `Wizard_Current_Towel` — najczęstsze porzucenia i powtarzalne błędy kliknięć.
 - [ ] Clarity: scroll depth / dead clicks na krokach z zestawami 7 i 8 (priorytet biznesowy z planu Ads).
 - [ ] GA4: ścieżka do zakupu vs wejścia z `/wizard` / produktów — segmentacja ruchu.
-- [ ] Porównanie desktop vs mobile (osobno — zgodnie z `UX-mobile-kreator-optymalizacja.md`).
+- [ ] Porównanie desktop vs mobile (osobno — zgodnie z `TASK_ux_wizard_mobile_panel_flow.md`).
 
 ### Kod i funkcjonalnie (w repo aplikacji)
 

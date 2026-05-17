@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeReadFile": [
+      {
+        "command": ".cursor/hooks/handoff-register-read.sh"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": ".cursor/hooks/handoff-register-prompt.sh"
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/handoff-stop-check.sh",
+        "loop_limit": 3
+      }
+    ]
+  }
+}
