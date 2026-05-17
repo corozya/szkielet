@@ -2,6 +2,27 @@
 .cursor/hooks/state/
 __pycache__/
 
+ads_error.log
+client_secret_*.json
+reczniki_*.sql
+
+audyt-*.png
+cart-*.png
+edit-*.png
+frame-check.png
+intro-preview*.png
+landing-homepage.png
+m[0-9]*.png
+no-frame-check.png
+oferta-see.png
+preview-frame-check.png
+rocznica-*.png
+slub-hero.png
+tabs-*.png
+ux-*.png
+w[0-9].png
+wizard-*.png
+
 .idea/
 kanboard_setup/__pycache__/
 kanboard_setup/.env
