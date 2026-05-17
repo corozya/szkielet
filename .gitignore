@@ -20,7 +20,7 @@ rocznica-*.png
 slub-hero.png
 tabs-*.png
 ux-*.png
-w[0-9].png
+w[0-9]*.png
 wizard-*.png
 
 .idea/
