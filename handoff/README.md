@@ -18,15 +18,9 @@ Szczegółowy plan z priorytetami: `SPRINT_PLAN.md`
 
 | # | Brief | Temat | Stan |
 |---|-------|--------|------|
-| 1 | `TASK_UX_clarity_session_fixes_dead_clicks_landings.md` | UX P0: dead clicki / landings (Clarity) | Audyt ✓, fixy w kodzie — w toku |
-| 2 | `TASK_ux_wizard_mobile_panel_flow.md` | Mobile UX kreatora (UX-M1–M16, sprinty) | Do wdrożenia |
-| 3 | `TASK_ux_google_prezent_na_slub_paralysis.md` | Google → landing ślub → kreator (paraliż CTA) | Analiza ✓, decyzje / wdrożenie — otwarte |
-| 4 | `TASK_performance_pagespeed_optimization_benchmark.md` | PageSpeed / LCP / robots / SEO / A11y | Otwarte |
-| 5 | `TASK_drawing_templates_source_of_truth.md` | Template jako źródło prawdy; cleanup legacy | Rdzeń ✓, migracja prod + cleanup — w toku |
-| 6 | `slot-template-editor-i-kreator.md` | Dopasowanie wizualne slot-template ↔ kreator | W toku |
-| 7 | `TASK_frontend_perf_wizard_font_cache_cleanup.md` | Perf: cleanup cache fontów w podglądzie kreatora | Open |
-| 8 | `TASK_frontend_perf_wizard_svg_generation.md` | Perf: odchudzenie generowania SVG w kreatorze | Done |
-| 9 | `TASK_frontend_perf_product_page_render_split.md` | Perf: rozbicie renderu strony produktu i `SetVisualization` | Open |
+| 1 | `TASK_backend_cleanup_refactor_audit.md` | Backend cleanup i refaktoryzacja zbędnych elementów | Rdzeń ✓, testy backendowe / weryfikacja — do zrobienia |
+| 2 | `TASK_backend_frontend_inpost_geowidget.md` | Integracja Paczkomatu InPost / Geowidget V5 | Open |
+| 3 | `TASK_ux_wizard_preset_set_info_from_realization.md` | Kreator: skład zestawu + cena po wejściu z `/wizard/r/:hash` | Open |
 
 **Mikro-backlog (bez osobnego briefu):** flash podglądu w koszyku/checkout dla starych pozycji bez `drawing_template`; miniatura wzoru „osa” w małym kafelku — po lazy catalog (zamknięte 2026-05-16).
 
@@ -34,12 +28,15 @@ Szczegółowy plan z priorytetami: `SPRINT_PLAN.md`
 
 - `TASK_frontend_wizard_lazy_catalog_fetch.md` — `done` — lazy fetch katalogu per zakładka + prefetch + `useEmbroideryAssets({ enabled })` (2026-05-16)
 - `wizard-preview-fixes-progress.md` — `done` (częściowo) — `enrichDrawingWithTemplate`, snapshot `drawing_template`, SetVisualization; reszta → mikro-backlog powyżej (2026-05-16)
+- `4_frontend_perf_rozbicie_renderu_strony_produktu_i_setvisualization/brief.md` — `done` — memoizowane sekcje ProductPage, optymalizacja `SetVisualization`, cache `drawings-grouped` (2026-05-18)
+- `TASK_frontend_gallery_embroidery_patterns.md` — `done` — hub /wzory-haftow + podstrony per okazja, SEO-first galerie wzorów haftów (2026-05-18)
 - `TASK_ux_mobile_sprint1_ANALYSIS.md` — `done` — analiza Sprint 1; wdrożenie w `TASK_ux_wizard_mobile_panel_flow.md` (2026-05-16)
 - `TASK_backend_drawing_text_slots_table_audit.md` — `done` — raport staging/prod vs template migrations (2026-05-16)
 - `UX-mobile-kreator-optymalizacja.md` — `done` (zastąpione) — treść pokryta przez `TASK_ux_wizard_mobile_panel_flow.md` (2026-05-16)
 - `TASK_font_a1_ascender_clipping_fix.md` — usunięte (brief testowy workflow, nie produkcja)
 - `TASK_wizard_preview_missing_text_font_issue.md` — `done` (brief wcześniej usunięty)
 - `TASK_wizard_preset_links_from_realizations.md` — `done` — `WizardPresetPage`, preset z realizacji w Filament (brief wcześniej usunięty)
+- `TASK_ux_wizard_mobile_panel_flow.md` — `done` — mobile UX kreatora (UX-M1–M16, sprinty)
 - `TASK_analytics_fix_double_tracking.md` — `done` (2026-05-14)
 - `TASK_analytics_fix_ecommerce_pricing.md` — `done` (2026-05-14)
 - `TASK_analytics_add_view_cart.md` — `done` (2026-05-14)

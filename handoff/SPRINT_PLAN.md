@@ -1,30 +1,48 @@
 # Plan sprintu — reczniki-haftowane.pl
 
-**Ostatnia aktualizacja:** 2026-05-16 (sprint 3 zakończony)
+**Ostatnia aktualizacja:** 2026-05-18 (sprint 4 w toku)
 **Aktywne briefy produkcyjne:** 1
 
 ---
 
 ## Logika kolejności (ważność)
 
-1. **Ścieżka konwersji** — martwe kliknięcia, mobile flow kreatora, landing ślub z Google.
-2. **Widoczne błędy i zaufanie** — PageSpeed / SEO / LCP na całym site.
-3. **Stabilizacja modelu danych kreatora** — template source of truth + deploy migracji na prod.
-4. **Spójność wizualna** — edytor slotów ↔ kreator.
+1. **Wydajność (Performance)** — eliminacja lagów w kreatorze i optymalizacja renderowania (krytyczne dla UX na mobile).
+2. **Backend cleanup** — usunięcie martwego kodu i uproszczenie monolitów w warstwie preview / order / cart.
 
 ---
 
 ## Backlog sprintu (od najważniejszego)
 
-*Brak aktywnych zadań — wszystkie blokery rozwiązane.*
+| ID | Zadanie | Plik | Priorytet |
+|----|---------|------|-----------|
+| #6 | Backend cleanup: martwy kod i refaktor preview | `TASK_backend_cleanup_refactor_audit.md` | High |
 
 ---
 
-## Ostatnio zamknięte — Sprint 3 cont. (2026-05-16)
+## Ostatnio zamknięte — Sprint 4 (2026-05-18)
 
 | Zadanie | Uwagi |
 |---------|-------|
-| Hero images LCP | Pliki `hero-banner.jpg/webp` już w repo od `7bed8ce` — bloker był fałszywy |
+| Podstrona galerii wzorów haftów (#5) | Zrealizowane. STATUS: DONE w pliku zadania. |
+| Frontend perf: rozbicie renderu strony produktu (#4) | Zrealizowane. STATUS: DONE w pliku zadania. |
+| Frontend perf: cleanup cache fontów (#2) | Zrealizowane. STATUS: DONE w pliku zadania. |
+| Frontend perf: odchudzenie generowania SVG (#3) | Zrealizowane. STATUS: DONE w pliku zadania. |
+| Deploy migracji Drawing Templates | Wykonano `php artisan migrate` na produkcji. Tabele i settings zsynchronizowane. |
+| UX: Kreator — widoczność podglądu (#5) | Zadanie oznaczone jako nieaktualne / zrealizowane. |
+| Polling płatności optimization (#1) | Zadanie oznaczone jako nieaktualne / zrealizowane. |
+
+---
+
+## Ostatnio zamknięte — Audyt UX (2026-05-17)
+
+| Zadanie | Plik (Archiwum) | Uwagi |
+|---------|-----------------|-------|
+| UX: Kreator — overflow zakładek | `archive/TASK_001...` | Rozwiązane przez sticky GOTOWE |
+| UX: Kreator — nagłówki sekcji | `archive/TASK_002...` | Dodano statyczne H3 |
+| UX: Kreator — pola tekstowe | `archive/TASK_003...` | Poprawiono UX klawiatury i licznik |
+| UX: Kreator — sloty i koszyk | `archive/TASK_005...` | Sticky CTA, kolory, numeracja |
+| Bug: Przejdź do zakładki | `archive/TASK_006...` | Fix re-renderu panelu wzorów |
 
 ---
 
@@ -54,7 +72,6 @@
 
 ## Blokery / otwarte
 
-- **Drawing templates prod — GOTOWE DO DEPLOY:** `php artisan migrate` na prod uruchomi kolejno: `2026_05_16_000000` (wgra settings) → `2026_05_15_120000` (stworzy tabele i wypełni z settings) → `2026_05_15_130000` (merge slots do JSON).
 - **UX-M9** (lazy loading wzorów): pominięte — większa zmiana, osobny sprint.
 - **Kontrast kolorów** (PageSpeed a11y): wymaga inspekcji CSS — pominięte.
 
