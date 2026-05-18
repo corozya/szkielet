@@ -1,4 +1,4 @@
-<!-- STATUS: OPEN -->
+<!-- STATUS: DONE -->
 # TASK — Frontend perf: rozbicie renderu strony produktu i `SetVisualization`
 
 ## Kontekst
@@ -28,5 +28,5 @@
 
 ## Status
 - owner: Frontend
-- state: open
+- state: done
 - priorytet: medium
