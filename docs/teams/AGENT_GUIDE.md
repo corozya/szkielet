@@ -13,6 +13,7 @@
 4. Jeśli agent ma czytać lub edytować pliki repo, użyj lokalnego Filesystem MCP: `npm run filesystem-mcp`.
 
 ## Kanboard
+- **ZASADA:** Agent nigdy nie tworzy nowych zadań (ticketów) w Kanboardzie. Możesz jedynie pobierać istniejące zadania lub zarządzać lokalnymi briefami w `handoff/`.
 - `KANBOARD_PROJECT` ustawia projekt
 - jeśli puste, zapytaj użytkownika i zapisz `handoff/ASK_PROJECT_NAME.md`
 - Kanboard MCP wymaga ustawionych `KANBOARD_URL` i `KANBOARD_TOKEN`; bez tego serwer nie wystartuje

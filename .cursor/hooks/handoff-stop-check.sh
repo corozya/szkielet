@@ -32,6 +32,7 @@ Zamknij zadania handoff z tej sesji (zasady: \`docs/teams/COMMON.md\`, stan: \`h
 1. W każdym briefie: \`<!-- STATUS: DONE -->\` oraz \`state: done\` w sekcji Status.
 2. Zaktualizuj \`handoff/README.md\` (Aktywne → Zakończone, data weryfikacji).
 3. Jeśli dotyczy — wpis w \`handoff/SPRINT_PLAN.md\`.
+4. Hook zrobi commit automatycznie po zamknięciu wszystkich briefów z sesji (orchestrator: \`handoff/\`, aplikacja: \`apps/*\`).
 
 Niezamknięte briefy:
 ${list}

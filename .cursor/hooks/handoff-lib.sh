@@ -36,6 +36,71 @@ handoff_brief_is_todo() {
   grep -qE 'STATUS:[[:space:]]*TODO' "$file"
 }
 
+handoff_brief_is_done() {
+  local task="$1"
+  local file="handoff/${task}.md"
+  [[ -f "$file" ]] || return 1
+  grep -qE 'STATUS:[[:space:]]*DONE' "$file"
+}
+
+handoff_registered_tasks() {
+  [[ -f "$HANDOFF_ACTIVE_LIST" ]] || return 0
+  grep -v '^[[:space:]]*$' "$HANDOFF_ACTIVE_LIST" 2>/dev/null || true
+}
+
+handoff_all_registered_done() {
+  local task
+  local any=0
+  while IFS= read -r task; do
+    [[ -n "$task" ]] || continue
+    any=1
+    handoff_brief_is_done "$task" || return 1
+  done < <(handoff_registered_tasks)
+  [[ "$any" -eq 1 ]]
+}
+
+handoff_task_commit_scope() {
+  local task="$1"
+  if [[ "$task" =~ ^TASK_[0-9]+_([^_]+) ]]; then
+    printf '%s' "${BASH_REMATCH[1]}"
+    return 0
+  fi
+  printf '%s' "handoff"
+}
+
+handoff_task_title() {
+  local task="$1"
+  local file="handoff/${task}.md"
+  [[ -f "$file" ]] || { printf '%s' "$task"; return; }
+  local title
+  title=$(grep -m1 '^# ' "$file" | sed 's/^# //' || true)
+  [[ -n "$title" ]] && printf '%s' "$title" || printf '%s' "$task"
+}
+
+handoff_build_commit_subject() {
+  local tasks=("$@")
+  local first="${tasks[0]}"
+  local scope
+  scope=$(handoff_task_commit_scope "$first")
+  if ((${#tasks[@]} == 1)); then
+    printf 'feat(%s): %s' "$scope" "$(handoff_task_title "$first")"
+  else
+    local names
+    names=$(IFS=', '; echo "${tasks[*]}")
+    printf 'feat(%s): close handoff tasks %s' "$scope" "$names"
+  fi
+}
+
+handoff_find_app_repo() {
+  local d
+  for d in apps/*/; do
+    [[ -d "${d}.git" ]] || continue
+    (cd "$d" && pwd)
+    return 0
+  done
+  return 1
+}
+
 handoff_pending_tasks() {
   [[ -f "$HANDOFF_ACTIVE_LIST" ]] || return 0
   local task

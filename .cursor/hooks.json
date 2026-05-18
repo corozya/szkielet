@@ -15,6 +15,9 @@
       {
         "command": ".cursor/hooks/handoff-stop-check.sh",
         "loop_limit": 3
+      },
+      {
+        "command": ".cursor/hooks/handoff-stop-commit.sh"
       }
     ]
   }

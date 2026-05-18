@@ -59,6 +59,9 @@ approval_mode = "approve"
 [mcp_servers.mysql.tools.mysql_connection_status]
 approval_mode = "approve"
 
+[mcp_servers.mysql.tools.mysql_describe_table]
+approval_mode = "approve"
+
 [mcp_servers.memory]
 command = "bash"
 args = ["scripts/run-memory-mcp.sh"]

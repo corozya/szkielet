@@ -6,6 +6,7 @@ Aktywne zadania: `handoff/`
 
 ## Kanboard (quick init)
 
+- **Zasada:** Nigdy nie twórz nowych zadań bezpośrednio w Kanboardzie. Zadania mogą być pobierane z istniejącego backlogu lub zarządzane lokalnie w `handoff/`.
 - Setup: `npm install` → `npm run init-kb`
 - Konfiguracja ląduje w `kanboard_setup/.env` (sekrety; nie commitować)
 
