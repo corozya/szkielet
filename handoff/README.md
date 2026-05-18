@@ -12,7 +12,7 @@ Szczegółowy plan z priorytetami: `SPRINT_PLAN.md`
 
 ## Stan zadań
 
-**Ostatnia weryfikacja:** 2026-05-16
+**Ostatnia weryfikacja:** 2026-05-18
 
 ### Aktywne (brief w repozytorium)
 
@@ -24,6 +24,9 @@ Szczegółowy plan z priorytetami: `SPRINT_PLAN.md`
 | 4 | `TASK_performance_pagespeed_optimization_benchmark.md` | PageSpeed / LCP / robots / SEO / A11y | Otwarte |
 | 5 | `TASK_drawing_templates_source_of_truth.md` | Template jako źródło prawdy; cleanup legacy | Rdzeń ✓, migracja prod + cleanup — w toku |
 | 6 | `slot-template-editor-i-kreator.md` | Dopasowanie wizualne slot-template ↔ kreator | W toku |
+| 7 | `TASK_frontend_perf_wizard_font_cache_cleanup.md` | Perf: cleanup cache fontów w podglądzie kreatora | Open |
+| 8 | `TASK_frontend_perf_wizard_svg_generation.md` | Perf: odchudzenie generowania SVG w kreatorze | Done |
+| 9 | `TASK_frontend_perf_product_page_render_split.md` | Perf: rozbicie renderu strony produktu i `SetVisualization` | Open |
 
 **Mikro-backlog (bez osobnego briefu):** flash podglądu w koszyku/checkout dla starych pozycji bez `drawing_template`; miniatura wzoru „osa” w małym kafelku — po lazy catalog (zamknięte 2026-05-16).
 
