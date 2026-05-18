@@ -18,14 +18,13 @@ Szczegółowy plan z priorytetami: `SPRINT_PLAN.md`
 
 | # | Brief | Temat | Stan |
 |---|-------|--------|------|
-| 1 | `TASK_backend_cleanup_refactor_audit.md` | Backend cleanup i refaktoryzacja zbędnych elementów | Rdzeń ✓, testy backendowe / weryfikacja — do zrobienia |
-| 2 | `TASK_backend_frontend_inpost_geowidget.md` | Integracja Paczkomatu InPost / Geowidget V5 | Open |
-| 3 | `TASK_ux_wizard_preset_set_info_from_realization.md` | Kreator: skład zestawu + cena po wejściu z `/wizard/r/:hash` | Open |
+| 1 | `TASK_backend_frontend_inpost_geowidget.md` | Integracja Paczkomatu InPost / Geowidget V5 | Open |
 
 **Mikro-backlog (bez osobnego briefu):** flash podglądu w koszyku/checkout dla starych pozycji bez `drawing_template`; miniatura wzoru „osa” w małym kafelku — po lazy catalog (zamknięte 2026-05-16).
 
 ### Zakończone (brief usunięty z `handoff/`)
 
+- `TASK_backend_cleanup_refactor_audit.md` — `done` — cleanup backendu + pełna weryfikacja w Dockerze (`php artisan test`: 90 passed, 2026-05-18)
 - `TASK_frontend_wizard_lazy_catalog_fetch.md` — `done` — lazy fetch katalogu per zakładka + prefetch + `useEmbroideryAssets({ enabled })` (2026-05-16)
 - `wizard-preview-fixes-progress.md` — `done` (częściowo) — `enrichDrawingWithTemplate`, snapshot `drawing_template`, SetVisualization; reszta → mikro-backlog powyżej (2026-05-16)
 - `4_frontend_perf_rozbicie_renderu_strony_produktu_i_setvisualization/brief.md` — `done` — memoizowane sekcje ProductPage, optymalizacja `SetVisualization`, cache `drawings-grouped` (2026-05-18)
@@ -62,6 +61,7 @@ Szczegółowy plan z priorytetami: `SPRINT_PLAN.md`
 - `fix-skeleton-svg-dompurify-id.md` — `done` (2026-05-16)
 - `TASK_backend_order_number_allocator.md` — `done`
 - `TASK_frontend_wizard_preview_override_sync.md` — `done`
+- `TASK_ux_wizard_preset_set_info_from_realization.md` — `done` — banner ze składem zestawu i ceną w intro kreatora po wejściu z presetem realizacji (2026-05-18)
 
 ### Usunięte
 

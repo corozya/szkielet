@@ -8,15 +8,14 @@
 ## Logika kolejności (ważność)
 
 1. **Wydajność (Performance)** — eliminacja lagów w kreatorze i optymalizacja renderowania (krytyczne dla UX na mobile).
-2. **Backend cleanup** — usunięcie martwego kodu i uproszczenie monolitów w warstwie preview / order / cart.
+2. **Backend cleanup** — zakończony; archiwalny brief w `handoff/archive/`.
 
 ---
 
 ## Backlog sprintu (od najważniejszego)
 
-| ID | Zadanie | Plik | Priorytet |
-|----|---------|------|-----------|
-| #6 | Backend cleanup: martwy kod i refaktor preview | `TASK_backend_cleanup_refactor_audit.md` | High |
+- Brak otwartego backlogu po stronie backend cleanup.
+- Aktywny brief produkcyjny: `TASK_backend_frontend_inpost_geowidget.md` (oczekuje na start).
 
 ---
 
