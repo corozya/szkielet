@@ -14,7 +14,7 @@ Jako agent pobierasz pliki i edytujesz konfiguracje samodzielnie. Nie używasz s
 ## Procedura
 
 ### Krok 1 — Ustal integrację
-Wyodrębnij nazwę z polecenia. Jeśli brak — zapytaj użytkownika.
+Wyodrębnij nazwę z polecenia. Jeśli brak — pokaż listę numerowaną z manifestu i zapytaj: *"Które chcesz zainstalować? Podaj numery lub nazwy."* Pozwól wybrać kilka.
 
 ### Krok 2 — Źródło manifestu (priorytet)
 

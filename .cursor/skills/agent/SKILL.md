@@ -11,7 +11,7 @@ Jako agent wykonujesz instalację samodzielnie — używasz narzędzi do pobiera
 
 ### Krok 1 — Ustal integrację
 Wyodrębnij nazwę z polecenia: `/agent frontend` → `frontend`, `/agent kanboard` → `kanboard`.
-Jeśli brak nazwy — zapytaj użytkownika.
+Jeśli brak nazwy — pokaż listę numerowaną z manifestu i zapytaj: *"Które chcesz zainstalować? Podaj numery lub nazwy."* Pozwól wybrać kilka.
 
 ### Krok 2 — Pobierz manifest
 

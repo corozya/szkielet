@@ -14,7 +14,7 @@ Użytkownik prosi: "chcę agenta frontendowego", "dodaj kanboard MCP", `/agent f
 ## Procedura
 
 ### Krok 1 — Ustal nazwę integracji
-Wyodrębnij z polecenia użytkownika. Jeśli brak — zapytaj.
+Wyodrębnij z polecenia. Jeśli brak — pokaż listę numerowaną z manifestu i zapytaj: *"Które chcesz zainstalować? Podaj numery lub nazwy."* Pozwól wybrać kilka.
 
 ### Krok 2 — Pobierz manifest
 

@@ -14,7 +14,9 @@ Jako agent wykonujesz instalację samodzielnie używając narzędzi (WebFetch, R
 
 Wyodrębnij nazwę z polecenia użytkownika: `/agent frontend` → `frontend`, `/agent kanboard` → `kanboard`.
 
-Jeśli użytkownik nie podał nazwy — zapytaj: "Jaką integrację chcesz zainstalować? Dostępne: frontend, backend, kanboard, mysql-mcp, filesystem-mcp, memory-mcp"
+Jeśli użytkownik nie podał nazwy — pokaż listę numerowaną z manifestu i zadaj jedno pytanie:
+*"Które chcesz zainstalować? Podaj numery (np. 1, 3) lub nazwy."*
+Pozwól wybrać kilka naraz.
 
 ### Krok 2 — Pobierz manifest
 
