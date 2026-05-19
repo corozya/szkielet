@@ -2,53 +2,36 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-gsc_repo="${repo_root}/mcp_servers/gsc"
+# Używa serwera GSC z repozytorium marketing
+gsc_repo="/home/corozya/www/marketing/mcp_servers/gsc"
 default_adc="${HOME}/.config/gcloud/application_default_credentials.json"
-runtime_root="${TMPDIR:-/tmp}/codex-gsc-mcp"
+runtime_root="${TMPDIR:-/tmp}/szkielet-gsc-mcp"
 
 source "${repo_root}/scripts/load-env.sh"
-
-if [ ! -d "${gsc_repo}" ]; then
-  echo "Missing mcp_servers/gsc. Clone AminForou/mcp-gsc into that path first." >&2
-  exit 1
-fi
 
 load_env_file "${repo_root}/.env"
 load_env_file "${repo_root}/.env.gsc"
 load_env_file "${repo_root}/.env.analytics"
 
+if [ ! -d "${gsc_repo}" ]; then
+  echo "Missing ${gsc_repo}. Upewnij się że repo marketing jest sklonowane." >&2
+  exit 1
+fi
+
 if [ -z "${GSC_CREDENTIALS_PATH:-}" ] && [ -z "${GSC_OAUTH_CLIENT_SECRETS_FILE:-}" ]; then
-  if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ] && [ -f "${GOOGLE_APPLICATION_CREDENTIALS}" ]; then
-    export GSC_CREDENTIALS_PATH="${GOOGLE_APPLICATION_CREDENTIALS}"
-  elif [ -f "${default_adc}" ]; then
+  if [ -f "${default_adc}" ]; then
     export GSC_CREDENTIALS_PATH="${default_adc}"
   fi
 fi
 
 if [ -z "${GSC_CREDENTIALS_PATH:-}" ] && [ -z "${GSC_OAUTH_CLIENT_SECRETS_FILE:-}" ]; then
-  echo "GSC credentials are not configured." >&2
-  echo "Set them in ${repo_root}/.env or create ${repo_root}/.env.gsc from .env.gsc.example." >&2
-  echo "If you use gcloud ADC, run: gcloud auth application-default login" >&2
-  exit 1
-fi
-
-if [ -n "${GSC_CREDENTIALS_PATH:-}" ] && [ ! -f "${GSC_CREDENTIALS_PATH}" ]; then
-  echo "GSC_CREDENTIALS_PATH points to a missing file: ${GSC_CREDENTIALS_PATH}" >&2
-  exit 1
-fi
-
-if [ -n "${GSC_OAUTH_CLIENT_SECRETS_FILE:-}" ] && [ ! -f "${GSC_OAUTH_CLIENT_SECRETS_FILE}" ]; then
-  echo "GSC_OAUTH_CLIENT_SECRETS_FILE points to a missing file: ${GSC_OAUTH_CLIENT_SECRETS_FILE}" >&2
+  echo "GSC credentials nie skonfigurowane. Uruchom: gcloud auth application-default login" >&2
   exit 1
 fi
 
 if ! command -v uv >/dev/null 2>&1; then
-  echo "uv is not available on PATH." >&2
+  echo "uv nie jest dostępny na PATH." >&2
   exit 1
-fi
-
-if [ -n "${GSC_CREDENTIALS_PATH:-}" ] && [ -z "${GSC_OAUTH_CLIENT_SECRETS_FILE:-}" ]; then
-  export GSC_SKIP_OAUTH="${GSC_SKIP_OAUTH:-true}"
 fi
 
 mkdir -p "${runtime_root}/state" "${runtime_root}/cache"

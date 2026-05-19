@@ -10,6 +10,10 @@ source "${repo_root}/scripts/load-env.sh"
 load_env_file "${repo_root}/.env"
 load_env_file "${env_file}"
 
+if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ] && [[ "${GOOGLE_APPLICATION_CREDENTIALS}" != /* ]]; then
+  export GOOGLE_APPLICATION_CREDENTIALS="${repo_root}/${GOOGLE_APPLICATION_CREDENTIALS}"
+fi
+
 if [ -z "${GOOGLE_APPLICATION_CREDENTIALS:-}" ] && [ -f "${default_adc}" ]; then
   export GOOGLE_APPLICATION_CREDENTIALS="${default_adc}"
 fi
@@ -53,7 +57,11 @@ if ! command -v analytics-mcp >/dev/null 2>&1; then
 fi
 
 if [ -n "${GA4_PROPERTY_ID:-}" ]; then
-  exec python3 "${repo_root}/scripts/run-google-analytics-mcp-default-property.py"
+  # Use the pipx venv python so analytics_mcp module is available
+  pipx_python="/home/corozya/.local/share/pipx/venvs/analytics-mcp/bin/python"
+  if [ -f "${pipx_python}" ]; then
+    exec "${pipx_python}" "${repo_root}/scripts/run-google-analytics-mcp-default-property.py"
+  fi
 fi
 
 exec analytics-mcp
