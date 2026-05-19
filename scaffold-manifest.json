@@ -48,26 +48,56 @@
     {
       "id": "frontend-agent",
       "name": "Frontend Agent",
-      "description": "Agent AI wyspecjalizowany w React/Next.js/Vue — komponenty, UX, perf, testy E2E",
+      "description": "JS, React, HTML, CSS — komponenty, UX, wydajność, testy E2E",
       "type": "agent",
-      "files": [
-        "agents/frontend/AGENT.md",
-        "agents/frontend/tools.json"
-      ],
+      "files": ["agents/frontend/AGENT.md", "agents/frontend/tools.json"],
       "setup_cmd": null,
       "requires_integrations": ["filesystem-mcp"]
     },
     {
       "id": "backend-agent",
       "name": "Backend Agent",
-      "description": "Agent AI do backendu: PHP/Node/Python — API, baza danych, testy jednostkowe",
+      "description": "PHP, Python — API, logika biznesowa, integracje, testy jednostkowe",
       "type": "agent",
-      "files": [
-        "agents/backend/AGENT.md",
-        "agents/backend/tools.json"
-      ],
+      "files": ["agents/backend/AGENT.md", "agents/backend/tools.json"],
       "setup_cmd": null,
       "requires_integrations": ["mysql-mcp"]
+    },
+    {
+      "id": "database-agent",
+      "name": "Database Agent",
+      "description": "MySQL, MariaDB — schemat, zapytania, wydajność, migracje",
+      "type": "agent",
+      "files": ["agents/database/AGENT.md", "agents/database/tools.json"],
+      "setup_cmd": null,
+      "requires_integrations": ["mysql-mcp"]
+    },
+    {
+      "id": "seo-agent",
+      "name": "SEO Agent",
+      "description": "SEO techniczne i contentowe — GSC, indeksowanie, Core Web Vitals, schema.org",
+      "type": "agent",
+      "files": ["agents/seo/AGENT.md", "agents/seo/tools.json"],
+      "setup_cmd": null,
+      "requires_integrations": ["gsc-mcp"]
+    },
+    {
+      "id": "marketing-agent",
+      "name": "Marketing Agent",
+      "description": "Google Ads, kampanie reklamowe, GA4 — planowanie, optymalizacja, raportowanie",
+      "type": "agent",
+      "files": ["agents/marketing/AGENT.md", "agents/marketing/tools.json"],
+      "setup_cmd": null,
+      "requires_integrations": ["analytics-mcp"]
+    },
+    {
+      "id": "pm-agent",
+      "name": "Project Manager Agent",
+      "description": "Zarządzanie projektem — backlog, priorytety, briefy handoff, delegowanie zadań",
+      "type": "agent",
+      "files": ["agents/pm/AGENT.md", "agents/pm/tools.json"],
+      "setup_cmd": null,
+      "requires_integrations": ["kanboard"]
     },
     {
       "id": "filesystem-mcp",

@@ -31,7 +31,7 @@ Kod aplikacji jest w repozytorium produktu.
    - `.gemini/` → `.gemini/settings.json`
    - `.codex/` lub `codex.json` → `mcp.json`
 4. Jeśli jest `python_deps` — poinformuj o instalacji: `pip install {deps}`
-5. Jeśli jest `setup_cmd` — zapytaj czy uruchomić teraz
+s5. Jeśli jest `setup_cmd` — zapytaj czy uruchomić teraz
 
 ---
 
@@ -130,29 +130,49 @@ Kod aplikacji jest w repozytorium produktu.
 
 ### frontend-agent
 
-**Typ:** Agent
-**Opis:** Definicja agenta AI do pracy z frontendem — React/Next.js/Vue, komponenty, UX, testy E2E
-
-**Pliki:**
-- `agents/frontend/AGENT.md`
-- `agents/frontend/tools.json`
-
-**MCP entry:** brak (agent, nie MCP)
-**Setup:** po instalacji przeczytaj `agents/frontend/AGENT.md` żeby zrozumieć rolę
+**Typ:** Agent | **Opis:** JS, React, HTML, CSS — komponenty, UX, wydajność, testy E2E
+**Pliki:** `agents/frontend/AGENT.md`, `agents/frontend/tools.json`
+**MCP entry:** brak | **Wymaga MCP:** filesystem-mcp
 
 ---
 
 ### backend-agent
 
-**Typ:** Agent
-**Opis:** Definicja agenta AI do backendu — PHP/Node/Python, API, baza danych, testy
+**Typ:** Agent | **Opis:** PHP, Python — API, logika biznesowa, integracje, testy
+**Pliki:** `agents/backend/AGENT.md`, `agents/backend/tools.json`
+**MCP entry:** brak | **Wymaga MCP:** mysql-mcp
 
-**Pliki:**
-- `agents/backend/AGENT.md`
-- `agents/backend/tools.json`
+---
 
-**MCP entry:** brak (agent, nie MCP)
-**Setup:** po instalacji przeczytaj `agents/backend/AGENT.md`
+### database-agent
+
+**Typ:** Agent | **Opis:** MySQL, MariaDB — schemat, zapytania, wydajność, migracje
+**Pliki:** `agents/database/AGENT.md`, `agents/database/tools.json`
+**MCP entry:** brak | **Wymaga MCP:** mysql-mcp
+
+---
+
+### seo-agent
+
+**Typ:** Agent | **Opis:** SEO techniczne i contentowe — GSC, indeksowanie, Core Web Vitals, schema.org
+**Pliki:** `agents/seo/AGENT.md`, `agents/seo/tools.json`
+**MCP entry:** brak | **Wymaga MCP:** gsc-mcp
+
+---
+
+### marketing-agent
+
+**Typ:** Agent | **Opis:** Google Ads, kampanie, GA4 — planowanie, optymalizacja, raportowanie
+**Pliki:** `agents/marketing/AGENT.md`, `agents/marketing/tools.json`
+**MCP entry:** brak | **Wymaga MCP:** analytics-mcp
+
+---
+
+### pm-agent
+
+**Typ:** Agent | **Opis:** Project Manager — backlog, priorytety, briefy handoff, delegowanie zadań
+**Pliki:** `agents/pm/AGENT.md`, `agents/pm/tools.json`
+**MCP entry:** brak | **Wymaga MCP:** kanboard-mcp
 
 ---
 

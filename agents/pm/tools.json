@@ -1,0 +1,5 @@
+{
+  "required_mcp": ["kanboard"],
+  "optional_mcp": ["filesystem", "memory"],
+  "suggested_commands": ["kanboard_get_backlog", "kanboard_create_handoff", "kanboard_move_task"]
+}

@@ -1,0 +1,5 @@
+{
+  "required_mcp": ["gsc"],
+  "optional_mcp": ["filesystem", "playwright", "analytics", "memory"],
+  "suggested_commands": ["inspect_url", "get_performance_overview", "check_indexing_issues"]
+}

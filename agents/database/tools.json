@@ -1,0 +1,5 @@
+{
+  "required_mcp": ["mysql"],
+  "optional_mcp": ["filesystem", "memory"],
+  "suggested_commands": ["SHOW TABLES", "DESCRIBE {table}", "EXPLAIN SELECT ..."]
+}
