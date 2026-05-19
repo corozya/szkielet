@@ -2,6 +2,13 @@
 
 **Użycie:** `/agent <nazwa>` np. `/agent frontend`, `/agent kanboard`, `/agent seo`
 
+**Wyzwalacze:** uruchamiaj ten skill gdy użytkownik mówi:
+- "zainstaluj agenta", "dodaj agenta", "zainstaluj nowego agenta"
+- "zainstaluj MCP", "dodaj MCP", "dodaj integrację"
+- lub używa `/agent <nazwa>` bezpośrednio
+
+**Nigdy nie twórz plików agenta ani MCP samodzielnie** — zawsze pobieraj je z repozytorium scaffold przez WebFetch. Wymyślanie zawartości AGENT.md lub tools.json jest błędem.
+
 Instaluje pojedynczego agenta lub MCP z repozytorium scaffold do bieżącego projektu.
 
 ## Procedura
@@ -48,6 +55,21 @@ Dla każdego pliku z `Pliki:`:
 WebFetch: {raw_base}/{plik}  →  Write: zapisz pod tą samą ścieżką
 ```
 Jeśli Write zgłosi że plik istnieje — dopiero wtedy zapytaj czy nadpisać.
+
+### Krok 5b — Zainstaluj wymagane MCP agenta (jeśli instalujesz agenta)
+
+Po zapisaniu plików agenta sprawdź pole `Wymaga MCP:` z INSTALL.md.
+Dla każdego wymaganego MCP które **nie jest jeszcze skonfigurowane** w projekcie:
+
+1. Zapytaj: *"Agent wymaga [nazwa-mcp]. Zainstalować?"*
+2. Jeśli tak — wykonaj pełną procedurę instalacji MCP (kroki 4→7 dla tego MCP):
+   - Pobierz `mcp_servers/{nazwa}/INSTALL.md`
+   - Zbierz wymagane dane konfiguracyjne
+   - Zapisz pliki
+   - Dopisz MCP entry do hostów AI
+   - Zainstaluj pip deps
+
+Nie pomijaj tego kroku — agent bez wymaganego MCP nie będzie działał poprawnie.
 
 ### Krok 6 — Dopisz MCP entry (tylko dla MCP)
 
