@@ -33,7 +33,6 @@ kanboard_setup/.env
 .env.google-ads
 .env.memory
 .env.e2e
-mcp_servers/gsc/
 mcp_servers/facebook/
 .claude/mcp.json
 .claude/settings.json
