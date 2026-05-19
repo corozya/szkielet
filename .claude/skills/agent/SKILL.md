@@ -49,7 +49,10 @@ Jeśli INSTALL.md zawiera sekcję `Wymagane dane:`:
 
 ### Krok 5 — Instaluj pliki
 
-**Ważne:** Każdy plik pobierasz dokładnie raz i od razu zapisujesz. Nie sprawdzaj struktury projektu przed zapisem.
+**Ważne:**
+- Każdy plik pobierasz przez WebFetch (nie curl/gh api) dokładnie raz i od razu zapisujesz przez Write.
+- Nie sprawdzaj struktury projektu przed zapisem.
+- Jeśli WebFetch zwróci 404 — napisz *"[nazwa] niedostępny w repo, pomijam"* i kontynuuj. Nie debuguj.
 
 Dla każdego pliku z `Pliki:`:
 ```

@@ -54,7 +54,10 @@ Zapytaj: *"Na podstawie tych ról potrzebujesz: [lista]. Zainstalować wszystkie
 
 ### Krok 4 — Instaluj wybrane pozycje
 
-**Ważne:** Każdy plik pobierasz dokładnie raz i od razu zapisujesz. Nie sprawdzaj struktury projektu, nie czytaj istniejących plików — po prostu pisz.
+**Ważne:**
+- Każdy plik pobierasz dokładnie raz przez WebFetch i od razu zapisujesz przez Write. Nie używaj Bash/curl/gh api do pobierania plików z GitHub.
+- Nie sprawdzaj struktury projektu przed zapisem.
+- Jeśli WebFetch zwróci 404 — napisz użytkownikowi *"[nazwa] niedostępny w repo, pomijam"* i kontynuuj. Nie debuguj, nie szukaj alternatywnych ścieżek.
 
 Dla każdego wybranego agenta i MCP:
 
