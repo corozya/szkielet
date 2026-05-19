@@ -20,10 +20,13 @@ Wyciągnij z README:
 
 ### Krok 2 — Zapytaj o role agentów
 
-Pokaż numerowaną listę i poczekaj na wybór (multi-select):
+**Zatrzymaj się i czekaj na odpowiedź użytkownika.** Nie instaluj niczego przed otrzymaniem wyboru.
+
+Pokaż numerowaną listę i zaczekaj na odpowiedź:
 
 ```
-Jakich agentów potrzebujesz? Podaj numery (np. 1 3 5) lub nazwy:
+Jakich agentów potrzebujesz? Podaj numery (np. 1 3 5) lub nazwy.
+Możesz wybrać kilka naraz:
 
 1. frontend-agent   — JS, React, HTML, CSS
 2. backend-agent    — PHP, Python
@@ -33,6 +36,8 @@ Jakich agentów potrzebujesz? Podaj numery (np. 1 3 5) lub nazwy:
 6. pm-agent         — Project Manager (Kanboard)
 7. devops-agent     — serwery, deploy, CI/CD, monitoring
 ```
+
+Poczekaj na odpowiedź. Dopiero po otrzymaniu numerów/nazw — przejdź do kroku 3.
 
 ### Krok 3 — Zaproponuj wymagane MCP
 
@@ -49,15 +54,17 @@ Zapytaj: *"Na podstawie tych ról potrzebujesz: [lista]. Zainstalować wszystkie
 
 ### Krok 4 — Instaluj wybrane pozycje
 
+**Ważne:** Każdy plik pobierasz dokładnie raz i od razu zapisujesz. Nie sprawdzaj struktury projektu, nie czytaj istniejących plików — po prostu pisz.
+
 Dla każdego wybranego agenta i MCP:
 
-1. Pobierz `INSTALL.md` przez WebFetch:
+1. Pobierz `INSTALL.md` przez WebFetch (jeden raz):
    - Agent: `{raw_base}/agents/{nazwa}/INSTALL.md`
    - MCP: `{raw_base}/mcp_servers/{nazwa}/INSTALL.md`
 
-2. Pobierz każdy plik z listy `Pliki:` i zapisz przez Write, zachowując ścieżki.
+2. Dla każdego pliku z listy `Pliki:` — pobierz przez WebFetch i od razu zapisz przez Write. Jeden fetch → jeden Write, bez pośrednich kroków.
 
-3. Jeśli plik już istnieje — zapytaj czy nadpisać.
+3. Jeśli Write zgłosi że plik istnieje — zapytaj czy nadpisać (tylko wtedy).
 
 ### Krok 5 — Zbierz wymagane dane konfiguracyjne
 

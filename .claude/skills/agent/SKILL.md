@@ -41,12 +41,13 @@ Jeśli INSTALL.md zawiera sekcję `Wymagane dane:`:
 
 ### Krok 5 — Instaluj pliki
 
+**Ważne:** Każdy plik pobierasz dokładnie raz i od razu zapisujesz. Nie sprawdzaj struktury projektu przed zapisem.
+
 Dla każdego pliku z `Pliki:`:
 ```
-WebFetch: {raw_base}/{plik}
-Write: zapisz pod tą samą ścieżką w projekcie
+WebFetch: {raw_base}/{plik}  →  Write: zapisz pod tą samą ścieżką
 ```
-Jeśli plik istnieje — zapytaj czy nadpisać.
+Jeśli Write zgłosi że plik istnieje — dopiero wtedy zapytaj czy nadpisać.
 
 ### Krok 6 — Dopisz MCP entry (tylko dla MCP)
 
