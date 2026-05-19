@@ -1,0 +1,120 @@
+{
+  "name": "szkielet-workflow",
+  "description": "Workflow scaffold z Kanboard MCP, agentami AI i toolingiem projektowym",
+  "version": "1.0.0",
+  "integrations": [
+    {
+      "id": "kanboard",
+      "name": "Kanboard MCP",
+      "description": "Zarządzanie zadaniami: backlog, tworzenie tasków, handoff briefs dla agentów",
+      "type": "mcp",
+      "files": [
+        "mcp_servers/kanboard/server.py",
+        "mcp_servers/kanboard/__init__.py",
+        "kanboard_setup/.env.example",
+        "scripts/run-kanboard-mcp.sh",
+        "scripts/load-env.sh"
+      ],
+      "requires": ["python3"],
+      "python_deps_file": "mcp_servers/kanboard/requirements.txt",
+      "python_deps": ["fastmcp", "requests", "python-dotenv"],
+      "setup_cmd": "npm run init-kb",
+      "mcp_entry": {
+        "command": "python3",
+        "args": ["mcp_servers/kanboard/server.py"],
+        "cwd": "."
+      }
+    },
+    {
+      "id": "mysql-mcp",
+      "name": "MySQL MCP",
+      "description": "Dostęp read-only do bazy MySQL projektu — zapytania, schemat, diagnostyka",
+      "type": "mcp",
+      "files": [
+        "mcp_servers/mysql/server.py",
+        "mcp_servers/mysql/__init__.py",
+        "scripts/run-mysql-mcp.sh",
+        "scripts/load-env.sh"
+      ],
+      "requires": ["python3"],
+      "python_deps": ["fastmcp", "pymysql", "python-dotenv"],
+      "setup_cmd": "npm run init-mcp",
+      "mcp_entry": {
+        "command": "bash",
+        "args": ["scripts/run-mysql-mcp.sh"],
+        "cwd": "."
+      }
+    },
+    {
+      "id": "frontend-agent",
+      "name": "Frontend Agent",
+      "description": "Agent AI wyspecjalizowany w React/Next.js/Vue — komponenty, UX, perf, testy E2E",
+      "type": "agent",
+      "files": [
+        "agents/frontend/AGENT.md",
+        "agents/frontend/tools.json"
+      ],
+      "setup_cmd": null,
+      "requires_integrations": ["filesystem-mcp"]
+    },
+    {
+      "id": "backend-agent",
+      "name": "Backend Agent",
+      "description": "Agent AI do backendu: PHP/Node/Python — API, baza danych, testy jednostkowe",
+      "type": "agent",
+      "files": [
+        "agents/backend/AGENT.md",
+        "agents/backend/tools.json"
+      ],
+      "setup_cmd": null,
+      "requires_integrations": ["mysql-mcp"]
+    },
+    {
+      "id": "filesystem-mcp",
+      "name": "Filesystem MCP",
+      "description": "Dostęp do plików projektu dla agentów AI (read/write przez MCP)",
+      "type": "mcp",
+      "files": [
+        "scripts/run-filesystem-mcp.sh",
+        "scripts/load-env.sh"
+      ],
+      "requires": [],
+      "setup_cmd": null,
+      "mcp_entry": {
+        "command": "bash",
+        "args": ["scripts/run-filesystem-mcp.sh"],
+        "cwd": "."
+      }
+    },
+    {
+      "id": "memory-mcp",
+      "name": "Memory MCP",
+      "description": "Trwała pamięć dla agentów AI (lokalny plik JSON — zachowuje kontekst między sesjami)",
+      "type": "mcp",
+      "files": [
+        "scripts/run-memory-mcp.sh"
+      ],
+      "requires": [],
+      "setup_cmd": null,
+      "mcp_entry": {
+        "command": "bash",
+        "args": ["scripts/run-memory-mcp.sh"],
+        "cwd": "."
+      }
+    },
+    {
+      "id": "handoff-workflow",
+      "name": "Handoff Workflow",
+      "description": "System briefów handoff/ dla agentów: każde zadanie = folder z brief.md, podział na role",
+      "type": "workflow",
+      "files": [
+        "bin/init-kb.js",
+        "bin/init-mcp.js",
+        "bin/fetch-issues.js",
+        "docs/teams/COMMON.md",
+        "docs/teams/AGENT_GUIDE.md"
+      ],
+      "setup_cmd": "npm install"
+    }
+  ]
+}
