@@ -357,6 +357,66 @@ def kanboard_delete_task(task_id: int, confirm: bool = False) -> str:
     return f"Deleted task #{task_id}" if success else f"Error: Failed to delete task #{task_id}."
 
 @mcp.tool()
+def kanboard_update_task(
+    task_id: int,
+    title: Optional[str] = None,
+    description: Optional[str] = None,
+    priority: Optional[int] = None,
+    due_date: Optional[str] = None,
+) -> str:
+    """Update title, description, priority or due_date of an existing task."""
+    agent = get_agent()
+    task = agent._call("getTask", {"task_id": task_id})
+    if not task:
+        return f"Error: Task #{task_id} not found."
+
+    params: dict = {"id": task_id}
+    if title is not None:
+        params["title"] = title
+    if description is not None:
+        params["description"] = description
+    if priority is not None:
+        params["priority"] = priority
+    if due_date is not None:
+        params["date_due"] = due_date
+
+    if len(params) == 1:
+        return "Error: Provide at least one field to update (title, description, priority, due_date)."
+
+    success = agent._call("updateTask", params)
+    return f"Updated task #{task_id}" if success else f"Error: Failed to update task #{task_id}."
+
+
+@mcp.tool()
+def kanboard_get_all_tasks(project_ref: Optional[str] = None, column: Optional[str] = None) -> str:
+    """Get all active tasks in a project, optionally filtered by column name."""
+    agent = get_agent()
+    ref = project_ref or get_config().project
+    if not ref:
+        return "Error: project_ref is required."
+
+    try:
+        project_id = resolve_project_id(agent, str(ref))
+        board = agent._call("getBoard", {"project_id": project_id}) or []
+        tasks: list[dict] = []
+
+        for swimlane in board:
+            for col in swimlane.get("columns", []):
+                col_title = str(col.get("title", ""))
+                if column and col_title.lower() != column.lower():
+                    continue
+                for task in col.get("tasks", []) or []:
+                    tasks.append({"id": task["id"], "title": task["title"], "column": col_title})
+
+        if not tasks:
+            return "No tasks found."
+
+        return "\n".join([f"#{t['id']} [{t['column']}]: {t['title']}" for t in tasks])
+    except Exception as exc:
+        return f"Error: {exc}"
+
+
+@mcp.tool()
 def kanboard_create_handoff(task_id: int) -> str:
     """Initialize a local handoff brief from a Kanboard task."""
     agent = get_agent()
