@@ -6,6 +6,154 @@
 
 Kod aplikacji jest w repozytorium produktu.
 
+---
+
+## Instalacja przez agenta AI
+
+> Jesteś agentem AI (Claude, Cursor, Codex, Gemini). Użytkownik wskazał Ci ten plik.
+> Przeczytaj poniższe integracje, zapytaj użytkownika które chce zainstalować,
+> a następnie zainstaluj je samodzielnie — pobierając pliki przez `raw.githubusercontent.com`
+> i edytując konfiguracje MCP w bieżącym projekcie.
+
+### Jak instalować (procedura dla agenta)
+
+1. Zapytaj: *"Które integracje chcesz zainstalować?"* — pokaż listę poniżej
+2. Dla każdej wybranej integracji:
+   - Pobierz każdy plik z sekcji **Pliki** przez URL:
+     `https://raw.githubusercontent.com/corozya/szkielet/main/{ścieżka_pliku}`
+   - Zapisz plik w bieżącym projekcie, zachowując ścieżkę względną
+   - Jeśli plik istnieje — zapytaj użytkownika czy nadpisać
+3. Dla integracji MCP — dopisz `mcp_entry` do plików konfiguracyjnych wykrytych hostów AI:
+   - `.claude/` → `.claude/mcp.json`
+   - `.cursor/` → `.cursor/mcp.json`
+   - `.gemini/` → `.gemini/settings.json`
+   - `.codex/` lub `codex.json` → `mcp.json`
+4. Jeśli jest `python_deps` — poinformuj o instalacji: `pip install {deps}`
+5. Jeśli jest `setup_cmd` — zapytaj czy uruchomić teraz
+
+---
+
+### kanboard-mcp
+
+**Typ:** MCP
+**Opis:** Zarządzanie zadaniami — backlog, tworzenie tasków, handoff briefy dla agentów AI
+
+**Pliki:**
+- `mcp_servers/kanboard/server.py`
+- `mcp_servers/kanboard/__init__.py`
+- `kanboard_setup/.env.example`
+- `scripts/run-kanboard-mcp.sh`
+- `scripts/load-env.sh`
+
+**MCP entry:**
+```json
+{
+  "command": "python3",
+  "args": ["mcp_servers/kanboard/server.py"],
+  "cwd": "."
+}
+```
+
+**Python deps:** `pip install fastmcp requests python-dotenv`
+**Setup:** `npm run init-kb` (pyta o URL i token Kanboard)
+
+---
+
+### mysql-mcp
+
+**Typ:** MCP
+**Opis:** Dostęp read-only do bazy MySQL projektu — zapytania, schemat, diagnostyka
+
+**Pliki:**
+- `mcp_servers/mysql/server.py`
+- `mcp_servers/mysql/__init__.py`
+- `scripts/run-mysql-mcp.sh`
+- `scripts/load-env.sh`
+
+**MCP entry:**
+```json
+{
+  "command": "bash",
+  "args": ["scripts/run-mysql-mcp.sh"],
+  "cwd": "."
+}
+```
+
+**Python deps:** `pip install fastmcp pymysql python-dotenv`
+**Setup:** uzupełnij `.env.mysql` (host, user, password, database)
+
+---
+
+### filesystem-mcp
+
+**Typ:** MCP
+**Opis:** Dostęp do plików projektu dla agentów AI (read/write)
+
+**Pliki:**
+- `scripts/run-filesystem-mcp.sh`
+
+**MCP entry:**
+```json
+{
+  "command": "bash",
+  "args": ["scripts/run-filesystem-mcp.sh"],
+  "cwd": "."
+}
+```
+
+**Setup:** brak — działa od razu
+
+---
+
+### memory-mcp
+
+**Typ:** MCP
+**Opis:** Trwała pamięć dla agentów AI między sesjami (lokalny knowledge graph)
+
+**Pliki:**
+- `scripts/run-memory-mcp.sh`
+
+**MCP entry:**
+```json
+{
+  "command": "bash",
+  "args": ["scripts/run-memory-mcp.sh"],
+  "cwd": "."
+}
+```
+
+**Setup:** brak — zapisuje do `.memory/memory.jsonl`
+
+---
+
+### frontend-agent
+
+**Typ:** Agent
+**Opis:** Definicja agenta AI do pracy z frontendem — React/Next.js/Vue, komponenty, UX, testy E2E
+
+**Pliki:**
+- `agents/frontend/AGENT.md`
+- `agents/frontend/tools.json`
+
+**MCP entry:** brak (agent, nie MCP)
+**Setup:** po instalacji przeczytaj `agents/frontend/AGENT.md` żeby zrozumieć rolę
+
+---
+
+### backend-agent
+
+**Typ:** Agent
+**Opis:** Definicja agenta AI do backendu — PHP/Node/Python, API, baza danych, testy
+
+**Pliki:**
+- `agents/backend/AGENT.md`
+- `agents/backend/tools.json`
+
+**MCP entry:** brak (agent, nie MCP)
+**Setup:** po instalacji przeczytaj `agents/backend/AGENT.md`
+
+---
+
 ## Dokumentacja marketingowa
 
 - **Strategia (mix kanałów, kalendarz, cele):** [marketing/MARKETING_PLAN.md](marketing/MARKETING_PLAN.md)
