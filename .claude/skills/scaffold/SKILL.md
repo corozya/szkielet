@@ -22,23 +22,33 @@ Jeśli URL jest w formacie `github.com/.../blob/main/README.md`, zamień na raw:
 W pobranym README znajdź sekcję `## Instalacja przez agenta AI`.
 Ta sekcja zawiera listę dostępnych integracji z instrukcjami dla Ciebie.
 
-### Krok 3 — Pokaż listę i pozwól wybrać kilka
+### Krok 3 — Zapytaj najpierw o role agentów
 
-Wyświetl wszystkie dostępne integracje jako listę numerowaną z opisem, np.:
+Pokaż tylko role agentów (nie MCP) jako listę numerowaną i zapytaj:
+*"Jakich agentów potrzebujesz w tym projekcie? Podaj numery lub nazwy."*
 
 ```
-1. kanboard-mcp     — zarządzanie zadaniami (backlog, handoff)
-2. mysql-mcp        — dostęp read-only do bazy MySQL
-3. filesystem-mcp   — dostęp do plików projektu
-4. memory-mcp       — trwała pamięć między sesjami
-5. frontend-agent   — agent React/Next.js/Vue
-6. backend-agent    — agent PHP/Node/Python
+1. frontend-agent   — JS, React, HTML, CSS
+2. backend-agent    — PHP, Python
+3. database-agent   — MySQL, MariaDB
+4. seo-agent        — SEO techniczne i contentowe
+5. marketing-agent  — Google Ads, GA4
+6. pm-agent         — Project Manager (Kanboard)
 ```
 
-Następnie zadaj jedno pytanie:
-*"Które chcesz zainstalować? Podaj numery (np. 1, 3) lub nazwy."*
+### Krok 3b — Zaproponuj wymagane MCP
 
-Poczekaj na odpowiedź, dopiero potem instaluj.
+Na podstawie wybranych ról wylicz potrzebne integracje MCP (deduplikuj):
+- frontend → filesystem-mcp
+- backend → filesystem-mcp, mysql-mcp
+- database → mysql-mcp
+- seo → gsc-mcp
+- marketing → analytics-mcp
+- pm → kanboard-mcp
+
+Powiedz: *"Na podstawie tych ról potrzebujesz: [lista]. Zainstalować wszystkie? (tak/nie/wybierz)"*
+
+Poczekaj na potwierdzenie przed instalacją.
 
 ### Krok 4 — Zainstaluj wybrane
 
@@ -59,10 +69,11 @@ Użytkownik: zapoznaj się z https://github.com/corozya/szkielet/blob/main/READM
 
 Agent:
 → WebFetch README
-→ Wyświetla listę 6 integracji z opisami
-→ "Które chcesz zainstalować? Podaj numery lub nazwy."
-Użytkownik: 1, 5
-→ Instaluje kanboard-mcp i frontend-agent
+→ "Jakich agentów potrzebujesz? (lista ról)"
+Użytkownik: frontend, seo
+→ "Na podstawie tych ról potrzebujesz: filesystem-mcp, gsc-mcp. Zainstalować wszystkie?"
+Użytkownik: tak
+→ Instaluje frontend-agent + seo-agent + filesystem-mcp + gsc-mcp
 
 Agent:
 → Pobiera mcp_servers/kanboard/server.py, scripts/run-kanboard-mcp.sh itd.

@@ -17,10 +17,29 @@ Kod aplikacji jest w repozytorium produktu.
 
 ### Jak instalować (procedura dla agenta)
 
-1. Pokaż wszystkie dostępne integracje w formie listy numerowanej z krótkim opisem i zapytaj:
-   *"Które chcesz zainstalować? Podaj numery (np. 1, 3, 4) lub napisz nazwy."*
-   Pozwól użytkownikowi wybrać kilka naraz. Poczekaj na odpowiedź przed instalacją.
-2. Dla każdej wybranej integracji:
+1. **Najpierw zapytaj o role agentów.** Pokaż listę numerowaną dostępnych ról i zapytaj:
+   *"Jakich agentów potrzebujesz w tym projekcie? Podaj numery lub nazwy."*
+   ```
+   1. frontend-agent   — JS, React, HTML, CSS
+   2. backend-agent    — PHP, Python
+   3. database-agent   — MySQL, MariaDB
+   4. seo-agent        — SEO techniczne i contentowe
+   5. marketing-agent  — Google Ads, GA4
+   6. pm-agent         — Project Manager (Kanboard)
+   ```
+
+2. **Na podstawie wybranych ról** zaproponuj wymagane integracje MCP. Każda rola ma zależności:
+   - `frontend-agent` → potrzebuje: **filesystem-mcp**
+   - `backend-agent` → potrzebuje: **filesystem-mcp**, **mysql-mcp**
+   - `database-agent` → potrzebuje: **mysql-mcp**
+   - `seo-agent` → potrzebuje: **gsc-mcp** (Google Search Console)
+   - `marketing-agent` → potrzebuje: **analytics-mcp**
+   - `pm-agent` → potrzebuje: **kanboard-mcp**
+
+   Pokaż listę deduplikowaną i zapytaj:
+   *"Na podstawie wybranych ról potrzebujesz: [lista MCP]. Zainstalować wszystkie? (tak/nie/wybierz)"*
+
+3. **Zainstaluj** wybrane role agentów i MCP. Dla każdej pozycji:
    - Pobierz każdy plik z sekcji **Pliki** przez URL:
      `https://raw.githubusercontent.com/corozya/szkielet/main/{ścieżka_pliku}`
    - Zapisz plik w bieżącym projekcie, zachowując ścieżkę względną
