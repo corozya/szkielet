@@ -1,37 +1,44 @@
 ---
 name: agent
-description: Instaluje agenta AI lub integrację MCP z repozytorium scaffold bez klonowania. Wywołaj: /agent <nazwa>.
+description: Instaluje agenta AI lub integrację MCP z repozytorium scaffold bez klonowania. Wywołaj /agent <nazwa>.
 ---
 
 # agent Skill (Codex)
 
-Instaluje agenta lub serwer MCP z repozytorium scaffold do bieżącego projektu.
+Jako agent pobierasz pliki i edytujesz konfiguracje samodzielnie. Nie używasz skryptów instalacyjnych.
 
 ## Wywołanie
 
-```
-/agent <nazwa>
-```
+`/agent <nazwa>` — np. `/agent frontend`, `/agent kanboard`, `/agent backend`
 
-Np.: `/agent frontend`, `/agent kanboard`, `/agent backend`
+## Procedura
 
-## Workflow
+### Krok 1 — Ustal integrację
+Wyodrębnij nazwę z polecenia. Jeśli brak — zapytaj użytkownika.
 
-1. Sprawdź lokalny `scaffold-manifest.json` lub `SCAFFOLD_REPO` w `.env`
-2. Uruchom:
-   ```bash
-   node bin/install-from-repo.js --id <nazwa>
-   ```
-3. Dla MCP: sprawdź `mcp.json` w katalogu projektu
-4. Uruchom ewentualne setup_cmd z manifest (np. `npm run init-kb`)
+### Krok 2 — Źródło manifestu (priorytet)
 
-## Konfiguracja w .env
+1. Lokalny `scaffold-manifest.json` → przeczytaj (Read)
+2. `SCAFFOLD_REPO` w `.env` → pobierz `https://raw.githubusercontent.com/{owner}/{repo}/main/scaffold-manifest.json`
+3. Brak obu → zapytaj o URL repo
 
-```
-SCAFFOLD_REPO=owner/repo          # źródło integracji
-GITHUB_TOKEN=ghp_...              # dla prywatnych repo
-```
+### Krok 3 — Pobierz pliki
 
-## Dostępne integracje
+Dla każdego z `integration.files`:
+- URL: `https://raw.githubusercontent.com/{owner}/{repo}/main/{filePath}`
+- Sprawdź czy istnieje (Read), zapytaj o nadpisanie
+- Zapisz przez Write
 
-Lista w `scaffold-manifest.json`. Typy: `mcp`, `agent`, `workflow`.
+### Krok 4 — Konfiguracja MCP
+
+Dla `type === "mcp"`:
+- Wykryj hosty: `.claude/` → `.claude/mcp.json`, `.cursor/` → `.cursor/mcp.json`, `.gemini/` → `.gemini/settings.json`, `.codex/` → `mcp.json`
+- Dopisz `integration.mcp_entry` pod kluczem `integration.id` w każdym pliku
+
+Dla `type === "agent"`: zapisz do `agents/{id}/`
+
+### Krok 5 — Finalizacja
+
+- Poinformuj o `python_deps` jeśli istnieją
+- Zapytaj czy uruchomić `setup_cmd` (np. `npm run init-kb`)
+- Podsumuj co zainstalowano

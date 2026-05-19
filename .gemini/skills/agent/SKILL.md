@@ -1,44 +1,48 @@
 ---
 name: agent
-description: Instaluje agenta AI lub integrację MCP do projektu z repozytorium scaffold (bez klonowania). Wywołaj przez /agent <nazwa> lub "zainstaluj agenta frontend".
+description: Instaluje agenta AI lub integrację MCP do projektu z repozytorium scaffold. Wywołaj przez /agent <nazwa> lub "zainstaluj agenta frontend".
 ---
 
 # agent Skill (Gemini)
 
-Pobiera konfigurację ze zdalnego repozytorium scaffold i instaluje wybranego agenta lub serwer MCP.
+Jako agent wykonujesz instalację samodzielnie — pobierasz pliki, zapisujesz je i edytujesz konfiguracje MCP. Nie uruchamiasz skryptów.
 
 ## Kiedy używać
 
-- Użytkownik prosi o agenta: "chcę agenta frontendowego", "dodaj kanboard MCP", "zainstaluj integrację mysql"
-- Wywołanie przez slash command: `/agent frontend`, `/agent kanboard`
+Użytkownik prosi: "chcę agenta frontendowego", "dodaj kanboard MCP", `/agent frontend`, `/agent kanboard`.
 
 ## Procedura
 
-### Krok 1 — Ustal integrację
-Wyodrębnij nazwę z polecenia użytkownika (frontend, backend, kanboard, mysql-mcp, itp.)
+### Krok 1 — Ustal nazwę integracji
+Wyodrębnij z polecenia użytkownika. Jeśli brak — zapytaj.
 
-### Krok 2 — Sprawdź manifest
-```bash
-cat scaffold-manifest.json 2>/dev/null
-```
-Jeśli brak pliku — sprawdź `.env`:
-```bash
-grep SCAFFOLD_REPO .env 2>/dev/null
-```
+### Krok 2 — Pobierz manifest
 
-### Krok 3 — Uruchom instalację
-```bash
-node bin/install-from-repo.js --id <nazwa>
-```
+1. Sprawdź lokalny `scaffold-manifest.json` (Read) — jeśli istnieje, użyj go
+2. Sprawdź `SCAFFOLD_REPO` w `.env` — jeśli ustawione, pobierz manifest:
+   `https://raw.githubusercontent.com/{owner}/{repo}/main/scaffold-manifest.json`
+3. Jeśli brak obu — zapytaj o URL repo
 
-### Krok 4 — Zweryfikuj
-- Dla MCP: sprawdź `.gemini/settings.json` — powinien zawierać nowy wpis
-- Dla agenta: sprawdź `agents/<nazwa>/AGENT.md`
+### Krok 3 — Zainstaluj pliki
 
-## Ustawienie SCAFFOLD_REPO (jednorazowe)
+Dla każdego pliku z `integration.files`:
+- Pobierz przez raw GitHub URL
+- Zapytaj o nadpisanie jeśli istnieje
+- Zapisz zachowując ścieżkę
 
-Dodaj do `.env`:
-```
-SCAFFOLD_REPO=owner/repo
-```
-Wtedy nie trzeba podawać URL przy każdej instalacji.
+### Krok 4 — Patchuj konfiguracje MCP
+
+Dla `type === "mcp"`: wykryj hosty (`.claude/`, `.cursor/`, `.gemini/`, `.codex/`), dopisz `integration.mcp_entry` do ich pliku konfiguracyjnego MCP.
+
+Dla `type === "agent"`: zapisz pliki do `agents/{id}/`.
+
+### Krok 5 — Zakończ
+
+Poinformuj o zależnościach pip jeśli potrzebne.
+Uruchom `integration.setup_cmd` jeśli użytkownik wyrazi zgodę.
+Powiedz co zainstalowano i jakie hosty AI zostały skonfigurowane.
+
+## Ważne
+
+- Tylko pliki po jednym przez raw GitHub URL — bez git clone
+- Zawsze pytaj przed nadpisaniem
