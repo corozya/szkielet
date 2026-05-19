@@ -6,6 +6,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "init-kb": "node ./bin/init-kb.js",
+    "init-mcp": "node ./bin/init-mcp.js",
     "start-project": "node ./bin/start-project.js",
     "zgloszenia": "node ./bin/fetch-issues.js",
     "kanboard-mcp": "bash ./scripts/run-kanboard-mcp.sh",
