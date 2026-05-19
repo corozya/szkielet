@@ -9,6 +9,18 @@ const readline = require("node:readline/promises");
 const CWD = process.cwd();
 const MANIFEST_FILE = "scaffold-manifest.json";
 
+// CLI flags: --id <integration-id> --repo <owner/repo> --force
+function parseCliArgs() {
+  const args = process.argv.slice(2);
+  const out = { id: null, repo: null, force: false };
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--id") out.id = args[++i];
+    else if (args[i] === "--repo") out.repo = args[++i];
+    else if (args[i] === "--force") out.force = true;
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------------------
 // GitHub helpers (zero deps — Node 18+ fetch)
 // ---------------------------------------------------------------------------
@@ -180,29 +192,48 @@ async function installIntegration(integration, { owner, repo, branch, token, rl,
 // ---------------------------------------------------------------------------
 
 async function main() {
+  const cli = parseCliArgs();
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
   try {
     console.log("\n=== Instalator ze zdalnego repo ===\n");
 
-    // Read optional GITHUB_TOKEN from .env
+    // Read optional GITHUB_TOKEN and SCAFFOLD_REPO from .env
     const localEnv = readEnvFile(path.join(CWD, ".env"));
     const token = localEnv.get("GITHUB_TOKEN") || process.env.GITHUB_TOKEN || "";
 
-    // Get repo URL
-    const repoInput = await ask(rl, "URL repozytorium GitHub (np. owner/repo lub https://github.com/owner/repo)");
+    // Get repo URL: --repo flag > SCAFFOLD_REPO in .env > interactive prompt
+    let repoInput = cli.repo || localEnv.get("SCAFFOLD_REPO") || process.env.SCAFFOLD_REPO || "";
+    if (!repoInput) {
+      // Check if there's a local scaffold-manifest.json first
+      const localManifest = path.join(CWD, MANIFEST_FILE);
+      if (fs.existsSync(localManifest)) {
+        repoInput = "__local__";
+      } else {
+        repoInput = await ask(rl, "URL repozytorium GitHub (np. owner/repo lub https://github.com/owner/repo)");
+      }
+    }
     if (!repoInput) { console.log("Anulowano."); return; }
 
-    const parsed = parseRepoUrl(repoInput);
-    if (!parsed) {
-      console.error("  ✗ Nie można sparsować URL repozytorium.");
-      process.exitCode = 1;
-      return;
-    }
+    let manifest, branch, parsed;
 
-    console.log(`\n  Pobieranie manifestu z ${parsed.owner}/${parsed.repo}...`);
-    const { manifest, branch } = await fetchManifest(parsed.owner, parsed.repo, token || undefined);
-    parsed.branch = branch;
+    if (repoInput === "__local__") {
+      const localManifest = path.join(CWD, MANIFEST_FILE);
+      manifest = JSON.parse(fs.readFileSync(localManifest, "utf8"));
+      branch = "local";
+      parsed = { owner: "local", repo: "local", branch: "local" };
+      console.log(`  ✓ Używam lokalnego ${MANIFEST_FILE}`);
+    } else {
+      parsed = parseRepoUrl(repoInput);
+      if (!parsed) {
+        console.error("  ✗ Nie można sparsować URL repozytorium.");
+        process.exitCode = 1;
+        return;
+      }
+      console.log(`\n  Pobieranie manifestu z ${parsed.owner}/${parsed.repo}...`);
+      ({ manifest, branch } = await fetchManifest(parsed.owner, parsed.repo, token || undefined));
+      parsed.branch = branch;
+    }
 
     console.log(`  ✓ ${manifest.name} — ${manifest.description}`);
 
@@ -211,14 +242,33 @@ async function main() {
       return;
     }
 
-    const selected = await selectIntegrations(rl, manifest.integrations);
-    if (!selected.length) { console.log("\nNie wybrano niczego. Koniec."); return; }
+    // Non-interactive mode: --id provided
+    let selected;
+    if (cli.id) {
+      const found = manifest.integrations.find(
+        (i) => i.id === cli.id || i.name.toLowerCase().includes(cli.id.toLowerCase())
+      );
+      if (!found) {
+        const ids = manifest.integrations.map((i) => i.id).join(", ");
+        console.error(`  ✗ Integracja '${cli.id}' nie znaleziona. Dostępne: ${ids}`);
+        process.exitCode = 1;
+        return;
+      }
+      selected = [found];
+      console.log(`  → Instaluję: ${found.name}`);
+    } else {
+      selected = await selectIntegrations(rl, manifest.integrations);
+      if (!selected.length) { console.log("\nNie wybrano niczego. Koniec."); return; }
+    }
 
     const hosts = detectHosts();
     console.log(`\n  Wykryte hosty AI: ${hosts.join(", ")}`);
 
-    const forceAns = await ask(rl, "Nadpisać istniejące pliki bez pytania?", "n");
-    const forceOverwrite = forceAns.toLowerCase() === "y" || forceAns.toLowerCase() === "tak";
+    let forceOverwrite = cli.force;
+    if (!cli.id && !cli.force) {
+      const forceAns = await ask(rl, "Nadpisać istniejące pliki bez pytania?", "n");
+      forceOverwrite = forceAns.toLowerCase() === "y" || forceAns.toLowerCase() === "tak";
+    }
 
     const summary = [];
     for (const integration of selected) {
