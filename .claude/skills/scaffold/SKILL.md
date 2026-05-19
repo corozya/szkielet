@@ -58,9 +58,11 @@ Zapytaj: *"Na podstawie tych ról potrzebujesz: [lista]. Zainstalować wszystkie
 
 Dla każdego wybranego agenta i MCP:
 
-1. Pobierz `INSTALL.md` przez WebFetch (jeden raz):
-   - Agent: `{raw_base}/agents/{nazwa}/INSTALL.md`
-   - MCP: `{raw_base}/mcp_servers/{nazwa}/INSTALL.md`
+1. Pobierz `INSTALL.md` przez WebFetch (jeden raz).
+   Katalog = krótka nazwa **bez sufiksu** `-agent` / `-mcp`:
+   `seo-agent` → `agents/seo/`, `kanboard-mcp` → `mcp_servers/kanboard/`
+   - Agent: `{raw_base}/agents/{krótka-nazwa}/INSTALL.md`
+   - MCP: `{raw_base}/mcp_servers/{krótka-nazwa}/INSTALL.md`
 
 2. Dla każdego pliku z listy `Pliki:` — pobierz przez WebFetch i od razu zapisz przez Write. Jeden fetch → jeden Write, bez pośrednich kroków.
 

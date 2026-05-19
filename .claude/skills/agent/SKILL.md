@@ -24,10 +24,11 @@ Przekształć URL GitHub na raw: `https://raw.githubusercontent.com/{owner}/{rep
 ### Krok 2 — Pobierz INSTALL.md narzędzia
 
 Ustal typ na podstawie nazwy (suffix `-agent` → agent, `-mcp` lub nazwa MCP → mcp).
+Katalog = krótka nazwa **bez sufiksu**: `seo-agent` → `seo`, `kanboard-mcp` → `kanboard`.
 
 WebFetch:
-- Agent: `{raw_base}/agents/{nazwa}/INSTALL.md`
-- MCP: `{raw_base}/mcp_servers/{nazwa}/INSTALL.md`
+- Agent: `{raw_base}/agents/{krótka-nazwa}/INSTALL.md`
+- MCP: `{raw_base}/mcp_servers/{krótka-nazwa}/INSTALL.md`
 
 ### Krok 3 — Potwierdź co instalujesz
 

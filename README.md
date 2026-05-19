@@ -42,9 +42,12 @@ Repozytorium narzędziowe do zarządzania projektami z agentami AI.
    *"Na podstawie tych ról potrzebujesz: [lista]. Zainstalować wszystkie?"*
 
 3. **Instaluj** każdą wybraną pozycję:
-   - Pobierz `INSTALL.md` narzędzia przez WebFetch:
-     - Agent: `https://raw.githubusercontent.com/corozya/szkielet/main/agents/{nazwa}/INSTALL.md`
-     - MCP: `https://raw.githubusercontent.com/corozya/szkielet/main/mcp_servers/{nazwa}/INSTALL.md`
+   - Pobierz `INSTALL.md` narzędzia przez WebFetch.
+     Nazwa katalogu to **krótka nazwa bez sufiksu** `-agent` lub `-mcp`:
+     - Agent `seo-agent` → `agents/seo/INSTALL.md`
+     - MCP `kanboard-mcp` → `mcp_servers/kanboard/INSTALL.md`
+     - Agent: `https://raw.githubusercontent.com/corozya/szkielet/main/agents/{krótka-nazwa}/INSTALL.md`
+     - MCP: `https://raw.githubusercontent.com/corozya/szkielet/main/mcp_servers/{krótka-nazwa}/INSTALL.md`
    - Pobierz wymienione w `Pliki:` pliki i zapisz przez Write
    - Jeśli plik istnieje — zapytaj czy nadpisać
    - Sprawdź pole `Setup:` i **przeprowadź użytkownika** przez konfigurację (zbierz brakujące dane)
