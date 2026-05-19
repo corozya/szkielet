@@ -22,15 +22,23 @@ Jeśli URL jest w formacie `github.com/.../blob/main/README.md`, zamień na raw:
 W pobranym README znajdź sekcję `## Instalacja przez agenta AI`.
 Ta sekcja zawiera listę dostępnych integracji z instrukcjami dla Ciebie.
 
-### Krok 3 — Pytaj o każdą integrację osobno
+### Krok 3 — Pokaż listę i pozwól wybrać kilka
 
-Przejdź przez każdą integrację **po kolei**. Dla każdej zadaj osobne pytanie i poczekaj na odpowiedź:
+Wyświetl wszystkie dostępne integracje jako listę numerowaną z opisem, np.:
 
-*"Czy zainstalować **kanboard-mcp** — Zarządzanie zadaniami (backlog, handoff)? (tak/nie)"*
-*"Czy zainstalować **frontend-agent** — Agent React/Next.js/Vue? (tak/nie)"*
-... itd.
+```
+1. kanboard-mcp     — zarządzanie zadaniami (backlog, handoff)
+2. mysql-mcp        — dostęp read-only do bazy MySQL
+3. filesystem-mcp   — dostęp do plików projektu
+4. memory-mcp       — trwała pamięć między sesjami
+5. frontend-agent   — agent React/Next.js/Vue
+6. backend-agent    — agent PHP/Node/Python
+```
 
-Nie pokazuj całej listy naraz.
+Następnie zadaj jedno pytanie:
+*"Które chcesz zainstalować? Podaj numery (np. 1, 3) lub nazwy."*
+
+Poczekaj na odpowiedź, dopiero potem instaluj.
 
 ### Krok 4 — Zainstaluj wybrane
 
@@ -51,13 +59,10 @@ Użytkownik: zapoznaj się z https://github.com/corozya/szkielet/blob/main/READM
 
 Agent:
 → WebFetch README
-→ "Czy zainstalować kanboard-mcp — zarządzanie zadaniami? (tak/nie)"
-Użytkownik: tak
-→ "Czy zainstalować mysql-mcp — dostęp do bazy MySQL? (tak/nie)"
-Użytkownik: nie
-→ "Czy zainstalować frontend-agent — agent React/Next.js? (tak/nie)"
-Użytkownik: tak
-→ ... (pyta o kolejne)
+→ Wyświetla listę 6 integracji z opisami
+→ "Które chcesz zainstalować? Podaj numery lub nazwy."
+Użytkownik: 1, 5
+→ Instaluje kanboard-mcp i frontend-agent
 
 Agent:
 → Pobiera mcp_servers/kanboard/server.py, scripts/run-kanboard-mcp.sh itd.
