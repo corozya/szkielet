@@ -17,8 +17,10 @@ Kod aplikacji jest w repozytorium produktu.
 
 ### Jak instalować (procedura dla agenta)
 
-1. Zapytaj: *"Które integracje chcesz zainstalować?"* — pokaż listę poniżej
-2. Dla każdej wybranej integracji:
+1. Przejdź przez każdą integrację **po kolei**, pytając osobno:
+   *"Czy zainstalować [nazwa] — [opis]? (tak/nie)"*
+   Nie pokazuj całej listy naraz — pytaj o każdą z osobna i czekaj na odpowiedź.
+2. Po zebraniu odpowiedzi instaluj wybrane. Dla każdej wybranej integracji:
    - Pobierz każdy plik z sekcji **Pliki** przez URL:
      `https://raw.githubusercontent.com/corozya/szkielet/main/{ścieżka_pliku}`
    - Zapisz plik w bieżącym projekcie, zachowując ścieżkę względną
