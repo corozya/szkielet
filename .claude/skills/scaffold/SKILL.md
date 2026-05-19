@@ -1,84 +1,88 @@
----
-name: scaffold
-description: Czyta README repozytorium scaffold podanego przez użytkownika i przeprowadza instalację wybranych integracji (MCP, agentów AI) do bieżącego projektu.
-triggers: ["scaffold", "zapoznaj się z", "przeczytaj repo", "zainstaluj ze szkieletu", "setup from repo"]
----
+# Skill: scaffold
 
-# scaffold — Instalacja z repozytorium scaffold
+Uruchamiany gdy użytkownik poda URL do README repozytorium scaffold
+(np. `https://github.com/corozya/szkielet/blob/main/README.md`
+lub `https://github.com/corozya/szkielet/`).
 
-Gdy użytkownik podaje URL do README repozytorium scaffold (np. `https://github.com/corozya/szkielet/blob/main/README.md`), pobierasz ten plik i postępujesz zgodnie z instrukcjami w sekcji `## Instalacja przez agenta AI`.
+**Po instalacji zapisz URL repo do `.scaffold-source` w katalogu projektu** — umożliwia późniejsze `/agent` bez podawania repo.
 
 ## Procedura
 
-### Krok 1 — Pobierz README
+### Krok 1 — Pobierz i przeczytaj README
 
-Użytkownik podał URL do README. Pobierz go przez WebFetch.
+Pobierz README przez WebFetch. Jeśli URL wskazuje na blob GitHub, zmień na raw:
+`https://raw.githubusercontent.com/corozya/szkielet/main/README.md`
 
-Jeśli URL jest w formacie `github.com/.../blob/main/README.md`, zamień na raw:
-`https://raw.githubusercontent.com/{owner}/{repo}/main/README.md`
+Wyciągnij z README:
+- listę agentów (sekcje `### *-agent`)
+- listę MCP (sekcje `### *-mcp`)
+- mapowanie agent → wymagane MCP
 
-### Krok 2 — Znajdź sekcję instalacji
+### Krok 2 — Zapytaj o role agentów
 
-W pobranym README znajdź sekcję `## Instalacja przez agenta AI`.
-Ta sekcja zawiera listę dostępnych integracji z instrukcjami dla Ciebie.
-
-### Krok 3 — Zapytaj najpierw o role agentów
-
-Pokaż tylko role agentów (nie MCP) jako listę numerowaną i zapytaj:
-*"Jakich agentów potrzebujesz w tym projekcie? Podaj numery lub nazwy."*
+Pokaż numerowaną listę i poczekaj na wybór (multi-select):
 
 ```
+Jakich agentów potrzebujesz? Podaj numery (np. 1 3 5) lub nazwy:
+
 1. frontend-agent   — JS, React, HTML, CSS
 2. backend-agent    — PHP, Python
 3. database-agent   — MySQL, MariaDB
 4. seo-agent        — SEO techniczne i contentowe
 5. marketing-agent  — Google Ads, GA4
 6. pm-agent         — Project Manager (Kanboard)
+7. devops-agent     — serwery, deploy, CI/CD, monitoring
 ```
 
-### Krok 3b — Zaproponuj wymagane MCP
+### Krok 3 — Zaproponuj wymagane MCP
 
-Na podstawie wybranych ról wylicz potrzebne integracje MCP (deduplikuj):
+Na podstawie wybranych ról deduplikuj MCP:
 - frontend → filesystem-mcp
 - backend → filesystem-mcp, mysql-mcp
 - database → mysql-mcp
 - seo → gsc-mcp
 - marketing → analytics-mcp
 - pm → kanboard-mcp
+- devops → filesystem-mcp
 
-Powiedz: *"Na podstawie tych ról potrzebujesz: [lista]. Zainstalować wszystkie? (tak/nie/wybierz)"*
+Zapytaj: *"Na podstawie tych ról potrzebujesz: [lista]. Zainstalować wszystkie?"*
 
-Poczekaj na potwierdzenie przed instalacją.
+### Krok 4 — Instaluj wybrane pozycje
 
-### Krok 4 — Zainstaluj wybrane
+Dla każdego wybranego agenta i MCP:
 
-Dla każdej wybranej integracji postępuj dokładnie według instrukcji z README:
-- Pobierz pliki przez WebFetch z raw.githubusercontent.com
-- Zapisz przez Write zachowując ścieżki
-- Patchuj konfiguracje MCP przez Edit (jeśli typ MCP)
-- Uruchom setup_cmd przez Bash jeśli użytkownik wyrazi zgodę
+1. Pobierz `INSTALL.md` przez WebFetch:
+   - Agent: `{raw_base}/agents/{nazwa}/INSTALL.md`
+   - MCP: `{raw_base}/mcp_servers/{nazwa}/INSTALL.md`
 
-### Krok 5 — Podsumuj
+2. Pobierz każdy plik z listy `Pliki:` i zapisz przez Write, zachowując ścieżki.
 
-Powiedz co zainstalowano, które hosty AI skonfigurowano i co jeszcze trzeba zrobić.
+3. Jeśli plik już istnieje — zapytaj czy nadpisać.
 
-## Przykład
+### Krok 5 — Zbierz wymagane dane konfiguracyjne
 
+Dla każdego MCP który ma sekcję `Wymagane dane:` w INSTALL.md:
+- Zapytaj użytkownika o każdą brakującą wartość **po kolei**
+- Nie przechodź dalej dopóki wszystkie dane nie są uzupełnione
+- Utwórz plik `.env` wskazany w `Setup:` z zebranymi wartościami
+
+### Krok 6 — Dopisz MCP entry do hostów AI
+
+Wykryj które hosty AI są aktywne (sprawdź czy katalogi istnieją):
+- `.claude/` → dopisz do `.claude/mcp.json`
+- `.cursor/` → dopisz do `.cursor/mcp.json`
+- `.gemini/` → dopisz do `.gemini/settings.json`
+- `.codex/` → dopisz do `mcp.json`
+
+Użyj `mcp_entry` z INSTALL.md danego MCP.
+Jeśli plik konfiguracyjny nie istnieje — utwórz go z odpowiednią strukturą JSON.
+
+### Krok 7 — Zależności pip i finalizacja
+
+Dla każdego zainstalowanego MCP z `Python deps:` — uruchom `pip install ...`.
+
+Zapisz URL repo do `.scaffold-source`:
 ```
-Użytkownik: zapoznaj się z https://github.com/corozya/szkielet/blob/main/README.md
-
-Agent:
-→ WebFetch README
-→ "Jakich agentów potrzebujesz? (lista ról)"
-Użytkownik: frontend, seo
-→ "Na podstawie tych ról potrzebujesz: filesystem-mcp, gsc-mcp. Zainstalować wszystkie?"
-Użytkownik: tak
-→ Instaluje frontend-agent + seo-agent + filesystem-mcp + gsc-mcp
-
-Agent:
-→ Pobiera mcp_servers/kanboard/server.py, scripts/run-kanboard-mcp.sh itd.
-→ Zapisuje pliki
-→ Patchuje .claude/mcp.json, .cursor/mcp.json
-→ "Zainstalowano kanboard-mcp i frontend-agent.
-   Uruchom teraz: npm run init-kb"
+https://github.com/corozya/szkielet
 ```
+Dzięki temu `/agent` będzie wiedział skąd instalować kolejne narzędzia.

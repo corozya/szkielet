@@ -1,5 +1,4 @@
 {
-  "required_mcp": ["filesystem"],
-  "optional_mcp": ["playwright", "memory"],
-  "suggested_commands": ["npm run dev", "npm test", "npm run build"]
+  "mcp": ["filesystem-mcp"],
+  "tools": ["Read", "Write", "Edit", "Bash", "WebFetch", "Glob", "Grep"]
 }

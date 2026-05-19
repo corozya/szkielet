@@ -1,5 +1,4 @@
 {
-  "required_mcp": ["analytics"],
-  "optional_mcp": ["gsc", "filesystem", "memory"],
-  "suggested_commands": ["run_report", "get_performance_overview", "run_realtime_report"]
+  "mcp": ["analytics-mcp"],
+  "tools": ["Read", "Write", "WebFetch"]
 }

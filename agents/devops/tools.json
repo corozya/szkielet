@@ -1,4 +1,4 @@
 {
-  "mcp": ["mysql-mcp"],
+  "mcp": ["filesystem-mcp"],
   "tools": ["Read", "Write", "Edit", "Bash", "Glob", "Grep"]
 }

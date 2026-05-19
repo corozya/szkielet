@@ -1,5 +1,4 @@
 {
-  "required_mcp": ["filesystem"],
-  "optional_mcp": ["mysql", "sentry", "memory"],
-  "suggested_commands": ["composer test", "php artisan test", "pytest", "python -m pytest"]
+  "mcp": ["filesystem-mcp", "mysql-mcp"],
+  "tools": ["Read", "Write", "Edit", "Bash", "WebFetch", "Glob", "Grep"]
 }

@@ -1,127 +1,61 @@
----
-name: agent
-description: Instaluje agenta AI lub integrację MCP do bieżącego projektu z repozytorium scaffold. Użyj /agent <nazwa> np. /agent frontend, /agent kanboard, /agent seo.
-triggers: ["agent", "install-agent", "dodaj agenta", "zainstaluj agenta", "dodaj mcp", "zainstaluj integrację"]
----
+# Skill: agent
 
-# agent — Instalator integracji i agentów AI
+**Użycie:** `/agent <nazwa>` np. `/agent frontend`, `/agent kanboard`, `/agent seo`
 
-Jako agent wykonujesz instalację samodzielnie używając narzędzi (WebFetch, Read, Write, Edit, Bash). Nie uruchamiasz skryptów — robisz to wszystko sam.
+Instaluje pojedynczego agenta lub MCP z repozytorium scaffold do bieżącego projektu.
 
 ## Procedura
 
-### Krok 1 — Ustal nazwę integracji
+### Krok 1 — Ustal URL repozytorium scaffold
 
-Wyodrębnij nazwę z polecenia użytkownika: `/agent frontend` → `frontend`, `/agent kanboard` → `kanboard`.
+Sprawdź czy istnieje plik `.scaffold-source` w katalogu projektu:
+- Jeśli tak — użyj zapisanego URL jako bazy (`raw_base`)
+- Jeśli nie — zapytaj użytkownika o URL repo scaffold
 
-Jeśli użytkownik nie podał nazwy — pokaż listę numerowaną z manifestu i zadaj jedno pytanie:
-*"Które chcesz zainstalować? Podaj numery (np. 1, 3) lub nazwy."*
-Pozwól wybrać kilka naraz.
+Przekształć URL GitHub na raw: `https://raw.githubusercontent.com/{owner}/{repo}/main`
 
-### Krok 2 — Pobierz manifest
+### Krok 2 — Pobierz INSTALL.md narzędzia
 
-**Opcja A — lokalny manifest (priorytet):**
-Sprawdź czy istnieje `scaffold-manifest.json` w CWD. Jeśli tak — przeczytaj go narzędziem Read.
+Ustal typ na podstawie nazwy (suffix `-agent` → agent, `-mcp` lub nazwa MCP → mcp).
 
-**Opcja B — zdalny manifest:**
-Sprawdź `SCAFFOLD_REPO` w `.env`. Jeśli ustawione np. `owner/repo`, pobierz:
+WebFetch:
+- Agent: `{raw_base}/agents/{nazwa}/INSTALL.md`
+- MCP: `{raw_base}/mcp_servers/{nazwa}/INSTALL.md`
+
+### Krok 3 — Potwierdź co instalujesz
+
+Pokaż użytkownikowi z INSTALL.md:
+- opis narzędzia
+- listę plików do pobrania
+- wymagane MCP (jeśli to agent)
+- wymagane dane konfiguracyjne (jeśli MCP)
+
+Zapytaj: *"Zainstalować?"* (tak/nie)
+
+### Krok 4 — Zbierz wymagane dane konfiguracyjne (jeśli MCP)
+
+Jeśli INSTALL.md zawiera sekcję `Wymagane dane:`:
+- Zapytaj użytkownika o każdą wartość **po kolei**
+- Nie przechodź dalej dopóki wszystkie dane nie są uzupełnione
+- Utwórz plik `.env` wskazany w `Setup:`
+
+### Krok 5 — Instaluj pliki
+
+Dla każdego pliku z `Pliki:`:
 ```
-https://raw.githubusercontent.com/{owner}/{repo}/main/scaffold-manifest.json
+WebFetch: {raw_base}/{plik}
+Write: zapisz pod tą samą ścieżką w projekcie
 ```
-użyj WebFetch.
+Jeśli plik istnieje — zapytaj czy nadpisać.
 
-Jeśli brak obu — zapytaj użytkownika o URL repozytorium scaffold (np. `https://github.com/owner/repo`).
+### Krok 6 — Dopisz MCP entry (tylko dla MCP)
 
-### Krok 3 — Znajdź integrację w manifeście
+Wykryj aktywne hosty AI i dopisz `mcp_entry` z INSTALL.md:
+- `.claude/` → `.claude/mcp.json`
+- `.cursor/` → `.cursor/mcp.json`
+- `.gemini/` → `.gemini/settings.json`
+- `.codex/` → `mcp.json`
 
-Z pobranego JSON znajdź obiekt gdzie `id` lub `name` pasuje do żądanej nazwy.
+### Krok 7 — Zależności pip
 
-Przykład wpisu:
-```json
-{
-  "id": "kanboard",
-  "type": "mcp",
-  "files": ["mcp_servers/kanboard/server.py", "kanboard_setup/.env.example"],
-  "mcp_entry": { "command": "python3", "args": ["mcp_servers/kanboard/server.py"], "cwd": "." },
-  "setup_cmd": "npm run init-kb"
-}
-```
-
-Jeśli integracja nie istnieje — powiedz użytkownikowi jakie ID są dostępne.
-
-### Krok 4 — Pobierz i zapisz pliki
-
-Dla każdego pliku z `integration.files`:
-
-1. Pobierz zawartość przez WebFetch:
-   ```
-   https://raw.githubusercontent.com/{owner}/{repo}/main/{filePath}
-   ```
-
-2. Sprawdź czy plik już istnieje (Read). Jeśli istnieje — zapytaj użytkownika czy nadpisać.
-
-3. Zapisz plik narzędziem Write, zachowując oryginalną ścieżkę względną.
-
-4. Jeśli plik jest wykonywalny (`.sh`) — ustaw uprawnienia:
-   ```bash
-   chmod +x {ścieżka}
-   ```
-
-### Krok 5 — Patchuj konfiguracje MCP (tylko dla type === "mcp")
-
-Wykryj obecnych hostów AI sprawdzając obecność katalogów:
-- `.claude/` → plik `.claude/mcp.json`
-- `.cursor/` → plik `.cursor/mcp.json`
-- `.gemini/` → plik `.gemini/settings.json`
-- `.codex/` lub `codex.json` → plik `mcp.json`
-
-Dla każdego wykrytego hosta:
-1. Przeczytaj istniejący plik konfiguracji (Read). Jeśli nie istnieje — zacznij od `{"mcpServers": {}}`.
-2. Dodaj lub zaktualizuj wpis pod kluczem `integration.id` używając wartości z `integration.mcp_entry`.
-3. Zapisz plik (Write lub Edit).
-
-### Krok 6 — Obsługa zależności Python (jeśli integration.python_deps)
-
-Poinformuj użytkownika:
-```
-Wymagane zależności Python: pip install fastmcp requests python-dotenv
-```
-Zapytaj czy uruchomić teraz. Jeśli tak:
-```bash
-pip install {integration.python_deps.join(" ")}
-```
-
-### Krok 7 — Uruchom setup_cmd (jeśli istnieje)
-
-Jeśli `integration.setup_cmd` jest ustawione (np. `npm run init-kb`):
-- Zapytaj użytkownika: "Integracja wymaga konfiguracji. Uruchomić teraz: `{setup_cmd}`?"
-- Jeśli tak — uruchom przez Bash i przeprowadź użytkownika przez pytania konfiguracyjne.
-
-### Krok 8 — Podsumowanie
-
-Powiedz użytkownikowi:
-- ✓ co zostało zainstalowane (lista plików)
-- ✓ które hosty AI zostały skonfigurowane
-- → co jeszcze trzeba zrobić (np. restart hosta AI, uruchomienie setup_cmd)
-
-## Przykład pełnego przebiegu
-
-```
-Użytkownik: /agent kanboard
-Agent:
-1. Czyta SCAFFOLD_REPO z .env → owner/repo
-2. WebFetch → scaffold-manifest.json → znajduje "kanboard"
-3. WebFetch → mcp_servers/kanboard/server.py → Write do CWD
-4. WebFetch → kanboard_setup/.env.example → Write do CWD
-5. Wykrywa .claude/ i .cursor/ → patchuje mcp.json w obu
-6. "Kanboard wymaga konfiguracji. Uruchomić npm run init-kb?"
-7. Uruchamia init-kb → użytkownik podaje URL/token
-8. "✓ Kanboard MCP zainstalowany. Zrestartuj Claude Code."
-```
-
-## Ważne zasady
-
-- Nigdy nie klonuj całego repo — tylko pobieraj pojedyncze pliki przez WebFetch
-- Zawsze pytaj przed nadpisaniem istniejących plików
-- Jeśli `SCAFFOLD_REPO` nie jest ustawione i nie ma lokalnego manifestu — zapytaj użytkownika o URL zanim zaczniesz cokolwiek pobierać
-- Dla agentów (type === "agent"): kopiuj pliki do `agents/{id}/`, nie patchuj MCP
+Jeśli INSTALL.md zawiera `Python deps:` — uruchom `pip install ...`.
